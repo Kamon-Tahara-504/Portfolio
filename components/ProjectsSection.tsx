@@ -15,10 +15,10 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
   return (
     <section
       id="projects"
-      className="border-b border-black bg-white py-32 md:py-40"
+      className="border-b border-black bg-white py-48 md:py-56"
     >
       <div className="mx-auto max-w-7xl px-6">
-        <h2 className="mb-16 text-center text-4xl font-bold tracking-tight md:text-5xl">
+        <h2 className="mb-20 text-center text-4xl font-bold tracking-tight md:text-5xl">
           Projects
         </h2>
         <ProjectGrid
