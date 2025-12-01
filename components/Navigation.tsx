@@ -33,7 +33,7 @@ export default function Navigation() {
   const scrollToSection = (sectionId: string) => {
     const section = document.getElementById(sectionId);
     if (section) {
-      const offset = 40; // 上のボーダー線が見えるようにするためのオフセット
+      const offset = 50; // 上のボーダー線が見えるようにするためのオフセット
       const elementPosition = section.getBoundingClientRect().top;
       const offsetPosition = elementPosition + window.pageYOffset - offset;
 

@@ -6,8 +6,7 @@
     "description": "A modern web application built with React and Next.js",
     "category": "web",
     "images": [
-      "/images/projects/sample-web-1.jpg",
-      "/images/projects/sample-web-2.jpg"
+      "/images/projects/PlaceHolder.png"
     ],
     "technologies": ["Next.js", "TypeScript", "TailwindCSS"],
     "links": {
@@ -23,8 +22,7 @@
     "description": "A cross-platform mobile app built with React Native",
     "category": "mobile",
     "images": [
-      "/images/projects/sample-mobile-1.jpg",
-      "/images/projects/sample-mobile-2.jpg"
+      "/images/projects/PlaceHolder.png"
     ],
     "technologies": ["React Native", "TypeScript", "Expo"],
     "links": {
