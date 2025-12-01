@@ -15,10 +15,10 @@ export default function AboutSection({
   return (
     <section
       id="about"
-      className="border-b border-black bg-white py-32 md:py-40"
+      className="border-b border-black bg-white py-48 md:py-56"
     >
       <div className="mx-auto max-w-7xl px-6">
-        <h2 className="mb-16 text-center text-4xl font-bold tracking-tight md:text-5xl">
+        <h2 className="mb-20 text-center text-4xl font-bold tracking-tight md:text-5xl">
           About
         </h2>
         <div className="flex flex-col items-center gap-16 md:flex-row md:items-start">
