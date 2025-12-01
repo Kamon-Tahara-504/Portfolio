@@ -17,13 +17,13 @@ export default function AboutSection({
       id="about"
       className="border-b border-black bg-white py-32 md:py-40"
     >
-      <div className="mx-auto max-w-7xl px-6">
+      <div className="mx-auto max-w-7xl pl-0 pr-6">
         <h2 className="mb-12 text-center text-4xl font-bold tracking-tight md:text-5xl">
           About
         </h2>
-        <div className="flex flex-col items-center gap-16 md:flex-row md:items-start">
-          {/* 4:3比率の画像 - エリアを拡大 */}
-          <div className="relative aspect-[4/3] w-full max-w-lg flex-shrink-0 overflow-hidden border border-black bg-black/5 md:w-2/5">
+        <div className="flex flex-col gap-16 md:flex-row">
+          {/* 4:3比率の画像 - 大きく左寄せ */}
+          <div className="relative aspect-[4/3] w-full flex-shrink-0 overflow-hidden border border-black bg-black/5 md:w-1/2">
             <Image
               src={about.image}
               alt={name}
