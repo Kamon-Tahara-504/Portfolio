@@ -20,16 +20,16 @@ export default function ExperienceSection({
         </h2>
         <div className="relative">
           {/* タイムラインの縦線 */}
-          <div className="absolute left-4 top-0 bottom-0 w-0.5 bg-black md:left-8" />
-          <div className="space-y-12">
+          <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-black/30 md:left-8" />
+          <div className="space-y-16">
             {experience.map((exp, index) => (
               <div
                 key={exp.id}
-                className="relative pl-12 md:pl-16"
+                className="relative pl-16 md:pl-20"
               >
                 {/* タイムラインのドット */}
-                <div className="absolute left-0 top-2 h-4 w-4 rounded-full border-2 border-black bg-white md:left-4" />
-                <div className="border-l-2 border-black/20 pl-8 md:pl-12">
+                <div className="absolute left-[25px] top-4 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-black md:left-[33px]" />
+                <div className="space-y-3">
                   <div className="mb-4">
                     <div className="mb-2 flex flex-col gap-1 md:flex-row md:items-baseline md:gap-4">
                       <h3 className="text-2xl font-bold tracking-tight md:text-3xl">
