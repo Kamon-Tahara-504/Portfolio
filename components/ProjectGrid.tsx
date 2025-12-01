@@ -1,14 +1,18 @@
+"use client";
+
 import { Project } from "@/types/project";
 import ProjectCard from "./ProjectCard";
 
-interface ProjectGridProps {
+export interface ProjectGridProps {
   projects: Project[];
   category?: "all" | "web" | "mobile";
+  onProjectClick?: (project: Project) => void;
 }
 
 export default function ProjectGrid({
   projects,
   category = "all",
+  onProjectClick,
 }: ProjectGridProps) {
   const filteredProjects =
     category === "all"
@@ -26,7 +30,11 @@ export default function ProjectGrid({
   return (
     <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
       {filteredProjects.map((project) => (
-        <ProjectCard key={project.id} project={project} />
+        <ProjectCard
+          key={project.id}
+          project={project}
+          onClick={onProjectClick}
+        />
       ))}
     </div>
   );
