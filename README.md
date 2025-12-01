@@ -1,24 +1,43 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Portfolio
+
+白と黒を基調とした建築設計図風のデザインで、Webアプリケーションとモバイルアプリケーションの作品を展示するポートフォリオサイトです。
+
+## 技術スタック
+
+- **Next.js 16** (App Router)
+- **TypeScript**
+- **TailwindCSS 4**
+- **SSG** (Static Site Generation) で高速化
+
+## 機能
+
+- トップページ：ヒーローセクションと作品プレビュー
+- 作品一覧ページ：全作品をグリッド表示
+- 作品詳細ページ：個別作品の詳細情報と画像ギャラリー
+- Aboutページ：自己紹介とスキル
+
+## データ管理
+
+作品データは `data/projects.json` で管理されています。新しい作品を追加する場合は、このファイルを編集してください。
 
 ## Getting Started
 
-First, run the development server:
+開発サーバーを起動:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+ブラウザで [http://localhost:3000](http://localhost:3000) を開いて確認できます。
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## ビルド
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+本番用ビルド:
+
+```bash
+npm run build
+npm start
+```
 
 ## Learn More
 

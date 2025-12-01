@@ -1,0 +1,37 @@
+[
+  {
+    "id": "project-1",
+    "slug": "sample-web-app",
+    "title": "Sample Web Application",
+    "description": "A modern web application built with React and Next.js",
+    "category": "web",
+    "images": [
+      "/images/projects/sample-web-1.jpg",
+      "/images/projects/sample-web-2.jpg"
+    ],
+    "technologies": ["Next.js", "TypeScript", "TailwindCSS"],
+    "links": {
+      "github": "https://github.com/example/sample-web-app",
+      "demo": "https://example.com/demo"
+    },
+    "date": "2024-01-15"
+  },
+  {
+    "id": "project-2",
+    "slug": "sample-mobile-app",
+    "title": "Sample Mobile Application",
+    "description": "A cross-platform mobile app built with React Native",
+    "category": "mobile",
+    "images": [
+      "/images/projects/sample-mobile-1.jpg",
+      "/images/projects/sample-mobile-2.jpg"
+    ],
+    "technologies": ["React Native", "TypeScript", "Expo"],
+    "links": {
+      "github": "https://github.com/example/sample-mobile-app",
+      "demo": "https://example.com/mobile-demo"
+    },
+    "date": "2024-02-20"
+  }
+]
+
