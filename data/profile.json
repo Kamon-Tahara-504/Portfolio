@@ -1,0 +1,42 @@
+{
+  "name": "Your Name",
+  "title": "Web & Mobile Developer",
+  "about": {
+    "image": "/images/profile/profile.jpg",
+    "description": "Webアプリケーションとモバイルアプリケーションの開発をしています。ユーザー体験を重視した、使いやすく美しいアプリケーションを作ることを心がけています。"
+  },
+  "experience": [
+    {
+      "id": "exp-1",
+      "title": "Software Engineer",
+      "company": "Company Name",
+      "period": "2023 - Present",
+      "description": "Webアプリケーションの開発に従事"
+    },
+    {
+      "id": "exp-2",
+      "title": "Frontend Developer",
+      "company": "Company Name",
+      "period": "2021 - 2023",
+      "description": "React/Next.jsを使用したフロントエンド開発"
+    }
+  ],
+  "skills": {
+    "frontend": [
+      { "name": "React", "level": 90 },
+      { "name": "Next.js", "level": 85 },
+      { "name": "TypeScript", "level": 80 },
+      { "name": "TailwindCSS", "level": 85 }
+    ],
+    "mobile": [
+      { "name": "React Native", "level": 75 },
+      { "name": "Expo", "level": 70 }
+    ],
+    "tools": [
+      { "name": "Git", "level": 85 },
+      { "name": "GitHub", "level": 85 },
+      { "name": "Vercel", "level": 80 }
+    ]
+  }
+}
+

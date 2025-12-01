@@ -1,18 +1,18 @@
 import Image from "next/image";
-import Link from "next/link";
 import { Project } from "@/types/project";
 
 interface ProjectCardProps {
   project: Project;
+  onClick?: (project: Project) => void;
 }
 
-export default function ProjectCard({ project }: ProjectCardProps) {
+export default function ProjectCard({ project, onClick }: ProjectCardProps) {
   const categoryLabel = project.category === "web" ? "Web" : "Mobile";
 
   return (
-    <Link
-      href={`/projects/${project.slug}`}
-      className="group relative block overflow-hidden border border-black bg-white transition-transform hover:scale-[1.02]"
+    <button
+      onClick={() => onClick?.(project)}
+      className="group relative block w-full overflow-hidden border border-black bg-white text-left transition-transform hover:scale-[1.02]"
     >
       <div className="relative aspect-video w-full overflow-hidden bg-black/5">
         {project.images && project.images.length > 0 ? (
@@ -52,7 +52,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
           ))}
         </div>
       </div>
-    </Link>
+    </button>
   );
 }
 
