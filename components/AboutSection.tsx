@@ -6,6 +6,7 @@ import EngineerExperienceCard from "./EngineerExperienceCard";
 interface AboutSectionProps {
   name: string;
   nameEn?: string;
+  age?: number | string;
   title: string;
   about: About;
   contact?: Contact;
@@ -14,6 +15,7 @@ interface AboutSectionProps {
 export default function AboutSection({
   name,
   nameEn,
+  age,
   title,
   about,
   contact,
@@ -27,7 +29,7 @@ export default function AboutSection({
       id="about"
       className="border-b border-black bg-white py-32 md:py-40"
     >
-      <div className="mx-auto max-w-7xl pl-0 pr-6">
+      <div className="mx-auto max-w-7-5xl px-6">
         <h2 className="mb-12 text-center text-4xl font-bold tracking-tight md:text-5xl">
           About
         </h2>
@@ -49,6 +51,11 @@ export default function AboutSection({
                 <h3 className="text-3xl font-bold tracking-tight md:text-4xl">
                   {name}
                 </h3>
+                {age && (
+                  <span className="text-lg font-medium text-black/70 md:text-xl whitespace-nowrap">
+                    {age}歳
+                  </span>
+                )}
                 <EngineerExperienceCard />
               </div>
               {nameEnParts.length > 0 && (

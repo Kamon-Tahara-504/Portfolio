@@ -55,12 +55,16 @@ export default function EngineerExperienceCard() {
   const duration = formatDuration(seconds);
 
   return (
-    <div className="inline-flex items-center gap-2 rounded-md border border-black bg-white px-4 py-2 shadow-sm">
-      <span className="text-xs font-medium text-black/70 md:text-sm">
+    <div className="flex items-center rounded-md border border-black bg-white px-3 py-2 shadow-sm w-[300px] md:w-[340px] flex-shrink-0">
+      <span className="text-xs font-medium text-black/70 md:text-sm whitespace-nowrap flex-shrink-0">
         エンジニア歴
       </span>
-      <span className="text-sm font-bold text-black md:text-base">
-        {duration.years}年 {duration.days}日 {duration.hours}時間 {duration.minutes}分 {duration.seconds}秒
+      <span className="text-sm font-bold text-black md:text-base tabular-nums whitespace-nowrap -ml-3">
+        <span className="inline-block w-[3ch] text-right">{duration.years}</span>年
+        <span className="inline-block w-[4ch] text-right">{duration.days}</span>日
+        <span className="inline-block w-[2ch] text-right">{duration.hours}</span>時間
+        <span className="inline-block w-[2ch] text-right">{duration.minutes}</span>分
+        <span className="inline-block w-[2ch] text-right">{duration.seconds}</span>秒
       </span>
     </div>
   );

@@ -14,7 +14,7 @@ export default function ExperienceSection({
       className="relative border-b border-black bg-white py-48 md:py-56"
     >
       <GridPattern className="opacity-20" size={60} strokeWidth={0.5} />
-      <div className="relative mx-auto max-w-5xl px-6">
+      <div className="relative mx-auto max-w-3-5xl px-6">
         <h2 className="mb-12 text-center text-4xl font-bold tracking-tight md:text-5xl">
           Experience
         </h2>

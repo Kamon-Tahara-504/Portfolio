@@ -306,7 +306,7 @@ export default function HeroSection({
             <span className="block text-6xl font-extrabold tracking-tight md:text-8xl lg:text-9xl bg-gradient-to-r from-white via-white to-white/80 bg-clip-text text-transparent drop-shadow-2xl [text-shadow:_0_0_40px_rgba(255,255,255,0.3)]">
               {nameEn}
             </span>
-          </h1>
+        </h1>
         )}
 
         {/* 開発者タイトル */}
