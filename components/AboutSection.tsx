@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { About, Contact } from "@/types/profile";
+import EngineerExperienceCard from "./EngineerExperienceCard";
 
 interface AboutSectionProps {
   name: string;
@@ -44,9 +45,12 @@ export default function AboutSection({
           {/* テキストコンテンツ */}
           <div className="flex-1 space-y-6">
             <div className="space-y-1">
-              <h3 className="text-3xl font-bold tracking-tight md:text-4xl">
-                {name}
-              </h3>
+              <div className="flex items-center gap-4 flex-wrap">
+                <h3 className="text-3xl font-bold tracking-tight md:text-4xl">
+                  {name}
+                </h3>
+                <EngineerExperienceCard />
+              </div>
               {nameEnParts.length > 0 && (
                 <div className="flex items-baseline gap-2">
                   {nameEnParts.map((part, index) => (
