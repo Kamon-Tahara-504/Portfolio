@@ -14,19 +14,35 @@ const sections = [
 export default function Navigation() {
   const [activeSection, setActiveSection] = useState("hero");
   const { isDark } = useVideoColor();
+  
+  // heroセクションの場合のみ動画の色検知を使用、それ以外は常に黒色
+  const shouldUseVideoColor = activeSection === "hero";
+  const effectiveIsDark = shouldUseVideoColor ? isDark : false;
 
   useEffect(() => {
     const handleScroll = () => {
-      const scrollPosition = window.scrollY + 100;
+      // ナビゲーションバーは画面中央（top-1/2）にあるので、画面中央の位置を基準に判定
+      const viewportCenter = window.scrollY + window.innerHeight / 2;
 
+      // 各セクションをチェックして、画面中央がどのセクション内にあるかを判定
       for (let i = sections.length - 1; i >= 0; i--) {
         const section = document.getElementById(sections[i].id);
-        if (section && section.offsetTop <= scrollPosition) {
-          setActiveSection(sections[i].id);
-          break;
+        if (section) {
+          const rect = section.getBoundingClientRect();
+          const sectionTop = window.scrollY + rect.top;
+          const sectionBottom = sectionTop + rect.height;
+          
+          // 画面中央がセクション内にあるか判定
+          if (viewportCenter >= sectionTop && viewportCenter <= sectionBottom) {
+            setActiveSection(sections[i].id);
+            break;
+          }
         }
       }
     };
+
+    // 初回実行
+    handleScroll();
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
@@ -55,16 +71,16 @@ export default function Navigation() {
               onClick={() => scrollToSection(section.id)}
               className={`group relative flex items-center transition-colors ${
                 activeSection === section.id
-                  ? isDark ? "text-white" : "text-black"
-                  : isDark ? "text-white/40 hover:text-white/70" : "text-black/40 hover:text-black/70"
+                  ? effectiveIsDark ? "text-white" : "text-black"
+                  : effectiveIsDark ? "text-white/40 hover:text-white/70" : "text-black/40 hover:text-black/70"
               }`}
               aria-label={`Scroll to ${section.label}`}
             >
               <span
                 className={`absolute -left-8 h-0.5 transition-all ${
                   activeSection === section.id
-                    ? `w-6 ${isDark ? "bg-white" : "bg-black"}`
-                    : `w-0 ${isDark ? "bg-white/40" : "bg-black/40"} group-hover:w-4`
+                    ? `w-6 ${effectiveIsDark ? "bg-white" : "bg-black"}`
+                    : `w-0 ${effectiveIsDark ? "bg-white/40" : "bg-black/40"} group-hover:w-4`
                 }`}
               />
               <span className="text-xs font-medium uppercase tracking-wider">
