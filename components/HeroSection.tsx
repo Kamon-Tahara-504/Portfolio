@@ -8,6 +8,8 @@ interface HeroSectionProps {
   image: string;
   title: string;
   subtitle?: string;
+  nameEn?: string;
+  developerTitle?: string;
 }
 
 // 3つの映像ファイルのパス
@@ -21,6 +23,8 @@ export default function HeroSection({
   image,
   title,
   subtitle,
+  nameEn,
+  developerTitle,
 }: HeroSectionProps) {
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [isNextVideoActive, setIsNextVideoActive] = useState(false); // 次の動画が表示中かどうか
@@ -288,12 +292,39 @@ export default function HeroSection({
       </div>
       {/* 色検出用のCanvas（非表示） */}
       <canvas ref={canvasRef} className="hidden" />
-      <div className="relative z-30 text-center text-white">
-        <h1 className="mb-4 text-5xl font-bold tracking-tight md:text-7xl lg:text-8xl">
-          {title}
-        </h1>
-        {subtitle && (
-          <p className="text-lg md:text-xl lg:text-2xl">{subtitle}</p>
+      <div className="relative z-30 flex flex-col items-center justify-center text-center text-white px-4">
+        {/* PORTFOLIO ラベル */}
+        <div className="mb-6 animate-fade-in-down">
+          <span className="inline-block px-4 py-2 text-xs font-semibold tracking-[0.2em] uppercase text-white/80 border border-white/30 rounded-full backdrop-blur-sm bg-white/5">
+            PORTFOLIO
+          </span>
+        </div>
+
+        {/* 名前（英語） */}
+        {nameEn && (
+          <h1 className="mb-6 animate-fade-in-up delay-100">
+            <span className="block text-6xl font-extrabold tracking-tight md:text-8xl lg:text-9xl bg-gradient-to-r from-white via-white to-white/80 bg-clip-text text-transparent drop-shadow-2xl [text-shadow:_0_0_40px_rgba(255,255,255,0.3)]">
+              {nameEn}
+            </span>
+          </h1>
+        )}
+
+        {/* 開発者タイトル */}
+        {developerTitle && (
+          <div className="mb-4 animate-fade-in-up delay-200">
+            <p className="text-lg font-medium tracking-wide md:text-xl lg:text-2xl text-white/90 drop-shadow-lg">
+              {developerTitle}
+            </p>
+          </div>
+        )}
+
+        {/* 既存のsubtitle（フォールバック） */}
+        {!developerTitle && subtitle && (
+          <div className="mb-4 animate-fade-in-up delay-200">
+            <p className="text-lg font-medium tracking-wide md:text-xl lg:text-2xl text-white/90 drop-shadow-lg">
+              {subtitle}
+            </p>
+          </div>
         )}
       </div>
     </section>

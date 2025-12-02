@@ -7,6 +7,7 @@ interface SkillsSectionProps {
 export default function SkillsSection({ skills }: SkillsSectionProps) {
   const skillCategories = [
     { name: "Frontend", skills: skills.frontend },
+    { name: "Backend", skills: skills.backend },
     { name: "Mobile", skills: skills.mobile },
     { name: "Tools", skills: skills.tools },
   ];

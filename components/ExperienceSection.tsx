@@ -39,9 +39,11 @@ export default function ExperienceSection({
                         {exp.period}
                       </span>
                     </div>
-                    <p className="text-lg font-medium text-black/70 md:text-xl">
-                      {exp.company}
-                    </p>
+                    <div className="text-lg font-medium text-black/70 md:text-xl">
+                      {exp.company.split('\n').map((line, index) => (
+                        <p key={index}>{line}</p>
+                      ))}
+                    </div>
                   </div>
                   <p className="leading-relaxed text-black/80 md:text-lg">
                     {exp.description}

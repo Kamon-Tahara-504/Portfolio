@@ -1,41 +1,60 @@
 {
-  "name": "Your Name",
-  "title": "Web & Mobile Developer",
+  "name": "田原 果門",
+  "nameEn": "Tahara Kamon",
+  "title": "Portfolio",
+  "developerTitle": "Web Developer & Mobile Developer",
   "about": {
     "image": "/images/projects/TAHARA.JPG",
-    "description": "Webアプリケーションとモバイルアプリケーションの開発をしています。ユーザー体験を重視した、使いやすく美しいアプリケーションを作ることを心がけています。"
+    "furigana": "TaharaKamon",
+    "description": "Web & Mobile アプリの開発を行っています。\n「やりたい」と思ったことには妥協せず、しっかり形にすることを大切にしています。\nユーザーが夢中になれる体験を届けるため、今の自分のスキルを最大限に活かして開発しています。"
+  },
+  "contact": {
+    "email": "taharacomeon.0504@gmail.com",
+    "phone": "09054281623",
+    "github": "https://github.com/Kamon-Tahara-504"
   },
   "experience": [
     {
       "id": "exp-1",
-      "title": "Software Engineer",
-      "company": "Company Name",
-      "period": "2023 - Present",
-      "description": "Webアプリケーションの開発に従事"
+      "title": "プログラミングスクール受講",
+      "company": "NcodeLabo",
+      "period": "2023",
+      "description": "プログラミングを学び始める"
     },
     {
       "id": "exp-2",
-      "title": "Frontend Developer",
-      "company": "Company Name",
-      "period": "2021 - 2023",
-      "description": "React/Next.jsを使用したフロントエンド開発"
+      "title": "卒業",
+      "company": "江戸川区東葛西中学校",
+      "period": "2024年3月",
+      "description": "中学校を卒業"
+    },
+    {
+      "id": "exp-3",
+      "title": "入学",
+      "company": "KADOKAWAドワンゴ情報工科学院 高等部 東京校 IT総合科\n学校法人 角川ドワンゴ学園 S高等学校 普通科",
+      "period": "2024年4月",
+      "description": "エンジニアとして働きたいと思い入学を決める"
     }
   ],
   "skills": {
     "frontend": [
-      { "name": "React", "level": 90 },
-      { "name": "Next.js", "level": 85 },
-      { "name": "TypeScript", "level": 80 },
-      { "name": "TailwindCSS", "level": 85 }
+      { "name": "React", "level": 60 },
+      { "name": "Next.js", "level": 40 }
+    ],
+    "backend": [
+      { "name": "Python", "level": 70 },
+      { "name": "C", "level": 75 },
+      { "name": "Java", "level": 45 },
+      { "name": "TypeScript", "level": 60 }
     ],
     "mobile": [
-      { "name": "React Native", "level": 75 },
-      { "name": "Expo", "level": 70 }
+      { "name": "Flutter", "level": 80 },
+      { "name": "Swift", "level": 15 },
+      { "name": "Kotlin", "level": 15 }
     ],
     "tools": [
-      { "name": "Git", "level": 85 },
-      { "name": "GitHub", "level": 85 },
-      { "name": "Vercel", "level": 80 }
+      { "name": "GitHub", "level": 75 },
+      { "name": "Figma", "level": 40 }
     ]
   }
 }
