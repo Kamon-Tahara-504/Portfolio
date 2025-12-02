@@ -10,13 +10,11 @@ interface HeroSectionProps {
   subtitle?: string;
 }
 
-// 5つの映像ファイルのパス
+// 3つの映像ファイルのパス
 const videoSources = [
-  "/images/hero/Galaxy1.mp4",
-  "/images/hero/Galaxy2.mp4",
-  "/images/hero/Galaxy3.mp4",
-  "/images/hero/Galaxy4.mp4",
-  "/images/hero/Galaxy5.mp4",
+  "/images/profile/Galaxy1.mp4",
+  "/images/profile/Galaxy2.mp4",
+  "/images/profile/Galaxy3.mp4",
 ];
 
 export default function HeroSection({
