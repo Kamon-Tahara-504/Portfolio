@@ -26,4 +26,13 @@ body {
 
 html {
   scroll-behavior: smooth;
+  overscroll-behavior: none;
+  overscroll-behavior-y: none;
+  overflow-x: hidden;
+}
+
+body {
+  overscroll-behavior: none;
+  overscroll-behavior-y: none;
+  overflow-x: hidden;
 }
