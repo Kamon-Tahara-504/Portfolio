@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useVideoColor } from "@/contexts/VideoColorContext";
 
 const sections = [
   { id: "hero", label: "Top" },
@@ -12,6 +13,7 @@ const sections = [
 
 export default function Navigation() {
   const [activeSection, setActiveSection] = useState("hero");
+  const { isDark } = useVideoColor();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -53,16 +55,16 @@ export default function Navigation() {
               onClick={() => scrollToSection(section.id)}
               className={`group relative flex items-center transition-colors ${
                 activeSection === section.id
-                  ? "text-black"
-                  : "text-black/40 hover:text-black/70"
+                  ? isDark ? "text-white" : "text-black"
+                  : isDark ? "text-white/40 hover:text-white/70" : "text-black/40 hover:text-black/70"
               }`}
               aria-label={`Scroll to ${section.label}`}
             >
               <span
                 className={`absolute -left-8 h-0.5 transition-all ${
                   activeSection === section.id
-                    ? "w-6 bg-black"
-                    : "w-0 bg-black/40 group-hover:w-4"
+                    ? `w-6 ${isDark ? "bg-white" : "bg-black"}`
+                    : `w-0 ${isDark ? "bg-white/40" : "bg-black/40"} group-hover:w-4`
                 }`}
               />
               <span className="text-xs font-medium uppercase tracking-wider">

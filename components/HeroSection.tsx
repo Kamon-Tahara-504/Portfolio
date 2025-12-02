@@ -1,6 +1,8 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
+import { useVideoColor } from "@/contexts/VideoColorContext";
+import { useVideoColorDetection } from "@/hooks/useVideoColorDetection";
 
 interface HeroSectionProps {
   image: string;
@@ -23,65 +25,238 @@ export default function HeroSection({
   subtitle,
 }: HeroSectionProps) {
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
-  const [fadeIn, setFadeIn] = useState(true);
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isNextVideoActive, setIsNextVideoActive] = useState(false); // 次の動画が表示中かどうか
+  const activeVideoRef = useRef<HTMLVideoElement>(null);
+  const nextVideoRef = useRef<HTMLVideoElement>(null);
+  const { setIsDark } = useVideoColor();
+  
+  // 次の動画の読み込み済みフラグ（重複読み込みを防止）
+  const nextVideoPreloadedRef = useRef<boolean>(false);
 
+  // 次の動画のインデックスを計算
+  const getNextIndex = (index: number) => (index + 1) % videoSources.length;
+
+  // 色検出（表示中のvideo要素から検出）
+  const { canvasRef } = useVideoColorDetection({
+    videoElement: isNextVideoActive ? nextVideoRef.current : activeVideoRef.current,
+    onColorDetected: setIsDark,
+    enabled: true,
+  });
+
+  // 初期化：最初の動画をactiveVideoに読み込み（2つ目は終了1秒前に読み込み開始）
   useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
+    const activeVideo = activeVideoRef.current;
+    if (!activeVideo) return;
 
-    const handleVideoEnd = () => {
-      // フェードアウト
-      setFadeIn(false);
-      
-      // フェードアウト後に次の映像に切り替え
-      setTimeout(() => {
-        setCurrentVideoIndex((prev) => (prev + 1) % videoSources.length);
-        setFadeIn(true);
-      }, 300); // フェードトランジションの時間
+    // activeVideoに1つ目の動画を設定
+    activeVideo.src = videoSources[0];
+    activeVideo.load();
+    
+    // 2つ目の動画は終了1秒前に読み込み開始（timeupdateイベントで処理）
+    nextVideoPreloadedRef.current = false;
+  }, []);
+
+  // activeVideoの再生管理（初期再生時のみ）
+  useEffect(() => {
+    const activeVideo = activeVideoRef.current;
+    if (!activeVideo || isNextVideoActive) return;
+
+    const handleCanPlay = () => {
+      const playPromise = activeVideo.play();
+      if (playPromise !== undefined) {
+        playPromise.catch((error) => {
+          if (error.name !== "AbortError") {
+            console.error("Video autoplay failed:", error);
+          }
+        });
+      }
     };
 
-    video.addEventListener("ended", handleVideoEnd);
+    activeVideo.addEventListener("canplay", handleCanPlay);
 
-    // 映像を再生（load()は不要、srcの変更で自動的にロードされる）
-    const playPromise = video.play();
-    
-    // play()のPromiseを処理（AbortErrorは無視）
-    if (playPromise !== undefined) {
-      playPromise.catch((error) => {
-        // AbortErrorは新しいloadが発生したことを示すだけなので無視
-        if (error.name !== "AbortError") {
-          console.error("Video autoplay failed:", error);
-        }
-      });
+    // 既に読み込まれている場合は再生
+    if (activeVideo.readyState >= 3) {
+      handleCanPlay();
     }
 
     return () => {
-      video.removeEventListener("ended", handleVideoEnd);
-      // クリーンアップ時に再生を停止
-      video.pause();
-      video.currentTime = 0;
+      activeVideo.removeEventListener("canplay", handleCanPlay);
     };
-  }, [currentVideoIndex]);
+  }, []);
+
+  // 次の動画を読み込む関数
+  const preloadNextVideo = useCallback(() => {
+    if (nextVideoPreloadedRef.current) return;
+    
+    const activeVideo = activeVideoRef.current;
+    const nextVideo = nextVideoRef.current;
+    if (!activeVideo || !nextVideo) return;
+
+    const currentVideo = isNextVideoActive ? nextVideo : activeVideo;
+    const waitingVideo = isNextVideoActive ? activeVideo : nextVideo;
+    const nextIndex = getNextIndex(currentVideoIndex);
+    
+    // 既に読み込まれていない場合のみ読み込み開始
+    const currentSrc = waitingVideo.src || "";
+    if (!currentSrc.includes(videoSources[nextIndex])) {
+      waitingVideo.src = videoSources[nextIndex];
+      waitingVideo.load();
+      nextVideoPreloadedRef.current = true;
+    } else {
+      // 既に読み込まれている場合はフラグを設定
+      nextVideoPreloadedRef.current = true;
+    }
+  }, [currentVideoIndex, isNextVideoActive, getNextIndex]);
+
+  // loadedmetadataイベントでdurationを取得し、動画が1秒未満の場合は即座に読み込み開始
+  useEffect(() => {
+    const activeVideo = activeVideoRef.current;
+    const nextVideo = nextVideoRef.current;
+    if (!activeVideo || !nextVideo) return;
+
+    const handleLoadedMetadata = () => {
+      const currentVideo = isNextVideoActive ? nextVideo : activeVideo;
+      
+      // durationが取得できているか確認
+      if (!currentVideo.duration || isNaN(currentVideo.duration)) return;
+      
+      // 動画が1秒未満の場合は即座に次の動画を読み込み開始
+      if (currentVideo.duration <= 1.0 && !nextVideoPreloadedRef.current) {
+        preloadNextVideo();
+      }
+    };
+
+    // 現在表示中の動画のloadedmetadataイベントを監視
+    const currentVideo = isNextVideoActive ? nextVideo : activeVideo;
+    currentVideo.addEventListener("loadedmetadata", handleLoadedMetadata);
+
+    // 既にメタデータが読み込まれている場合
+    if (currentVideo.readyState >= 1 && currentVideo.duration && !isNaN(currentVideo.duration)) {
+      if (currentVideo.duration <= 1.0 && !nextVideoPreloadedRef.current) {
+        preloadNextVideo();
+      }
+    }
+
+    return () => {
+      currentVideo.removeEventListener("loadedmetadata", handleLoadedMetadata);
+    };
+  }, [currentVideoIndex, isNextVideoActive, preloadNextVideo]);
+
+  // timeupdateイベントで終了1秒前を監視し、次の動画の読み込みを開始
+  useEffect(() => {
+    const activeVideo = activeVideoRef.current;
+    const nextVideo = nextVideoRef.current;
+    if (!activeVideo || !nextVideo) return;
+
+    const handleTimeUpdate = () => {
+      // 現在表示中の動画を特定
+      const currentVideo = isNextVideoActive ? nextVideo : activeVideo;
+      
+      // durationが取得できているか確認
+      if (!currentVideo.duration || isNaN(currentVideo.duration)) return;
+      
+      // 終了1秒前かどうかをチェック
+      const timeRemaining = currentVideo.duration - currentVideo.currentTime;
+      
+      // 終了1秒前になったら、次の動画の読み込みを開始
+      if (timeRemaining <= 1.0 && !nextVideoPreloadedRef.current) {
+        preloadNextVideo();
+      }
+    };
+
+    // 現在表示中の動画のtimeupdateイベントを監視
+    const currentVideo = isNextVideoActive ? nextVideo : activeVideo;
+    currentVideo.addEventListener("timeupdate", handleTimeUpdate);
+
+    return () => {
+      currentVideo.removeEventListener("timeupdate", handleTimeUpdate);
+    };
+  }, [currentVideoIndex, isNextVideoActive, preloadNextVideo]);
+
+  // 動画終了時の処理
+  useEffect(() => {
+    const activeVideo = activeVideoRef.current;
+    const nextVideo = nextVideoRef.current;
+    if (!activeVideo || !nextVideo) return;
+
+    const handleVideoEnd = () => {
+      // 現在表示中の動画を特定
+      const currentVideo = isNextVideoActive ? nextVideo : activeVideo;
+      const waitingVideo = isNextVideoActive ? activeVideo : nextVideo;
+
+      // waitingVideoが既に読み込まれていることを確認
+      if (waitingVideo.readyState >= 3) {
+        // waitingVideoを前面に表示して再生開始
+        setIsNextVideoActive(!isNextVideoActive);
+        
+        const playPromise = waitingVideo.play();
+        if (playPromise !== undefined) {
+          playPromise
+            .then(() => {
+              // currentVideoを停止
+              currentVideo.pause();
+              currentVideo.currentTime = 0;
+
+              // currentVideoIndexを更新
+              const newIndex = getNextIndex(currentVideoIndex);
+              setCurrentVideoIndex(newIndex);
+
+              // 読み込み済みフラグをリセット
+              nextVideoPreloadedRef.current = false;
+
+              // currentVideoに次の次の動画は終了1秒前に読み込み開始（timeupdateイベントで処理）
+              // ここでは読み込まない
+            })
+            .catch((error) => {
+              if (error.name !== "AbortError") {
+                console.error("Next video autoplay failed:", error);
+              }
+              setIsNextVideoActive(!isNextVideoActive); // 元に戻す
+            });
+        }
+      }
+    };
+
+    // 現在表示中の動画のendedイベントを監視
+    const currentVideo = isNextVideoActive ? nextVideo : activeVideo;
+    currentVideo.addEventListener("ended", handleVideoEnd);
+
+    return () => {
+      currentVideo.removeEventListener("ended", handleVideoEnd);
+    };
+  }, [currentVideoIndex, isNextVideoActive]);
 
   return (
     <section
       id="hero"
-      className="relative flex min-h-screen items-center justify-center overflow-hidden"
+      className="relative flex min-h-screen items-center justify-center overflow-hidden bg-black"
     >
-      <div className="absolute inset-0">
+      <div className="absolute inset-0 bg-black">
+        {/* activeVideo: 現在表示・再生中の動画 */}
         <video
-          ref={videoRef}
-          src={videoSources[currentVideoIndex]}
+          ref={activeVideoRef}
           muted
           playsInline
-          className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-300 ${
-            fadeIn ? "opacity-100" : "opacity-0"
+          preload="auto"
+          className={`absolute inset-0 h-full w-full object-cover ${
+            !isNextVideoActive ? "z-10" : "z-0"
           }`}
         />
-        <div className="absolute inset-0 bg-black/40" />
+        {/* nextVideo: 次の動画を事前読み込み */}
+        <video
+          ref={nextVideoRef}
+          muted
+          playsInline
+          preload="auto"
+          className={`absolute inset-0 h-full w-full object-cover ${
+            isNextVideoActive ? "z-10" : "z-0"
+          }`}
+        />
+        <div className="absolute inset-0 bg-black/40 z-20" />
       </div>
-      <div className="relative z-10 text-center text-white">
+      {/* 色検出用のCanvas（非表示） */}
+      <canvas ref={canvasRef} className="hidden" />
+      <div className="relative z-30 text-center text-white">
         <h1 className="mb-4 text-5xl font-bold tracking-tight md:text-7xl lg:text-8xl">
           {title}
         </h1>
