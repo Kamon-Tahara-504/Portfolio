@@ -24,6 +24,7 @@ export default function Home() {
       <AboutSection
         name={profile.name}
         nameEn={profile.nameEn}
+        age={profile.age}
         title={profile.title}
         about={profile.about}
         contact={profile.contact}

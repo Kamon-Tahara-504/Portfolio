@@ -10,6 +10,8 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --max-width-7-5xl: 85rem;
+  --max-width-3-5xl: 52rem;
 }
 
 body {

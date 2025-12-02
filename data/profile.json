@@ -1,6 +1,7 @@
 {
   "name": "田原 果門",
   "nameEn": "Tahara Kamon",
+  "age": 17,
   "title": "Portfolio",
   "developerTitle": "Web Developer & Mobile Developer",
   "about": {
@@ -34,6 +35,13 @@
       "company": "KADOKAWAドワンゴ情報工科学院 高等部 東京校 IT総合科\n学校法人 角川ドワンゴ学園 S高等学校 普通科",
       "period": "2024年4月",
       "description": "エンジニアとして働きたいと思い入学を決める"
+    },
+    {
+      "id": "exp-4",
+      "title": "現在",
+      "company": "WEBアプリケーションを4つ作成\n Mobileアプリケーションリリース目前",
+      "period": "2025年12月",
+      "description": "エンジニアリングを学びながら、Web & Mobileアプリの開発に取り組んでいます"
     }
   ],
   "skills": {

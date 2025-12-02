@@ -33,6 +33,7 @@ export interface Contact {
 export interface Profile {
   name: string;
   nameEn?: string;
+  age?: number | string;
   title: string;
   developerTitle?: string;
   about: About;

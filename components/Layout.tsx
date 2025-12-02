@@ -72,7 +72,7 @@ export default function Layout({ children }: LayoutProps) {
         <Navigation />
         <main>{children}</main>
         <footer className="border-t border-black bg-white">
-          <div className="mx-auto max-w-7xl px-6 py-8 text-center text-sm text-black/60">
+          <div className="mx-auto max-w-7-5xl px-6 py-8 text-center text-sm text-black/60">
             <p>© {new Date().getFullYear()} Portfolio. All rights reserved.</p>
           </div>
         </footer>
