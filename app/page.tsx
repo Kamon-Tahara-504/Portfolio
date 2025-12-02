@@ -18,11 +18,15 @@ export default function Home() {
         image="/images/hero/hero.jpg"
         title={profile.name}
         subtitle={profile.title}
+        nameEn={profile.nameEn}
+        developerTitle={profile.developerTitle}
       />
       <AboutSection
         name={profile.name}
+        nameEn={profile.nameEn}
         title={profile.title}
         about={profile.about}
+        contact={profile.contact}
       />
       <ExperienceSection experience={profile.experience} />
       <SkillsSection skills={profile.skills} />
