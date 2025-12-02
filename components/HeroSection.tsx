@@ -46,12 +46,35 @@ export default function HeroSection({
     const activeVideo = activeVideoRef.current;
     if (!activeVideo) return;
 
+    // エラーハンドリングを追加
+    const handleError = (e: Event) => {
+      const video = e.target as HTMLVideoElement;
+      console.error("Video loading error:", {
+        src: video.src,
+        error: video.error,
+        networkState: video.networkState,
+        readyState: video.readyState,
+      });
+    };
+
+    const handleLoadedData = () => {
+      console.log("Video loaded successfully:", activeVideo.src);
+    };
+
+    activeVideo.addEventListener("error", handleError);
+    activeVideo.addEventListener("loadeddata", handleLoadedData);
+
     // activeVideoに1つ目の動画を設定
     activeVideo.src = videoSources[0];
     activeVideo.load();
     
     // 2つ目の動画は終了1秒前に読み込み開始（timeupdateイベントで処理）
     nextVideoPreloadedRef.current = false;
+
+    return () => {
+      activeVideo.removeEventListener("error", handleError);
+      activeVideo.removeEventListener("loadeddata", handleLoadedData);
+    };
   }, []);
 
   // activeVideoの再生管理（初期再生時のみ）
@@ -97,6 +120,17 @@ export default function HeroSection({
     // 既に読み込まれていない場合のみ読み込み開始
     const currentSrc = waitingVideo.src || "";
     if (!currentSrc.includes(videoSources[nextIndex])) {
+      // エラーハンドリングを追加
+      const handleError = (e: Event) => {
+        const video = e.target as HTMLVideoElement;
+        console.error("Next video loading error:", {
+          src: video.src,
+          error: video.error,
+          networkState: video.networkState,
+        });
+      };
+
+      waitingVideo.addEventListener("error", handleError, { once: true });
       waitingVideo.src = videoSources[nextIndex];
       waitingVideo.load();
       nextVideoPreloadedRef.current = true;
