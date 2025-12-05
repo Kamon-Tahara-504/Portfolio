@@ -46,17 +46,19 @@
   ],
   "skills": {
     "frontend": [
-      { "name": "React", "level": 60 },
-      { "name": "Next.js", "level": 40 }
+      { "name": "React", "level": 60, "startDate": "2025-04", "endDate": null },
+      { "name": "Next.js", "level": 40, "startDate": "2025-11", "endDate": null }
     ],
     "backend": [
-      { "name": "Python", "level": 70 },
-      { "name": "C", "level": 75 },
-      { "name": "Java", "level": 45 },
+      { "name": "C#", "level": 0, "startDate": "2022-05", "endDate": "2022-11" },
+      { "name": "C", "level": 75, "startDate": "2022-11", "endDate": "2024-03" },
+      { "name": "Python", "level": 70, "startDate": "2023-04", "endDate": "2025-02" },
+      { "name": "Django", "level": 0, "startDate": "2024-10", "endDate": "2025-02" },
+      { "name": "Java", "level": 45, "startDate": "2025-04", "endDate": null },
       { "name": "TypeScript", "level": 60 }
     ],
     "mobile": [
-      { "name": "Flutter", "level": 80 },
+      { "name": "Flutter", "level": 80, "startDate": "2025-03", "endDate": null },
       { "name": "Swift", "level": 15 },
       { "name": "Kotlin", "level": 15 }
     ],
