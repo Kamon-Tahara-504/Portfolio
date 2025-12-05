@@ -1,4 +1,5 @@
 import { Skills } from "@/types/profile";
+import SkillsTimeline from "./SkillsTimeline";
 
 interface SkillsSectionProps {
   skills: Skills;
@@ -21,7 +22,8 @@ export default function SkillsSection({ skills }: SkillsSectionProps) {
         <h2 className="mb-20 text-center text-4xl font-bold tracking-tight md:text-5xl">
           Skills
         </h2>
-        <div className="grid gap-12 md:grid-cols-3">
+        <SkillsTimeline skills={skills} />
+        <div className="mt-20 grid gap-12 md:grid-cols-3">
           {skillCategories.map((category) => (
             <div key={category.name}>
               <h3 className="mb-8 text-2xl font-bold tracking-tight md:text-3xl">

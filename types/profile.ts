@@ -15,6 +15,8 @@ export interface Experience {
 export interface Skill {
   name: string;
   level: number;
+  startDate?: string; // "YYYY-MM" format
+  endDate?: string | null; // "YYYY-MM" format or null for ongoing
 }
 
 export interface Skills {
