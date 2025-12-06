@@ -99,24 +99,53 @@ body {
 
 /* Custom Scrollbar Styles */
 .overflow-x-auto::-webkit-scrollbar {
-  height: 8px;
+  height: 10px;
 }
 
 .overflow-x-auto::-webkit-scrollbar-track {
-  background: transparent;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 5px;
 }
 
 .overflow-x-auto::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.2);
-  border-radius: 4px;
+  background: black;
+  border-radius: 5px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  min-width: 50px; /* つまみの最小幅を設定して短く見せる */
 }
 
 .overflow-x-auto::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 0, 0, 0.3);
+  background: black;
 }
 
 /* Firefox scrollbar */
 .overflow-x-auto {
   scrollbar-width: thin;
-  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+  scrollbar-color: black rgba(0, 0, 0, 0.05);
+}
+
+/* タイムラインコンテナ専用のスクロールバースタイル */
+.timeline-scrollbar::-webkit-scrollbar {
+  height: 10px;
+}
+
+.timeline-scrollbar::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 5px;
+}
+
+.timeline-scrollbar::-webkit-scrollbar-thumb {
+  background: black;
+  border-radius: 5px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  min-width: 50px;
+}
+
+.timeline-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: black;
+}
+
+.timeline-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: black rgba(0, 0, 0, 0.05);
 }
