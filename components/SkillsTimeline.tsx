@@ -1,5 +1,6 @@
 "use client";
 
+import { useRef, useEffect } from "react";
 import { Skills, Skill } from "@/types/profile";
 
 interface SkillsTimelineProps {
@@ -28,6 +29,9 @@ const getSkillColor = (skillName: string): string => {
 };
 
 export default function SkillsTimeline({ skills }: SkillsTimelineProps) {
+  // スクロール可能なコンテナへの参照
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
   // 全スキルから期間情報を持つものを抽出
   const allSkills: Skill[] = [
     ...skills.frontend,
@@ -245,30 +249,40 @@ export default function SkillsTimeline({ skills }: SkillsTimelineProps) {
   const timelineHeight = 450; // タイムラインの高さ（レイヤー間隔拡大のため増加）
   const baseLineTop = 225; // タイムラインの中央（450pxの中央）
 
+  // マウント時に右端にスクロール
+  useEffect(() => {
+    if (scrollContainerRef.current) {
+      const container = scrollContainerRef.current;
+      // 右端にスクロール（scrollWidth - clientWidth）
+      container.scrollLeft = container.scrollWidth - container.clientWidth;
+    }
+  }, []); // マウント時のみ実行
+
   return (
-    <div 
-      className="mt-10 w-full mx-auto pb-10 border border-black p-4"
-      style={{ maxWidth: "76rem" }}
-    >
+    <div className="mt-10 w-full mx-auto pb-10" style={{ maxWidth: "76rem" }}>
       <h3 className="mb-8 text-center text-xl font-bold tracking-tight md:text-2xl">
         Learning Timeline
       </h3>
       <div 
-        className="w-full overflow-x-auto overflow-y-visible" 
-        style={{ 
-          WebkitOverflowScrolling: 'touch',
-          paddingLeft: "60px", // 左側の目盛りが見えるように透明な空白を追加
-          paddingRight: "120px" // 右側の目盛りと「現在」の位置の要素が見えるように透明な空白を追加
-        }}
+        className="w-full border border-black px-2 py-2"
       >
+        <div 
+          ref={scrollContainerRef}
+          className="w-full overflow-x-auto overflow-y-visible timeline-scrollbar" 
+          style={{ 
+            WebkitOverflowScrolling: 'touch',
+            paddingLeft: "60px", // 左側の目盛りが見えるように透明な空白を追加
+            paddingRight: "120px" // 右側の目盛りと「現在」の位置の要素が見えるように透明な空白を追加
+          }}
+        >
         <div 
           className="relative mx-auto px-4" 
           style={{ 
             height: `${timelineHeight}px`,
             minWidth: `${minTimelineWidth}px`,
             width: "100%",
-            paddingTop: "200px", // 上側の要素が切れないように上部にpadding（レイヤー間隔拡大に対応）
-            paddingBottom: "20px"
+            paddingTop: "150px", // 上側の要素が切れないように上部にpadding（縮小）
+            paddingBottom: "10px" // 下側のpaddingを縮小
           }}
         >
         {/* 年/月の目盛り（基準線の上） */}
@@ -385,6 +399,7 @@ export default function SkillsTimeline({ skills }: SkillsTimelineProps) {
           );
         })}
         </div>
+      </div>
       </div>
     </div>
   );
