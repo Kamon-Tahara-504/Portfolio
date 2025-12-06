@@ -105,10 +105,12 @@ export default function SkillsTimeline({ skills }: SkillsTimelineProps) {
   }
 
   // 最後の月を追加（12月でない場合、または現在の場合）
+  // ただし、2025年12月は追加しない
   const lastMonthValue = (maxMonth % 12) + 1;
   const lastYearValue = Math.floor(maxMonth / 12);
   const isCurrentMonth = maxMonth === currentMonth;
-  if (lastMonthValue !== 12 || isCurrentMonth) {
+  const is2025December = lastYearValue === 2025 && lastMonthValue === 12;
+  if ((lastMonthValue !== 12 || isCurrentMonth) && !is2025December) {
     const lastPosition = 100;
     // 重複チェック（最後の年が既に追加されている場合）
     const alreadyExists = yearMarks.some(
@@ -136,11 +138,10 @@ export default function SkillsTimeline({ skills }: SkillsTimelineProps) {
     return start1 < end2 && start2 < end1;
   };
 
-  // レイヤーの定義（上側5層、下側5層）- 縮小版（約87.5%）
-  const scaleFactor = 0.875;
+  // レイヤーの定義（上側5層、下側5層）- 50px間隔で拡大
   const LAYER_HEIGHTS = {
-    above: [-44, -70, -96, -123, -149].map(h => h * scaleFactor), // 上側のレイヤー高さ（px）
-    below: [44, 70, 96, 123, 149].map(h => h * scaleFactor), // 下側のレイヤー高さ（px）
+    above: [-50, -100, -150, -200, -250], // 上側のレイヤー高さ（px）- 50px間隔
+    below: [50, 100, 150, 200, 250], // 下側のレイヤー高さ（px）- 50px間隔
   };
 
   // 各レイヤーに配置されているスキルの期間を記録
@@ -240,23 +241,30 @@ export default function SkillsTimeline({ skills }: SkillsTimelineProps) {
   // タイムラインの最小幅を計算（固定スケールで全期間を表示）
   const minTimelineWidth = Math.max(1400, totalMonths * PIXELS_PER_MONTH);
 
-  // 基準線の位置（中央に配置）- 縮小版（約87.5%）
-  const baseLineTop = 175; // タイムラインの中央（350pxの中央）
-  const timelineHeight = 350; // タイムラインの高さ（400px → 350px）
+  // 基準線の位置（中央に配置）- レイヤー間隔拡大に対応
+  const timelineHeight = 450; // タイムラインの高さ（レイヤー間隔拡大のため増加）
+  const baseLineTop = 225; // タイムラインの中央（450pxの中央）
 
   return (
     <div className="mt-10 w-full pb-10">
       <h3 className="mb-8 text-center text-xl font-bold tracking-tight md:text-2xl">
         Learning Timeline
       </h3>
-      <div className="w-full overflow-x-auto overflow-y-visible" style={{ WebkitOverflowScrolling: 'touch' }}>
+      <div 
+        className="w-full overflow-x-auto overflow-y-visible" 
+        style={{ 
+          WebkitOverflowScrolling: 'touch',
+          paddingLeft: "60px", // 左側の目盛りが見えるように透明な空白を追加
+          paddingRight: "60px" // 右側の目盛りが見えるように透明な空白を追加
+        }}
+      >
         <div 
           className="relative mx-auto px-4" 
           style={{ 
             height: `${timelineHeight}px`,
             minWidth: `${minTimelineWidth}px`,
             width: "100%",
-            paddingTop: "160px", // 上側の要素が切れないように上部にpadding（縮小版）
+            paddingTop: "200px", // 上側の要素が切れないように上部にpadding（レイヤー間隔拡大に対応）
             paddingBottom: "20px"
           }}
         >
@@ -293,7 +301,7 @@ export default function SkillsTimeline({ skills }: SkillsTimelineProps) {
         {skillPositions.map(({ skill, left, width, isAbove, lineHeight, startDate, endDate, color }, index) => {
           // ラベルを線の中央に配置するための計算
           const labelPosition = width > 15 ? 50 : (isAbove ? 0 : 100); // 幅が広い場合は中央、狭い場合は端
-          const labelOffset = isAbove ? -6 : 6;
+          const labelOffset = isAbove ? -8 : 8;
 
           return (
             <div
