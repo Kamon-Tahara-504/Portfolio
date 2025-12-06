@@ -31,13 +31,42 @@ html {
   overscroll-behavior: none;
   overscroll-behavior-y: none;
   overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: black transparent;
 }
 
 body {
   overscroll-behavior: none;
   overscroll-behavior-y: none;
   overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: black transparent;
 }
+
+/* サイト本体のスクロールバー */
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  width: 8px !important;
+  height: 8px !important;
+}
+
+html::-webkit-scrollbar-track,
+body::-webkit-scrollbar-track {
+  background: transparent !important;
+  border-radius: 4px !important;
+}
+
+html::-webkit-scrollbar-thumb,
+body::-webkit-scrollbar-thumb {
+  background: black !important;
+  border-radius: 4px !important;
+}
+
+html::-webkit-scrollbar-thumb:hover,
+body::-webkit-scrollbar-thumb:hover {
+  background: black !important;
+}
+
 
 /* Hero Section Animations */
 @keyframes fade-in-down {
