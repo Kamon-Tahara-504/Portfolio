@@ -246,7 +246,10 @@ export default function SkillsTimeline({ skills }: SkillsTimelineProps) {
   const baseLineTop = 225; // タイムラインの中央（450pxの中央）
 
   return (
-    <div className="mt-10 w-full pb-10">
+    <div 
+      className="mt-10 w-full mx-auto pb-10 border border-black p-4"
+      style={{ maxWidth: "76rem" }}
+    >
       <h3 className="mb-8 text-center text-xl font-bold tracking-tight md:text-2xl">
         Learning Timeline
       </h3>
@@ -255,7 +258,7 @@ export default function SkillsTimeline({ skills }: SkillsTimelineProps) {
         style={{ 
           WebkitOverflowScrolling: 'touch',
           paddingLeft: "60px", // 左側の目盛りが見えるように透明な空白を追加
-          paddingRight: "60px" // 右側の目盛りが見えるように透明な空白を追加
+          paddingRight: "120px" // 右側の目盛りと「現在」の位置の要素が見えるように透明な空白を追加
         }}
       >
         <div 
@@ -302,6 +305,10 @@ export default function SkillsTimeline({ skills }: SkillsTimelineProps) {
           // ラベルを線の中央に配置するための計算
           const labelPosition = width > 15 ? 50 : (isAbove ? 0 : 100); // 幅が広い場合は中央、狭い場合は端
           const labelOffset = isAbove ? -8 : 8;
+          
+          // 各スキルごとにランダムな遅延を生成（スキル名とインデックスを組み合わせて一貫した値を生成）
+          const randomSeed = skill.name.split('').reduce((acc, char) => acc + char.charCodeAt(0), index);
+          const randomDelay = (randomSeed % 100) / 100 * 3; // 0から3秒の間でランダム
 
           return (
             <div
@@ -337,14 +344,16 @@ export default function SkillsTimeline({ skills }: SkillsTimelineProps) {
               />
               {/* 終了点の円（ドット） */}
               <div
-                className="absolute right-0 rounded-full"
+                className={`absolute right-0 rounded-full ${endDate === null ? 'animate-wobble' : ''}`}
                 style={{
                   width: "10px",
                   height: "10px",
                   top: `${lineHeight - 4}px`,
+                  right: endDate === null ? "-3px" : "0",
                   backgroundColor: color,
                   border: "2.5px solid white",
                   boxShadow: "0 0 0 1px black",
+                  animationDelay: endDate === null ? `${randomDelay}s` : undefined,
                 }}
               />
               {/* ラベル */}

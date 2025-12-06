@@ -80,6 +80,23 @@ body {
   opacity: 0;
 }
 
+/* スキルタイムラインのアニメーション */
+@keyframes wobble {
+  0% {
+    transform: translateX(4px) translateY(0); /* 右（大きく） */
+  }
+  50% {
+    transform: translateX(-4px) translateY(0); /* 左　戻る */
+  }
+  100% {
+    transform: translateX(4px) translateY(0); /* 右（大きく） */
+  }
+}
+
+.animate-wobble {
+  animation: wobble 3s ease-in-out infinite;
+}
+
 /* Custom Scrollbar Styles */
 .overflow-x-auto::-webkit-scrollbar {
   height: 8px;
