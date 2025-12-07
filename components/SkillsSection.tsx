@@ -22,8 +22,7 @@ export default function SkillsSection({ skills }: SkillsSectionProps) {
         <h2 className="mb-20 text-center text-4xl font-bold tracking-tight md:text-5xl">
           Skills
         </h2>
-        <SkillsTimeline skills={skills} />
-        <div className="mt-20 grid gap-12 md:grid-cols-3">
+        <div className="mt-20 grid gap-12 md:grid-cols-4">
           {skillCategories.map((category) => (
             <div key={category.name}>
               <h3 className="mb-8 text-2xl font-bold tracking-tight md:text-3xl">
@@ -55,6 +54,9 @@ export default function SkillsSection({ skills }: SkillsSectionProps) {
               </div>
             </div>
           ))}
+        </div>
+        <div className="mt-20">
+          <SkillsTimeline skills={skills} />
         </div>
       </div>
     </section>

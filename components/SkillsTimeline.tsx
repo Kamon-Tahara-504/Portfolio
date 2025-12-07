@@ -38,6 +38,8 @@ export default function SkillsTimeline({ skills }: SkillsTimelineProps) {
     ...skills.backend,
     ...skills.mobile,
     ...skills.tools,
+    // C#はSkillsカテゴリーには表示しないが、Learning Timelineには表示する
+    { name: "C#", level: 0, startDate: "2022-05", endDate: "2022-11" },
   ];
 
   const timelineSkills: TimelineSkill[] = allSkills.filter(
@@ -263,7 +265,7 @@ export default function SkillsTimeline({ skills }: SkillsTimelineProps) {
 
   return (
     <div className="mt-10 w-full mx-auto pb-10" style={{ maxWidth: "76rem" }}>
-      <h3 className="mb-8 text-center text-xl font-bold tracking-tight md:text-2xl">
+      <h3 className="mb-8 text-center text-2xl font-bold tracking-tight md:text-3xl">
         Learning Timeline
       </h3>
       <div 
