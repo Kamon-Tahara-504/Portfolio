@@ -265,15 +265,15 @@ export default function SkillsTimeline({ skills }: SkillsTimelineProps) {
 
   return (
     <div className="mt-10 w-full mx-auto pb-10" style={{ maxWidth: "76rem" }}>
-      <h3 className="mb-8 text-center text-2xl font-bold tracking-tight md:text-3xl">
-        Learning Timeline
-      </h3>
       <div 
-        className="w-full border border-black px-2 py-2"
+        className="relative w-full border border-black px-2 py-2"
       >
+        <h3 className="absolute top-[18px] left-0 right-0 text-center text-2xl font-bold tracking-tight md:text-3xl z-30">
+          Learning Timeline
+        </h3>
         <div 
           ref={scrollContainerRef}
-          className="w-full overflow-x-auto overflow-y-visible timeline-scrollbar" 
+          className="w-full overflow-x-auto overflow-y-hidden timeline-scrollbar" 
           style={{ 
             WebkitOverflowScrolling: 'touch',
             paddingLeft: "60px", // 左側の目盛りが見えるように透明な空白を追加
@@ -286,8 +286,8 @@ export default function SkillsTimeline({ skills }: SkillsTimelineProps) {
             height: `${timelineHeight}px`,
             minWidth: `${minTimelineWidth}px`,
             width: "100%",
-            paddingTop: "150px", // 上側の要素が切れないように上部にpadding（縮小）
-            paddingBottom: "10px" // 下側のpaddingを縮小
+            paddingTop: "60px",
+            paddingBottom: "0px"
           }}
         >
         {/* 年/月の目盛り（基準線の中央） */}
@@ -346,8 +346,11 @@ export default function SkillsTimeline({ skills }: SkillsTimelineProps) {
 
         {/* 各スキルの線とラベル */}
         {skillPositions.map(({ skill, left, width, isAbove, lineHeight, startDate, endDate, color }, index) => {
-          // ラベルを線の中央に配置するための計算
-          const labelOffset = isAbove ? -8 : 8;
+          // ラベルを線の内側（コンテナ内）に配置するための計算
+          // 上側の線（lineHeight < 0）: ラベルを線の上側（コンテナ上部方向）に配置
+          // 下側の線（lineHeight > 0）: ラベルを線の下側（コンテナ下部方向）に配置
+          const labelOffset = isAbove ? -4 : 12;
+          const labelTransform = isAbove ? "translate(-50%, -100%)" : "translate(-50%, 0)";
           
           // 各スキルごとにランダムな遅延を生成（スキル名とインデックスを組み合わせて一貫した値を生成）
           const randomSeed = skill.name.split('').reduce((acc, char) => acc + char.charCodeAt(0), index);
@@ -405,7 +408,7 @@ export default function SkillsTimeline({ skills }: SkillsTimelineProps) {
                 style={{
                   left: "50%",
                   top: `${lineHeight + labelOffset}px`,
-                  transform: isAbove ? "translate(-50%, -100%)" : "translate(-50%, 0)",
+                  transform: labelTransform,
                 }}
               >
                 <div
