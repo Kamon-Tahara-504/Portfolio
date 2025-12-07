@@ -4,11 +4,11 @@ import { useEffect, useState } from "react";
 import { useVideoColor } from "@/contexts/VideoColorContext";
 
 const sections = [
-  { id: "hero", label: "Top" },
-  { id: "about", label: "About" },
-  { id: "experience", label: "Experience" },
-  { id: "skills", label: "Skills" },
-  { id: "projects", label: "Projects" },
+  { id: "hero", label: "Top", offset: 0 },
+  { id: "about", label: "About", offset: -50 },
+  { id: "experience", label: "Experience", offset: -170 },
+  { id: "skills", label: "Skills", offset: -170 },
+  { id: "projects", label: "Projects", offset: -50 },
 ];
 
 export default function Navigation() {
@@ -51,7 +51,8 @@ export default function Navigation() {
   const scrollToSection = (sectionId: string) => {
     const section = document.getElementById(sectionId);
     if (section) {
-      const offset = 50; // 上のボーダー線が見えるようにするためのオフセット
+      const sectionConfig = sections.find(s => s.id === sectionId);
+      const offset = sectionConfig?.offset ?? -50; // セクションごとのオフセット、デフォルトは-50
       const elementPosition = section.getBoundingClientRect().top;
       const offsetPosition = elementPosition + window.pageYOffset - offset;
 
