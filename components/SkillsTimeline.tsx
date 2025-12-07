@@ -347,7 +347,7 @@ export default function SkillsTimeline({ skills }: SkillsTimelineProps) {
         {/* 各スキルの線とラベル */}
         {skillPositions.map(({ skill, left, width, isAbove, lineHeight, startDate, endDate, color }, index) => {
           // ラベルを線の中央に配置するための計算
-          const labelPosition = width > 15 ? 50 : (isAbove ? 0 : 100); // 幅が広い場合は中央、狭い場合は端
+          const labelPosition = 50; // 常に中央に配置
           const labelOffset = isAbove ? -8 : 8;
           
           // 各スキルごとにランダムな遅延を生成（スキル名とインデックスを組み合わせて一貫した値を生成）
