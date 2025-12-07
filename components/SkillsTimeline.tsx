@@ -74,9 +74,11 @@ export default function SkillsTimeline({ skills }: SkillsTimelineProps) {
   const absoluteMaxMonth = Math.max(...allMonths);
 
   // 全期間を表示（固定スケール20px/月で）
-  const minMonth = absoluteMinMonth;
+  // 開始点を2022年1月に固定
+  const FIXED_START_MONTH = 2022 * 12 + 0; // 2022年1月
+  const minMonth = FIXED_START_MONTH;
   const maxMonth = absoluteMaxMonth;
-  const totalMonths = absoluteMaxMonth - absoluteMinMonth;
+  const totalMonths = absoluteMaxMonth - FIXED_START_MONTH;
 
   // 固定スケール: 30px/月（より長い線で表示）
   const PIXELS_PER_MONTH = 50;
@@ -101,7 +103,8 @@ export default function SkillsTimeline({ skills }: SkillsTimelineProps) {
   // 1年ごとに目盛りを追加（1月の位置）
   for (let year = minYear; year <= maxYear; year++) {
     const monthIndex = year * 12;
-    if (monthIndex > minMonth && monthIndex < maxMonth) {
+    // minMonthが1月の場合も含めて、その年の1月の目盛りを追加
+    if (monthIndex >= minMonth && monthIndex < maxMonth) {
       const positionPx = (monthIndex - minMonth) * PIXELS_PER_MONTH;
       const position = (positionPx / timelineWidthPx) * 100;
       yearMarks.push({ year, month: 0, position });
@@ -285,7 +288,7 @@ export default function SkillsTimeline({ skills }: SkillsTimelineProps) {
             paddingBottom: "10px" // 下側のpaddingを縮小
           }}
         >
-        {/* 年/月の目盛り（基準線の上） */}
+        {/* 年/月の目盛り（基準線の中央） */}
         {yearMarks.map((mark, index) => (
           <div
             key={`mark-${index}`}
@@ -293,17 +296,37 @@ export default function SkillsTimeline({ skills }: SkillsTimelineProps) {
             style={{
               left: `${mark.position}%`,
               top: `${baseLineTop}px`,
-              transform: "translateX(-50%)",
+              transform: "translateX(-50%) translateY(-50%)",
+              zIndex: 20
             }}
           >
-            <div className="text-xs font-medium text-black/70 md:text-sm mb-1">
+            {/* 縦線（中央線の上側） */}
+            <div
+              className="mx-auto w-px bg-black/30"
+              style={{ 
+                height: "10px",
+                marginBottom: "4px"
+              }}
+            />
+            {/* 年数（中央線の真ん中） */}
+            <div 
+              className="text-xs font-medium text-black/70 md:text-sm bg-white px-2 rounded"
+              style={{ 
+                lineHeight: "1.2",
+                zIndex: 10
+              }}
+            >
               {mark.month === 0
                 ? `${mark.year}`
                 : `${mark.year}年${mark.month}月`}
             </div>
+            {/* 縦線（中央線の下側） */}
             <div
               className="mx-auto w-px bg-black/30"
-              style={{ height: "14px" }}
+              style={{ 
+                height: "10px",
+                marginTop: "4px"
+              }}
             />
           </div>
         ))}
@@ -311,7 +334,12 @@ export default function SkillsTimeline({ skills }: SkillsTimelineProps) {
         {/* 中央の基準線 */}
         <div
           className="absolute w-full bg-black"
-          style={{ top: `${baseLineTop}px`, left: 0, height: "2.5px" }}
+          style={{ 
+            top: `${baseLineTop}px`, 
+            left: 0, 
+            height: "2.5px",
+            zIndex: 1
+          }}
         />
 
         {/* 各スキルの線とラベル */}
