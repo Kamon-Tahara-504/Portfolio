@@ -347,7 +347,6 @@ export default function SkillsTimeline({ skills }: SkillsTimelineProps) {
         {/* 各スキルの線とラベル */}
         {skillPositions.map(({ skill, left, width, isAbove, lineHeight, startDate, endDate, color }, index) => {
           // ラベルを線の中央に配置するための計算
-          const labelPosition = 50; // 常に中央に配置
           const labelOffset = isAbove ? -8 : 8;
           
           // 各スキルごとにランダムな遅延を生成（スキル名とインデックスを組み合わせて一貫した値を生成）
@@ -404,12 +403,9 @@ export default function SkillsTimeline({ skills }: SkillsTimelineProps) {
               <div
                 className="absolute"
                 style={{
-                  left: labelPosition === 50 ? "50%" : labelPosition === 0 ? "0" : "auto",
-                  right: labelPosition === 100 ? "0" : "auto",
+                  left: "50%",
                   top: `${lineHeight + labelOffset}px`,
-                  transform: labelPosition === 50 
-                    ? (isAbove ? "translate(-50%, -100%)" : "translate(-50%, 0)")
-                    : (isAbove ? "translateY(-100%)" : "translateY(0)"),
+                  transform: isAbove ? "translate(-50%, -100%)" : "translate(-50%, 0)",
                 }}
               >
                 <div
