@@ -2,6 +2,8 @@ export interface About {
   image: string;
   furigana?: string;
   description: string;
+  birthDate?: string;
+  hobby?: string;
 }
 
 export interface Experience {

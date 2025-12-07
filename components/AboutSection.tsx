@@ -80,9 +80,21 @@ export default function AboutSection({
             {contact && (
               <div className="space-y-4 pt-4">
                 <div className="space-y-2 text-sm text-black/70 md:text-base">
+                  {about.birthDate && (
+                    <div className="flex items-center gap-2">
+                      <span><span className="font-bold">生年月日</span>:</span>
+                      <span>{about.birthDate}</span>
+                    </div>
+                  )}
+                  {about.hobby && (
+                    <div className="flex items-center gap-2">
+                      <span><span className="font-bold">好きなこと</span>:</span>
+                      <span>{about.hobby}</span>
+                    </div>
+                  )}
                   {contact.email && (
                     <div className="flex items-center gap-2">
-                      <span className="font-medium">Email:</span>
+                      <span><span className="font-bold">Email</span>:</span>
                       <a
                         href={`mailto:${contact.email}`}
                         className="hover:text-black transition-colors underline"
@@ -93,7 +105,7 @@ export default function AboutSection({
                   )}
                   {contact.phone && (
                     <div className="flex items-center gap-2">
-                      <span className="font-medium">TEL:</span>
+                      <span><span className="font-bold">TEL</span>:</span>
                       <a
                         href={`tel:${contact.phone}`}
                         className="hover:text-black transition-colors"
