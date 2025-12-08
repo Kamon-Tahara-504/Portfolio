@@ -3,6 +3,7 @@ export interface About {
   furigana?: string;
   description: string;
   birthDate?: string;
+  birthplace?: string;
   hobby?: string;
 }
 
