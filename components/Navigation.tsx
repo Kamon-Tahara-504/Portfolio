@@ -13,11 +13,22 @@ const sections = [
 
 export default function Navigation() {
   const [activeSection, setActiveSection] = useState("hero");
+  const [hasColorDetected, setHasColorDetected] = useState(false);
   const { isDark } = useVideoColor();
   
+  // 動画の色検知が動作したかどうかを追跡
+  useEffect(() => {
+    if (isDark) {
+      setHasColorDetected(true);
+    }
+  }, [isDark]);
+  
   // heroセクションの場合のみ動画の色検知を使用、それ以外は常に黒色
+  // 初期状態では白色を表示し、動画の色検知が動作した後はその値に従って色が変わる
   const shouldUseVideoColor = activeSection === "hero";
-  const effectiveIsDark = shouldUseVideoColor ? isDark : false;
+  const effectiveIsDark = shouldUseVideoColor 
+    ? (hasColorDetected ? isDark : true) // 初期状態では白色（true）、検知後はisDarkの値を使用
+    : false; // 他のセクションは常に黒色（false）
 
   useEffect(() => {
     const handleScroll = () => {
