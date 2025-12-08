@@ -73,7 +73,8 @@ export default function Layout({ children }: LayoutProps) {
         <main>{children}</main>
         <footer className="border-t border-black bg-white">
           <div className="mx-auto max-w-7-5xl px-6 py-8 text-center text-sm text-black/60">
-            <p>© {new Date().getFullYear()} Portfolio. All rights reserved.</p>
+            <p>©︎ 2025 Kamon-Tahara-504</p>
+            <p className="mt-2">Licensed under MIT License</p>
           </div>
         </footer>
       </div>
