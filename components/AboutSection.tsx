@@ -1,7 +1,10 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import { About, Contact } from "@/types/profile";
 import EngineerExperienceCard from "./EngineerExperienceCard";
+import { useFadeInOnScroll } from "@/hooks/useFadeInOnScroll";
 
 interface AboutSectionProps {
   name: string;
@@ -24,18 +27,31 @@ export default function AboutSection({
   const nameEnParts = nameEn?.split(' ').map((part, index) => 
     index === 0 ? part : part.toLowerCase()
   ) || [];
+
+  const titleRef = useFadeInOnScroll({ delay: 0 });
+  const imageRef = useFadeInOnScroll({ delay: 100 });
+  const nameRef = useFadeInOnScroll({ delay: 200 });
+  const descriptionRef = useFadeInOnScroll({ delay: 300 });
+  const contactRef = useFadeInOnScroll({ delay: 400 });
+
   return (
     <section
       id="about"
       className="border-b border-black bg-white py-48 md:py-56"
     >
       <div className="mx-auto max-w-7-5xl px-6">
-        <h2 className="mb-12 text-center text-4xl font-bold tracking-tight md:text-5xl">
+        <h2 
+          ref={titleRef.ref as React.RefObject<HTMLHeadingElement>}
+          className={`mb-12 text-center text-4xl font-bold tracking-tight md:text-5xl fade-in-on-scroll ${titleRef.isVisible ? 'visible' : ''}`}
+        >
           About
         </h2>
         <div className="flex flex-col gap-16 md:flex-row md:items-center">
           {/* 4:3比率の画像 - 大きく左寄せ */}
-          <div className="relative aspect-[4/3] w-full flex-shrink-0 overflow-hidden border border-black bg-black/5 md:w-1/2">
+          <div 
+            ref={imageRef.ref as React.RefObject<HTMLDivElement>}
+            className={`relative aspect-[4/3] w-full flex-shrink-0 overflow-hidden border border-black bg-black/5 md:w-1/2 fade-in-on-scroll ${imageRef.isVisible ? 'visible' : ''}`}
+          >
             <Image
               src={about.image}
               alt={name}
@@ -46,7 +62,10 @@ export default function AboutSection({
           </div>
           {/* テキストコンテンツ */}
           <div className="flex-1 space-y-6">
-            <div className="space-y-1">
+            <div 
+              ref={nameRef.ref as React.RefObject<HTMLDivElement>}
+              className={`space-y-1 fade-in-on-scroll ${nameRef.isVisible ? 'visible' : ''}`}
+            >
               <div className="flex items-center gap-4 flex-wrap">
                 <h3 className="text-3xl font-bold tracking-tight md:text-4xl">
                   {name}
@@ -71,14 +90,20 @@ export default function AboutSection({
                 </div>
               )}
             </div>
-            <div className="space-y-3 leading-relaxed text-black/80 md:text-lg">
+            <div 
+              ref={descriptionRef.ref as React.RefObject<HTMLDivElement>}
+              className={`space-y-3 leading-relaxed text-black/80 md:text-lg fade-in-on-scroll ${descriptionRef.isVisible ? 'visible' : ''}`}
+            >
               {about.description.split('\n').map((line, index) => (
                 <p key={index} className="break-keep break-words">{line}</p>
               ))}
             </div>
             {/* 連絡先情報 */}
             {contact && (
-              <div className="space-y-4 pt-4">
+              <div 
+                ref={contactRef.ref as React.RefObject<HTMLDivElement>}
+                className={`space-y-4 pt-4 fade-in-on-scroll ${contactRef.isVisible ? 'visible' : ''}`}
+              >
                 <div className="space-y-2 text-sm text-black/70 md:text-base">
                   {about.birthDate && (
                     <div className="flex items-center gap-2">
