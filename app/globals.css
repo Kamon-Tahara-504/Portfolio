@@ -119,6 +119,19 @@ body::-webkit-scrollbar-thumb:hover {
   transform: translateY(0) !important;
 }
 
+/* 左からフェードインするアニメーション（自画像用） */
+.fade-in-from-left {
+  opacity: 0 !important;
+  transform: translateX(-30px) !important;
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  will-change: opacity, transform;
+}
+
+.fade-in-from-left.visible {
+  opacity: 1 !important;
+  transform: translateX(0) !important;
+}
+
 /* スキルタイムラインのアニメーション */
 @keyframes wobble {
   0% {

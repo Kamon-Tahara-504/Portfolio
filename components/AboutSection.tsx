@@ -42,7 +42,7 @@ export default function AboutSection({
       <div className="mx-auto max-w-7-5xl px-6">
         <h2 
           ref={titleRef.ref as React.RefObject<HTMLHeadingElement>}
-          className={`mb-12 text-center text-4xl font-bold tracking-tight md:text-5xl fade-in-on-scroll ${titleRef.isVisible ? 'visible' : ''}`}
+          className={`mb-12 text-center text-4xl font-bold tracking-tight md:text-5xl fade-in-from-left ${titleRef.isVisible ? 'visible' : ''}`}
         >
           About
         </h2>
@@ -50,7 +50,7 @@ export default function AboutSection({
           {/* 4:3比率の画像 - 大きく左寄せ */}
           <div 
             ref={imageRef.ref as React.RefObject<HTMLDivElement>}
-            className={`relative aspect-[4/3] w-full flex-shrink-0 overflow-hidden border border-black bg-black/5 md:w-1/2 fade-in-on-scroll ${imageRef.isVisible ? 'visible' : ''}`}
+            className={`relative aspect-[4/3] w-full flex-shrink-0 overflow-hidden border border-black bg-black/5 md:w-1/2 fade-in-from-left ${imageRef.isVisible ? 'visible' : ''}`}
           >
             <Image
               src={about.image}
@@ -64,7 +64,7 @@ export default function AboutSection({
           <div className="flex-1 space-y-6">
             <div 
               ref={nameRef.ref as React.RefObject<HTMLDivElement>}
-              className={`space-y-1 fade-in-on-scroll ${nameRef.isVisible ? 'visible' : ''}`}
+              className={`space-y-1 fade-in-from-left ${nameRef.isVisible ? 'visible' : ''}`}
             >
               <div className="flex items-center gap-4 flex-wrap">
                 <h3 className="text-3xl font-bold tracking-tight md:text-4xl">
@@ -92,7 +92,7 @@ export default function AboutSection({
             </div>
             <div 
               ref={descriptionRef.ref as React.RefObject<HTMLDivElement>}
-              className={`space-y-3 leading-relaxed text-black/80 md:text-lg fade-in-on-scroll ${descriptionRef.isVisible ? 'visible' : ''}`}
+              className={`space-y-3 leading-relaxed text-black/80 md:text-lg fade-in-from-left ${descriptionRef.isVisible ? 'visible' : ''}`}
             >
               {about.description.split('\n').map((line, index) => (
                 <p key={index} className="break-keep break-words">{line}</p>
@@ -102,13 +102,19 @@ export default function AboutSection({
             {contact && (
               <div 
                 ref={contactRef.ref as React.RefObject<HTMLDivElement>}
-                className={`space-y-4 pt-4 fade-in-on-scroll ${contactRef.isVisible ? 'visible' : ''}`}
+                className={`space-y-4 pt-4 fade-in-from-left ${contactRef.isVisible ? 'visible' : ''}`}
               >
                 <div className="space-y-2 text-sm text-black/70 md:text-base">
                   {about.birthDate && (
                     <div className="flex items-center gap-2">
                       <span><span className="font-bold">生年月日</span>:</span>
                       <span>{about.birthDate}</span>
+                    </div>
+                  )}
+                  {about.birthplace && (
+                    <div className="flex items-center gap-2">
+                      <span><span className="font-bold">出身</span>:</span>
+                      <span>{about.birthplace}</span>
                     </div>
                   )}
                   {about.hobby && (
