@@ -30,6 +30,70 @@
       "demo": "https://example.com/mobile-demo"
     },
     "date": "2024-02-20"
+  },
+  {
+    "id": "project-3",
+    "slug": "e-commerce-platform",
+    "title": "E-Commerce Platform",
+    "description": "A full-featured e-commerce platform with shopping cart and payment integration",
+    "category": "web",
+    "images": [
+      "/images/projects/PlaceHolder.png"
+    ],
+    "technologies": ["Next.js", "TypeScript", "Stripe", "PostgreSQL"],
+    "links": {
+      "github": "https://github.com/example/e-commerce-platform",
+      "demo": "https://example.com/ecommerce"
+    },
+    "date": "2024-03-10"
+  },
+  {
+    "id": "project-4",
+    "slug": "fitness-tracking-app",
+    "title": "Fitness Tracking App",
+    "description": "Mobile app for tracking workouts, nutrition, and fitness goals",
+    "category": "mobile",
+    "images": [
+      "/images/projects/PlaceHolder.png"
+    ],
+    "technologies": ["Flutter", "Dart", "Firebase"],
+    "links": {
+      "github": "https://github.com/example/fitness-app",
+      "demo": "https://example.com/fitness"
+    },
+    "date": "2024-04-05"
+  },
+  {
+    "id": "project-5",
+    "slug": "dashboard-analytics",
+    "title": "Analytics Dashboard",
+    "description": "Real-time analytics dashboard with data visualization and reporting",
+    "category": "web",
+    "images": [
+      "/images/projects/PlaceHolder.png"
+    ],
+    "technologies": ["React", "TypeScript", "Chart.js", "Node.js"],
+    "links": {
+      "github": "https://github.com/example/analytics-dashboard",
+      "demo": "https://example.com/analytics"
+    },
+    "date": "2024-05-12"
+  },
+  {
+    "id": "project-6",
+    "slug": "social-media-app",
+    "title": "Social Media App",
+    "description": "A social networking app with real-time messaging and content sharing",
+    "category": "mobile",
+    "images": [
+      "/images/projects/PlaceHolder.png"
+    ],
+    "technologies": ["React Native", "TypeScript", "Socket.io", "MongoDB"],
+    "links": {
+      "github": "https://github.com/example/social-app",
+      "demo": "https://example.com/social"
+    },
+    "date": "2024-06-18"
   }
 ]
 

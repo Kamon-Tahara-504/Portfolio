@@ -20,7 +20,7 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
       id="projects"
       className="border-b border-black bg-white py-48 md:py-56"
     >
-      <div className="mx-auto max-w-7-5xl px-6">
+      <div className="mx-auto max-w-7xl px-6">
         <h2 
           ref={titleRef.ref as React.RefObject<HTMLHeadingElement>}
           className={`mb-20 text-center text-4xl font-bold tracking-tight md:text-5xl fade-in-on-scroll ${titleRef.isVisible ? 'visible' : ''}`}
