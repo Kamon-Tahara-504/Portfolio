@@ -13,6 +13,7 @@ export function useFadeInOnScroll(options: UseFadeInOnScrollOptions = {}) {
   const [isVisible, setIsVisible] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
   const elementRef = useRef<HTMLElement>(null);
+  const delayTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     setIsMounted(true);
@@ -27,11 +28,20 @@ export function useFadeInOnScroll(options: UseFadeInOnScrollOptions = {}) {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
+          // 既存のタイムアウトをクリア
+          if (delayTimeoutRef.current) {
+            clearTimeout(delayTimeoutRef.current);
+            delayTimeoutRef.current = null;
+          }
+
           if (entry.isIntersecting) {
-            setTimeout(() => {
+            // ビューポートに入ったとき：遅延後に表示
+            delayTimeoutRef.current = setTimeout(() => {
               setIsVisible(true);
             }, delay);
-            observer.unobserve(entry.target);
+          } else {
+            // ビューポートから出たとき：即座に非表示
+            setIsVisible(false);
           }
         });
       },
@@ -44,6 +54,9 @@ export function useFadeInOnScroll(options: UseFadeInOnScrollOptions = {}) {
     observer.observe(element);
 
     return () => {
+      if (delayTimeoutRef.current) {
+        clearTimeout(delayTimeoutRef.current);
+      }
       if (element) {
         observer.unobserve(element);
       }
