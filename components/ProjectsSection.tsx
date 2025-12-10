@@ -34,6 +34,7 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
           <ProjectGrid
             projects={projects}
             onProjectClick={(project: Project) => setSelectedProject(project)}
+            isGridVisible={gridRef.isVisible}
           />
         </div>
       </div>
