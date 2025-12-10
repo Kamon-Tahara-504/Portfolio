@@ -1,18 +1,31 @@
+"use client";
+
+import React from "react";
 import Image from "next/image";
 import { Project } from "@/types/project";
 
 interface ProjectCardProps {
   project: Project;
   onClick?: (project: Project) => void;
+  index: number;
+  shouldAnimate: boolean;
 }
 
-export default function ProjectCard({ project, onClick }: ProjectCardProps) {
+export default function ProjectCard({
+  project,
+  onClick,
+  index,
+  shouldAnimate,
+}: ProjectCardProps) {
   const categoryLabel = project.category === "web" ? "Web" : "Mobile";
+  const animationClass = `fade-in-on-scroll ${shouldAnimate ? "visible" : ""}`;
 
   return (
     <button
       onClick={() => onClick?.(project)}
-      className="group relative block w-full aspect-[3/4] overflow-hidden rounded-xl bg-black/5 text-left transition-transform hover:scale-[1.02]"
+      className={`group relative block w-full aspect-[3/4] overflow-hidden rounded-xl bg-black/5 text-left transition-transform hover:scale-[1.02] ${animationClass}`}
+      // 表示時は上から順に100ms刻み、巻き戻し時も同じディレイで戻る
+      style={{ transitionDelay: `${index * 100}ms` }}
     >
       {/* カード全体に画像を表示（フルブリード） */}
       {project.images && project.images.length > 0 ? (
