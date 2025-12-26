@@ -23,7 +23,7 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
       <div className="mx-auto max-w-7xl px-6">
         <h2 
           ref={titleRef.ref as React.RefObject<HTMLHeadingElement>}
-          className={`mb-20 text-center text-4xl font-bold tracking-tight md:text-5xl fade-in-on-scroll ${titleRef.isVisible ? 'visible' : ''}`}
+          className={`mb-20 text-center text-4xl font-bold tracking-tight md:text-5xl fade-in-from-left ${titleRef.isVisible ? 'visible' : ''}`}
         >
           Projects
         </h2>
