@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { Skills, Skill } from "@/types/profile";
 
 interface SkillsTimelineProps {
@@ -31,6 +31,14 @@ const getSkillColor = (skillName: string): string => {
 export default function SkillsTimeline({ skills }: SkillsTimelineProps) {
   // スクロール可能なコンテナへの参照
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  // 再生中かどうかの状態
+  const [isPlaying, setIsPlaying] = useState(false);
+  const isPlayingRef = useRef(false);
+  // 自動スクロール用のrequestAnimationFrameのID
+  const animationFrameIdRef = useRef<number | null>(null);
+  const timeoutIdRef = useRef<NodeJS.Timeout | null>(null);
+  // 現在の自動スクロール目標位置を保持
+  const currentScrollTargetRef = useRef<number | null>(null);
 
   // 全スキルから期間情報を持つものを抽出
   const allSkills: Skill[] = [
@@ -263,21 +271,187 @@ export default function SkillsTimeline({ skills }: SkillsTimelineProps) {
     }
   }, []); // マウント時のみ実行
 
+  // クリーンアップ処理
+  useEffect(() => {
+    return () => {
+      // コンポーネントアンマウント時やisPlayingがfalseになった時にクリーンアップ
+      if (animationFrameIdRef.current !== null) {
+        cancelAnimationFrame(animationFrameIdRef.current);
+        animationFrameIdRef.current = null;
+      }
+      if (timeoutIdRef.current !== null) {
+        clearTimeout(timeoutIdRef.current);
+        timeoutIdRef.current = null;
+      }
+      if (!isPlaying) {
+        isPlayingRef.current = false;
+      }
+    };
+  }, [isPlaying]);
+
+  // 再生中にスクロールを無効化
+  useEffect(() => {
+    if (!isPlaying || !scrollContainerRef.current) return;
+
+    const container = scrollContainerRef.current;
+    
+    const handleScroll = (e: Event) => {
+      // 目標位置が設定されている場合、ユーザーのスクロールを無効化
+      if (currentScrollTargetRef.current !== null) {
+        const targetPosition = currentScrollTargetRef.current;
+        const currentPosition = container.scrollLeft;
+        
+        // 目標位置から大きくずれていたら（1px以上）目標位置に戻す
+        if (Math.abs(currentPosition - targetPosition) > 1) {
+          container.scrollLeft = targetPosition;
+        }
+      }
+    };
+
+    container.addEventListener('scroll', handleScroll, { passive: false });
+    
+    return () => {
+      container.removeEventListener('scroll', handleScroll);
+    };
+  }, [isPlaying]);
+
+  // 再生機能の実装
+  const handlePlay = () => {
+    if (!scrollContainerRef.current || isPlaying) return;
+
+    setIsPlaying(true);
+    isPlayingRef.current = true;
+    const container = scrollContainerRef.current;
+
+    // 左端にスムーズスクロール
+    container.scrollTo({
+      left: 0,
+      behavior: 'smooth'
+    });
+
+    // スクロール完了を確認してから待機
+    const checkScrollComplete = () => {
+      let lastScrollLeft = container.scrollLeft;
+      let stableFrameCount = 0;
+      const requiredStableFrames = 3; // 3フレーム連続で位置が変わらなければ完了とみなす
+
+      const checkFrame = () => {
+        const currentScrollLeft = container.scrollLeft;
+        
+        // スクロール位置が0に近い（1px以内）かつ、位置が安定しているか確認
+        if (Math.abs(currentScrollLeft) < 1) {
+          if (Math.abs(currentScrollLeft - lastScrollLeft) < 0.1) {
+            stableFrameCount++;
+            if (stableFrameCount >= requiredStableFrames) {
+              // 左端へのスクロール完了 - 目標位置を0に設定
+              currentScrollTargetRef.current = 0;
+              
+          // スクロール完了を確認、1.5秒待機してから自動スクロール開始
+          timeoutIdRef.current = setTimeout(() => {
+            const startScrollLeft = container.scrollLeft;
+            // 右端の計算: scrollWidth - clientWidth でスクロール可能な最大位置を取得
+            const endScrollLeft = Math.max(0, container.scrollWidth - container.clientWidth);
+            const scrollDistance = endScrollLeft - startScrollLeft;
+            const duration = 9000; // 9秒
+            const startTime = Date.now();
+
+            const animateScroll = () => {
+              // コンテナが存在するか確認
+              if (!container) {
+                setIsPlaying(false);
+                animationFrameIdRef.current = null;
+                return;
+              }
+
+              const elapsed = Date.now() - startTime;
+              const scrollProgress = Math.min(elapsed / duration, 1);
+              
+              // イージング関数（ease-in-out）
+              const easeInOut = (t: number) => {
+                return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+              };
+              
+              const easedProgress = easeInOut(scrollProgress);
+              const currentScrollLeft = startScrollLeft + scrollDistance * easedProgress;
+              
+              // 目標位置を更新
+              currentScrollTargetRef.current = currentScrollLeft;
+              
+              // scrollLeftを更新
+              container.scrollLeft = currentScrollLeft;
+
+              if (scrollProgress < 1) {
+                animationFrameIdRef.current = requestAnimationFrame(animateScroll);
+              } else {
+                // スクロール完了 - 最終位置を確実に設定
+                container.scrollLeft = endScrollLeft;
+                currentScrollTargetRef.current = endScrollLeft;
+                setIsPlaying(false);
+                isPlayingRef.current = false;
+                animationFrameIdRef.current = null;
+                currentScrollTargetRef.current = null;
+              }
+            };
+
+            animationFrameIdRef.current = requestAnimationFrame(animateScroll);
+          }, 1500); // 1.5秒待機
+              return;
+            }
+          } else {
+            stableFrameCount = 0;
+          }
+        } else {
+          stableFrameCount = 0;
+        }
+        
+        lastScrollLeft = currentScrollLeft;
+        requestAnimationFrame(checkFrame);
+      };
+
+      requestAnimationFrame(checkFrame);
+    };
+
+    checkScrollComplete();
+  };
+
   return (
     <div className="mt-10 w-full mx-auto pb-10" style={{ maxWidth: "76rem" }}>
       <div 
         className="relative w-full border border-black px-2 py-2"
       >
-        <h3 className="absolute top-[18px] left-0 right-0 text-center text-2xl font-bold tracking-tight md:text-3xl z-30">
-          Learning Timeline
-        </h3>
+        <div className="absolute top-[18px] left-0 right-0 flex items-center justify-center gap-3 z-30">
+          <h3 className="text-2xl font-bold tracking-tight md:text-3xl">
+            Learning Timeline
+          </h3>
+          {/* 再生ボタン */}
+          <button
+            onClick={handlePlay}
+            disabled={isPlaying}
+            className={`relative rounded-full bg-black p-2 text-white transition-all duration-200 hover:opacity-80 disabled:cursor-not-allowed active:scale-95 ${
+              isPlaying ? "animate-pulse-scale" : ""
+            }`}
+            style={isPlaying ? { opacity: 1 } : {}}
+            aria-label={isPlaying ? "再生中" : "再生"}
+          >
+          {/* 再生アイコン（三角形） */}
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            className="h-5 w-5"
+          >
+            <path d="M8 5v14l11-7z" />
+          </svg>
+          </button>
+        </div>
         <div 
           ref={scrollContainerRef}
           className="w-full overflow-x-auto overflow-y-hidden timeline-scrollbar" 
           style={{ 
             WebkitOverflowScrolling: 'touch',
             paddingLeft: "60px", // 左側の目盛りが見えるように透明な空白を追加
-            paddingRight: "120px" // 右側の目盛りと「現在」の位置の要素が見えるように透明な空白を追加
+            paddingRight: "120px", // 右側の目盛りと「現在」の位置の要素が見えるように透明な空白を追加
+            pointerEvents: isPlaying ? 'none' : 'auto' // 再生中はスクロール操作を無効化
           }}
         >
         <div 
