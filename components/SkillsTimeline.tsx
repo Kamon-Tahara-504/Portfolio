@@ -427,7 +427,7 @@ export default function SkillsTimeline({ skills }: SkillsTimelineProps) {
           <button
             onClick={handlePlay}
             disabled={isPlaying}
-            className={`relative rounded-full bg-black p-2 text-white transition-all duration-200 hover:opacity-80 disabled:cursor-not-allowed active:scale-95 ${
+            className={`relative rounded-full bg-black p-2 text-white transition-all duration-200 hover:opacity-80 active:scale-95 ${
               isPlaying ? "animate-pulse-scale" : ""
             }`}
             style={isPlaying ? { opacity: 1 } : {}}
