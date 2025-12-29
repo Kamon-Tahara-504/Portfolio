@@ -37,9 +37,7 @@ export default function AboutSection({
 
   const titleRef = useFadeInOnScroll({ delay: 0 });
   const imageRef = useFadeInOnScroll({ delay: 100 });
-  const nameRef = useFadeInOnScroll({ delay: 200 });
-  const descriptionRef = useFadeInOnScroll({ delay: 300 });
-  const contactRef = useFadeInOnScroll({ delay: 400 });
+  const contentRef = useFadeInOnScroll({ delay: 200 });
 
   return (
     <section
@@ -68,11 +66,11 @@ export default function AboutSection({
             />
           </div>
           {/* テキストコンテンツ */}
-          <div className="flex-1 space-y-6">
-            <div 
-              ref={nameRef.ref as React.RefObject<HTMLDivElement>}
-              className={`space-y-1 fade-in-from-left ${nameRef.isVisible ? 'visible' : ''}`}
-            >
+          <div 
+            ref={contentRef.ref as React.RefObject<HTMLDivElement>}
+            className={`flex-1 space-y-6 fade-in-from-left ${contentRef.isVisible ? 'visible' : ''}`}
+          >
+            <div className="space-y-1">
               <div className="flex items-center gap-4 flex-wrap">
                 <h3 className="text-3xl font-bold tracking-tight md:text-4xl">
                   {name}
@@ -97,20 +95,14 @@ export default function AboutSection({
                 </div>
               )}
             </div>
-            <div 
-              ref={descriptionRef.ref as React.RefObject<HTMLDivElement>}
-              className={`space-y-3 leading-relaxed text-black/80 md:text-lg fade-in-from-left ${descriptionRef.isVisible ? 'visible' : ''}`}
-            >
+            <div className="space-y-3 leading-relaxed text-black/80 md:text-lg">
               {about.description.split('\n').map((line, index) => (
                 <p key={index} className="break-keep break-words">{line}</p>
               ))}
             </div>
             {/* 連絡先情報 */}
             {contact && (
-              <div 
-                ref={contactRef.ref as React.RefObject<HTMLDivElement>}
-                className={`space-y-4 pt-4 fade-in-from-left ${contactRef.isVisible ? 'visible' : ''}`}
-              >
+              <div className="space-y-4 pt-4">
                 <div className="space-y-2 text-sm text-black/70 md:text-base">
                   {about.birthDate && (
                     <div className="flex items-center gap-2">
