@@ -17,19 +17,24 @@
   },
   {
     "id": "project-2",
-    "slug": "sample-mobile-app",
-    "title": "Sample Mobile Application",
-    "description": "A cross-platform mobile app built with React Native",
+    "slug": "thisone",
+    "title": "ThisOne",
+    "description": "タスク管理､スケジュール管理､メモ機能､を一つのアプリで簡単管理 !\nそれぞれの連携力を高めることで、日々の生産性向上を目指す Flutterアプリケーションです !\n数多くの機能を搭載し、使いやすさを限りなく追求した自分の一番の自信作です !",
     "category": "mobile",
     "images": [
-      "/images/projects/PlaceHolder.png"
+      "/images/projects/ThisOne/ThisOne.png",
+      "/images/projects/ThisOne/ThisOne-modal.png"
     ],
-    "technologies": ["React Native", "TypeScript", "Expo"],
+    "technologies": ["Flutter", "Dart", "Supabase"],
     "links": {
-      "github": "https://github.com/example/sample-mobile-app",
-      "demo": "https://example.com/mobile-demo"
+      "github": "https://github.com/Kamon-Tahara-504/ThisOne",
+      "appStore": "https://apps.apple.com/jp/app/thisone-1/id6755763891"
     },
-    "date": "2024-02-20"
+    "date": {
+      "startDate": "2025-05-27",
+      "releaseDate": "2025-12-18",
+      "lastUpdated": "2025-12-30"
+    }
   },
   {
     "id": "project-3",
