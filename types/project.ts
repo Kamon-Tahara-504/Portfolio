@@ -3,6 +3,13 @@ export type ProjectCategory = "web" | "mobile";
 export interface ProjectLinks {
   github?: string;
   demo?: string;
+  appStore?: string;
+}
+
+export interface ProjectDateRange {
+  startDate: string;
+  releaseDate: string;
+  lastUpdated?: string;
 }
 
 export interface Project {
@@ -14,6 +21,6 @@ export interface Project {
   images: string[];
   technologies: string[];
   links: ProjectLinks;
-  date: string;
+  date: string | ProjectDateRange;
 }
 

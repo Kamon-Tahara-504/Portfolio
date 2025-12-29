@@ -23,7 +23,7 @@ export default function ProjectCard({
   return (
     <button
       onClick={() => onClick?.(project)}
-      className={`group relative block w-full aspect-[3/4] overflow-hidden rounded-xl bg-black/5 text-left transition-transform hover:scale-[1.02] ${animationClass}`}
+      className={`group relative block w-full aspect-[3/4] overflow-hidden rounded-3xl bg-black/5 text-left border border-black hover:shadow-[0_0_0_2px_black] transition-all ${animationClass}`}
       // 表示時は上から順に100ms刻み、巻き戻し時も同じディレイで戻る
       style={{ transitionDelay: `${index * 100}ms` }}
     >
@@ -33,7 +33,7 @@ export default function ProjectCard({
           src={project.images[0]}
           alt={project.title}
           fill
-          className="object-cover transition-transform group-hover:scale-105"
+          className="object-cover"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
       ) : (
@@ -50,11 +50,11 @@ export default function ProjectCard({
       </div>
 
       {/* テキストエリア（下部に浮遊） */}
-      <div className="absolute bottom-4 left-4 right-4 md:bottom-6 md:left-6 md:right-6 z-10 bg-black rounded-xl p-4 md:p-6 flex flex-col">
+      <div className="absolute bottom-4 left-4 right-4 md:bottom-6 md:left-6 md:right-6 z-10 bg-black rounded-2xl p-4 md:p-6 flex flex-col">
         <h3 className="mb-2 text-lg md:text-xl font-bold tracking-tight text-white line-clamp-1">
           {project.title}
         </h3>
-        <p className="text-xs md:text-sm text-white/80 line-clamp-2">
+        <p className="text-xs md:text-sm text-white/80 line-clamp-2 whitespace-pre-line">
           {project.description}
         </p>
       </div>
