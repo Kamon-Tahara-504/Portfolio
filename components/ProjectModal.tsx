@@ -20,12 +20,16 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
       }
     };
 
-    document.addEventListener("keydown", handleEscape);
+    // 背景のスクロールを防ぐ（htmlとbodyの両方に適用）
+    document.documentElement.style.overflow = "hidden";
     document.body.style.overflow = "hidden";
+
+    document.addEventListener("keydown", handleEscape);
 
     return () => {
       document.removeEventListener("keydown", handleEscape);
-      document.body.style.overflow = "unset";
+      document.documentElement.style.overflow = "";
+      document.body.style.overflow = "";
     };
   }, [onClose]);
 
@@ -40,10 +44,20 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
     return `${year} / ${month} / ${day}`;
   };
 
+  const handleTouchMove = (e: React.TouchEvent) => {
+    e.preventDefault();
+  };
+
+  const handleWheel = (e: React.WheelEvent) => {
+    e.preventDefault();
+  };
+
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 touch-none"
       onClick={onClose}
+      onTouchMove={handleTouchMove}
+      onWheel={handleWheel}
     >
       <div
         className="relative w-full max-w-[90vw] h-[90vh] bg-white border border-black"
