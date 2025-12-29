@@ -8,6 +8,9 @@ import EngineerExperienceCard from "./EngineerExperienceCard";
 import { useFadeInOnScroll } from "@/hooks/useFadeInOnScroll";
 import ContactModal from "./ContactModal";
 
+// basePathの定義（開発環境では空、本番環境では'/Portfolio'）
+const basePath = process.env.NODE_ENV === 'production' ? '/Portfolio' : '';
+
 interface AboutSectionProps {
   name: string;
   nameEn?: string;
@@ -57,7 +60,7 @@ export default function AboutSection({
             className={`relative aspect-[4/3] w-full flex-shrink-0 overflow-hidden border border-black bg-black/5 md:w-1/2 fade-in-from-left ${imageRef.isVisible ? 'visible' : ''}`}
           >
             <Image
-              src={about.image}
+              src={about.image.startsWith('/') ? `${basePath}${about.image}` : about.image}
               alt={name}
               fill
               className="object-cover"
