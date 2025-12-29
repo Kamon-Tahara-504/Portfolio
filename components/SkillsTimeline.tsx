@@ -71,7 +71,10 @@ export default function SkillsTimeline({ skills }: SkillsTimelineProps) {
   };
 
   const now = new Date();
-  const currentMonth = now.getFullYear() * 12 + now.getMonth();
+  const currentYear = now.getFullYear();
+  const currentMonthIndex = now.getMonth(); // 0-11 (0=1月、11=12月)
+  const currentMonth = currentYear * 12 + currentMonthIndex;
+  const isCurrentMonthDecember = currentMonthIndex === 11; // 12月かどうか
 
   // 全期間の最小・最大を計算（全期間表示用）
   const allMonths = timelineSkills.flatMap((skill) => {
@@ -87,8 +90,11 @@ export default function SkillsTimeline({ skills }: SkillsTimelineProps) {
   // 開始点を2022年1月に固定
   const FIXED_START_MONTH = 2022 * 12 + 0; // 2022年1月
   const minMonth = FIXED_START_MONTH;
-  const maxMonth = absoluteMaxMonth;
-  const totalMonths = absoluteMaxMonth - FIXED_START_MONTH;
+  // タイムラインの最大月は、スキルの最大月と現在の年の1月のうち大きい方
+  // これにより、現在の年が2026年になった場合、2026年1月の目盛りも表示される
+  const currentYearStartMonth = currentYear * 12;
+  const maxMonth = Math.max(absoluteMaxMonth, currentYearStartMonth);
+  const totalMonths = maxMonth - FIXED_START_MONTH;
 
   // 固定スケール: 30px/月（より長い線で表示）
   const PIXELS_PER_MONTH = 50;
@@ -111,23 +117,28 @@ export default function SkillsTimeline({ skills }: SkillsTimelineProps) {
   }
 
   // 1年ごとに目盛りを追加（1月の位置）
-  for (let year = minYear; year <= maxYear; year++) {
+  // 現在の年まで含めて目盛りを追加（2026年になったら自動的に2026年の目盛りも表示される）
+  const displayMaxYear = Math.max(maxYear, currentYear);
+  for (let year = minYear; year <= displayMaxYear; year++) {
     const monthIndex = year * 12;
     // minMonthが1月の場合も含めて、その年の1月の目盛りを追加
-    if (monthIndex >= minMonth && monthIndex < maxMonth) {
+    // maxMonth以下の場合、または現在の年の場合に目盛りを追加
+    if (monthIndex >= minMonth && (monthIndex <= maxMonth || year === currentYear)) {
       const positionPx = (monthIndex - minMonth) * PIXELS_PER_MONTH;
       const position = (positionPx / timelineWidthPx) * 100;
       yearMarks.push({ year, month: 0, position });
     }
   }
 
-  // 最後の月を追加（12月でない場合、または現在の場合）
-  // ただし、2025年12月は追加しない
+  // 最後の月を追加（現在の月が12月でない場合のみ）
+  // 現在の月が12月の場合は目盛りを表示しない（2025年12月の場合は何も表示しない）
+  // 次の年の1月になったら、年ごとの目盛り生成ロジック（117-129行目）で年だけが表示される
   const lastMonthValue = (maxMonth % 12) + 1;
   const lastYearValue = Math.floor(maxMonth / 12);
   const isCurrentMonth = maxMonth === currentMonth;
-  const is2025December = lastYearValue === 2025 && lastMonthValue === 12;
-  if ((lastMonthValue !== 12 || isCurrentMonth) && !is2025December) {
+  // 現在の月が12月でない場合、または12月でない場合は最後の月の目盛りを追加
+  // ただし、現在の月が12月の場合は追加しない
+  if ((lastMonthValue !== 12 || isCurrentMonth) && !isCurrentMonthDecember) {
     const lastPosition = 100;
     // 重複チェック（最後の年が既に追加されている場合）
     const alreadyExists = yearMarks.some(
