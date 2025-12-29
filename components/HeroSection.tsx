@@ -12,11 +12,14 @@ interface HeroSectionProps {
   developerTitle?: string;
 }
 
+// basePathの定義（GitHub Pages用）
+const basePath = '/Portfolio';
+
 // 3つの映像ファイルのパス
 const videoSources = [
-  "/images/profile/Galaxy1.mp4",
-  "/images/profile/Galaxy2.mp4",
-  "/images/profile/Galaxy3.mp4",
+  `${basePath}/images/profile/Galaxy1.mp4`,
+  `${basePath}/images/profile/Galaxy2.mp4`,
+  `${basePath}/images/profile/Galaxy3.mp4`,
 ];
 
 export default function HeroSection({
