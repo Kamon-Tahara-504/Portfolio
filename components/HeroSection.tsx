@@ -12,8 +12,8 @@ interface HeroSectionProps {
   developerTitle?: string;
 }
 
-// basePathの定義（GitHub Pages用）
-const basePath = '/Portfolio';
+// basePathの定義（開発環境では空、本番環境では'/Portfolio'）
+const basePath = process.env.NODE_ENV === 'production' ? '/Portfolio' : '';
 
 // 3つの映像ファイルのパス
 const videoSources = [
@@ -39,7 +39,7 @@ export default function HeroSection({
   const nextVideoPreloadedRef = useRef<boolean>(false);
 
   // 次の動画のインデックスを計算
-  const getNextIndex = (index: number) => (index + 1) % videoSources.length;
+  const getNextIndex = useCallback((index: number) => (index + 1) % videoSources.length, []);
 
   // 色検出（表示中のvideo要素から検出）
   const { canvasRef } = useVideoColorDetection({
@@ -145,7 +145,7 @@ export default function HeroSection({
       // 既に読み込まれている場合はフラグを設定
       nextVideoPreloadedRef.current = true;
     }
-  }, [currentVideoIndex, isNextVideoActive, getNextIndex]);
+  }, [currentVideoIndex, isNextVideoActive, getNextIndex, videoSources]);
 
   // loadedmetadataイベントでdurationを取得し、動画が1秒未満の場合は即座に読み込み開始
   useEffect(() => {
@@ -223,7 +223,7 @@ export default function HeroSection({
       const currentVideo = isNextVideoActive ? nextVideo : activeVideo;
       const waitingVideo = isNextVideoActive ? activeVideo : nextVideo;
 
-      // waitingVideoが既に読み込まれていることを確認
+      // waitingVideoが既に読み込まれていることを確認（readyState >= 3: HAVE_FUTURE_DATA以上）
       if (waitingVideo.readyState >= 3) {
         // waitingVideoを前面に表示して再生開始
         setIsNextVideoActive(!isNextVideoActive);
@@ -252,7 +252,27 @@ export default function HeroSection({
               }
               setIsNextVideoActive(!isNextVideoActive); // 元に戻す
             });
+        } else {
+          // play()がPromiseを返さない場合（古いブラウザなど）
+          // currentVideoを停止
+          currentVideo.pause();
+          currentVideo.currentTime = 0;
+
+          // currentVideoIndexを更新
+          const newIndex = getNextIndex(currentVideoIndex);
+          setCurrentVideoIndex(newIndex);
+
+          // 読み込み済みフラグをリセット
+          nextVideoPreloadedRef.current = false;
         }
+      } else {
+        // waitingVideoがまだ読み込まれていない場合、読み込みを待つ
+        const handleCanPlay = () => {
+          waitingVideo.removeEventListener("canplay", handleCanPlay);
+          // 再帰的に呼び出して再度試行
+          handleVideoEnd();
+        };
+        waitingVideo.addEventListener("canplay", handleCanPlay, { once: true });
       }
     };
 
@@ -263,7 +283,7 @@ export default function HeroSection({
     return () => {
       currentVideo.removeEventListener("ended", handleVideoEnd);
     };
-  }, [currentVideoIndex, isNextVideoActive]);
+  }, [currentVideoIndex, isNextVideoActive, getNextIndex]);
 
   return (
     <section
