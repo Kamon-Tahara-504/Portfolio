@@ -20,6 +20,36 @@
 
 作品データは `data/projects.json` で管理されています。新しい作品を追加する場合は、このファイルを編集してください。
 
+## 環境変数の設定
+
+お問い合わせフォーム機能を使用するには、EmailJSの設定が必要です。
+
+### EmailJSのセットアップ手順
+
+1. [EmailJS](https://www.emailjs.com/)でアカウントを作成
+2. Gmailサービスを追加
+3. メールテンプレートを作成（以下の変数を使用）：
+   - `{{to_email}}` - 送信先メールアドレス
+   - `{{from_name}}` - 送信者名
+   - `{{from_email}}` - 送信者メールアドレス
+   - `{{subject}}` - 件名
+   - `{{message}}` - メッセージ内容
+   - `{{reply_to}}` - 返信先メールアドレス
+4. Public Key、Service ID、Template IDを取得
+
+### 環境変数の設定
+
+プロジェクトルートに `.env.local` ファイルを作成し、以下の環境変数を設定してください：
+
+```env
+NEXT_PUBLIC_EMAILJS_PUBLIC_KEY=your_public_key
+NEXT_PUBLIC_EMAILJS_SERVICE_ID=your_service_id
+NEXT_PUBLIC_EMAILJS_TEMPLATE_ID=your_template_id
+NEXT_PUBLIC_EMAILJS_TO_EMAIL=your_gmail_address
+```
+
+**注意**: `.env.local` ファイルは `.gitignore` に追加されているため、Gitにはコミットされません。
+
 ## 映像ファイルの配置
 
 ヒーローセクションで使用する映像ファイルは `public/videos/hero/` ディレクトリに配置してください。
