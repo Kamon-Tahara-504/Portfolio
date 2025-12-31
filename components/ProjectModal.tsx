@@ -97,11 +97,6 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                 <span className="bg-black px-4 py-2 text-sm font-medium text-white">
                   {categoryLabel}
                 </span>
-                {typeof project.date === "object" && project.date.lastUpdated && (
-                  <span className="text-sm font-medium text-black">
-                    最終更新: {formatDate(project.date.lastUpdated)}
-                  </span>
-                )}
               </div>
 
               {/* タイトル */}
@@ -220,12 +215,26 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                   </p>
                 ) : (
                   <div className="space-y-2 text-black/70">
-                    <p>
-                      開発開始日: {formatDate(project.date.startDate)}
-                    </p>
-                    <p>
-                      リリース日: {formatDate(project.date.releaseDate)}
-                    </p>
+                    {project.date.startDate && (
+                      <p>
+                        開発開始日: {formatDate(project.date.startDate)}
+                      </p>
+                    )}
+                    {project.date.endDate && (
+                      <p>
+                        開発終了日: {formatDate(project.date.endDate)}
+                      </p>
+                    )}
+                    {project.date.releaseDate && (
+                      <p>
+                        リリース日: {formatDate(project.date.releaseDate)}
+                      </p>
+                    )}
+                    {project.date.deployDate && (
+                      <p>
+                        デプロイ日: {formatDate(project.date.deployDate)}
+                      </p>
+                    )}
                   </div>
                 )}
               </div>
