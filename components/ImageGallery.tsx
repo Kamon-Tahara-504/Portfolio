@@ -1,5 +1,8 @@
 import Image from "next/image";
 
+// basePathの定義（開発環境では空、本番環境では'/Portfolio'）
+const basePath = process.env.NODE_ENV === 'production' ? '/Portfolio' : '';
+
 interface ImageGalleryProps {
   images: string[];
   alt: string;
@@ -18,7 +21,7 @@ export default function ImageGallery({ images, alt }: ImageGalleryProps) {
           className="relative aspect-video w-full overflow-hidden border border-black bg-black/5"
         >
           <Image
-            src={image}
+            src={image.startsWith('/') ? `${basePath}${image}` : image}
             alt={`${alt} - Image ${index + 1}`}
             fill
             className="object-contain"

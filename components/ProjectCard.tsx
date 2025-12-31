@@ -4,6 +4,9 @@ import React from "react";
 import Image from "next/image";
 import { Project } from "@/types/project";
 
+// basePathの定義（開発環境では空、本番環境では'/Portfolio'）
+const basePath = process.env.NODE_ENV === 'production' ? '/Portfolio' : '';
+
 interface ProjectCardProps {
   project: Project;
   onClick?: (project: Project) => void;
@@ -30,7 +33,7 @@ export default function ProjectCard({
       {/* カード全体に画像を表示（フルブリード） */}
       {project.images && project.images.length > 0 ? (
         <Image
-          src={project.images[0]}
+          src={project.images[0].startsWith('/') ? `${basePath}${project.images[0]}` : project.images[0]}
           alt={project.title}
           fill
           className="object-cover"
