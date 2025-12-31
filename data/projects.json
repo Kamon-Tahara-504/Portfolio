@@ -1,25 +1,29 @@
 [
   {
     "id": "project-1",
-    "slug": "sample-web-app",
-    "title": "Sample Web Application",
-    "description": "A modern web application built with React and Next.js",
+    "slug": "todo-it-now",
+    "title": "Todo it Now",
+    "description": "ノート帳のcuteなデザインでタスクを楽しく管理 !\n Djangoで構築された多機能なタスク管理アプリケーションです !",
     "category": "web",
     "images": [
       "/images/projects/PlaceHolder.png"
     ],
-    "technologies": ["Next.js", "TypeScript", "TailwindCSS"],
+    "technologies": ["Django", "Python", "HTML", "CSS", "JavaScript"],
     "links": {
-      "github": "https://github.com/example/sample-web-app",
-      "demo": "https://example.com/demo"
+      "github": "https://github.com/Kamon-Tahara-504/ToDo-it-Now",
+      "demo": "https://kamon-tahara-504.github.io/ToDo-it-Now/"
     },
-    "date": "2024-01-15"
+    "date": {
+      "startDate": "2024-11-01",
+      "endDate": "2025-01-23",
+      "deployDate": "2025-12-31"
+    }
   },
   {
     "id": "project-2",
     "slug": "thisone",
     "title": "ThisOne",
-    "description": "タスク管理､スケジュール管理､メモ機能､を一つのアプリで簡単管理 !\nそれぞれの連携力を高めることで、日々の生産性向上を目指す Flutterアプリケーションです !\n数多くの機能を搭載し、使いやすさを限りなく追求した自分の一番の自信作です !",
+    "description": "タスク管理､スケジュール管理､メモ機能､を一つのアプリで一括管理 !\nそれぞれの連携力を高めることで日々の生産性向上を目指し \n数多くの機能を搭載し使いやすさを限りなく追求した \nFlutter製のモバイルアプリケーションです !",
     "category": "mobile",
     "images": [
       "/images/projects/ThisOne/ThisOne.png",
@@ -32,73 +36,73 @@
     },
     "date": {
       "startDate": "2025-05-27",
-      "releaseDate": "2025-12-18",
-      "lastUpdated": "2025-12-30"
+      "releaseDate": "2025-12-18"
     }
   },
   {
     "id": "project-3",
-    "slug": "e-commerce-platform",
-    "title": "E-Commerce Platform",
-    "description": "A full-featured e-commerce platform with shopping cart and payment integration",
+    "slug": "nexst-task",
+    "title": "Nexst Task",
+    "description": "エンジニアの悩みであるタスクの共有不足を 1つのアプリで簡単解決 !\nタスクをチームで一括管理しスムーズな開発環境を構築します !\n【共同開発プロジェクト】",
     "category": "web",
     "images": [
       "/images/projects/PlaceHolder.png"
     ],
-    "technologies": ["Next.js", "TypeScript", "Stripe", "PostgreSQL"],
+    "technologies": ["React", "TypeScript", "Tailwind CSS", "Supabase"],
     "links": {
-      "github": "https://github.com/example/e-commerce-platform",
-      "demo": "https://example.com/ecommerce"
+      "github": "https://github.com/Hirotaka-Tambo/Engineer-Task-APP",
+      "demo": "https://hirotaka-tambo.github.io/Engineer-Task-APP/#/login"
     },
-    "date": "2024-03-10"
+    "date": {
+      "startDate": "2025-09-21",
+      "endDate": "2025-10-16",
+      "deployDate": "2025-11-09"
+    }
   },
   {
     "id": "project-4",
-    "slug": "fitness-tracking-app",
-    "title": "Fitness Tracking App",
-    "description": "Mobile app for tracking workouts, nutrition, and fitness goals",
-    "category": "mobile",
-    "images": [
-      "/images/projects/PlaceHolder.png"
-    ],
-    "technologies": ["Flutter", "Dart", "Firebase"],
-    "links": {
-      "github": "https://github.com/example/fitness-app",
-      "demo": "https://example.com/fitness"
-    },
-    "date": "2024-04-05"
-  },
-  {
-    "id": "project-5",
-    "slug": "dashboard-analytics",
-    "title": "Analytics Dashboard",
-    "description": "Real-time analytics dashboard with data visualization and reporting",
+    "slug": "kanban",
+    "title": "Kanban",
+    "description": "「あなたのワークスペース、あなたの色に。」\nタスク管理としても、メモとしても使える。 \n自分好みにカスタマイズ可能なマルチ自己管理アプリケーションです !",
     "category": "web",
     "images": [
       "/images/projects/PlaceHolder.png"
     ],
-    "technologies": ["React", "TypeScript", "Chart.js", "Node.js"],
+    "technologies": ["React", "TypeScript", "CSS"],
     "links": {
-      "github": "https://github.com/example/analytics-dashboard",
-      "demo": "https://example.com/analytics"
+      "github": "https://github.com/Kamon-Tahara-504/Kanban",
+      "demo": "https://kamon-tahara-504.github.io/Kanban/"
     },
-    "date": "2024-05-12"
+    "date": {
+      "startDate": "2025-11-24",
+      "deployDate": "2025-11-24"
+    }
   },
   {
-    "id": "project-6",
-    "slug": "social-media-app",
-    "title": "Social Media App",
-    "description": "A social networking app with real-time messaging and content sharing",
-    "category": "mobile",
+    "id": "project-5",
+    "slug": "coming-soon-1",
+    "title": "準備中",
+    "description": "準備中です",
+    "category": "web",
     "images": [
       "/images/projects/PlaceHolder.png"
     ],
-    "technologies": ["React Native", "TypeScript", "Socket.io", "MongoDB"],
-    "links": {
-      "github": "https://github.com/example/social-app",
-      "demo": "https://example.com/social"
-    },
-    "date": "2024-06-18"
+    "technologies": [],
+    "links": {},
+    "date": "2024-01-01"
+  },
+  {
+    "id": "project-6",
+    "slug": "coming-soon-2",
+    "title": "準備中",
+    "description": "準備中です",
+    "category": "web",
+    "images": [
+      "/images/projects/PlaceHolder.png"
+    ],
+    "technologies": [],
+    "links": {},
+    "date": "2024-01-01"
   }
 ]
 

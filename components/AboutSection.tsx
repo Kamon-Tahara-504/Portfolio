@@ -66,10 +66,10 @@ export default function AboutSection({
             />
           </div>
           {/* テキストコンテンツ */}
-          <div 
+            <div 
             ref={contentRef.ref as React.RefObject<HTMLDivElement>}
             className={`flex-1 space-y-6 fade-in-from-left ${contentRef.isVisible ? 'visible' : ''}`}
-          >
+            >
             <div className="space-y-1">
               <div className="flex items-center gap-4 flex-wrap">
                 <h3 className="text-3xl font-bold tracking-tight md:text-4xl">

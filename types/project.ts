@@ -7,9 +7,10 @@ export interface ProjectLinks {
 }
 
 export interface ProjectDateRange {
-  startDate: string;
-  releaseDate: string;
-  lastUpdated?: string;
+  startDate?: string;
+  endDate?: string;
+  releaseDate?: string;
+  deployDate?: string;
 }
 
 export interface Project {
