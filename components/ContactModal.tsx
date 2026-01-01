@@ -22,6 +22,7 @@ interface FormErrors {
 }
 
 export default function ContactModal({ onClose }: ContactModalProps) {
+  const [isOpen, setIsOpen] = useState(false);
   const [formData, setFormData] = useState<FormData>({
     name: "",
     email: "",
@@ -31,6 +32,11 @@ export default function ContactModal({ onClose }: ContactModalProps) {
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<"success" | "error" | null>(null);
+
+  useEffect(() => {
+    // マウント時にアニメーションをトリガー
+    setIsOpen(true);
+  }, []);
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -153,13 +159,17 @@ export default function ContactModal({ onClose }: ContactModalProps) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 touch-none"
+      className={`fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 touch-none transition-opacity duration-300 ease-out ${
+        isOpen ? "opacity-100" : "opacity-0"
+      }`}
       onClick={onClose}
       onTouchMove={handleTouchMove}
       onWheel={handleWheel}
     >
       <div
-        className="relative max-h-[90vh] w-full max-w-2xl overflow-y-auto bg-white border border-black"
+        className={`relative max-h-[90vh] w-full max-w-2xl overflow-y-auto bg-white border border-black transition-all duration-300 ease-out ${
+          isOpen ? "opacity-100 scale-100" : "opacity-0 scale-95"
+        }`}
         onClick={(e) => e.stopPropagation()}
       >
         {/* 閉じるボタン */}

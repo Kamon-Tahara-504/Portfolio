@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { Project } from "@/types/project";
 
@@ -13,6 +13,13 @@ interface ProjectModalProps {
 }
 
 export default function ProjectModal({ project, onClose }: ProjectModalProps) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    // マウント時にアニメーションをトリガー
+    setIsOpen(true);
+  }, []);
+
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
@@ -54,13 +61,17 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 touch-none"
+      className={`fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 touch-none transition-opacity duration-300 ease-out ${
+        isOpen ? "opacity-100" : "opacity-0"
+      }`}
       onClick={onClose}
       onTouchMove={handleTouchMove}
       onWheel={handleWheel}
     >
       <div
-        className="relative w-full max-w-[90vw] h-[90vh] bg-white border border-black"
+        className={`relative w-full max-w-[90vw] h-[90vh] bg-white border border-black transition-all duration-300 ease-out ${
+          isOpen ? "opacity-100 scale-100" : "opacity-0 scale-95"
+        }`}
         onClick={(e) => e.stopPropagation()}
       >
         {/* 閉じるボタン */}
