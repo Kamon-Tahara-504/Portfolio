@@ -7,10 +7,36 @@
   "about": {
     "image": "/images/projects/TAHARA.JPG",
     "furigana": "TaharaKamon",
-    "description": "Web & Mobile アプリの開発を行っています。\n「やりたい」と思ったことには妥協せず、しっかり形にすることを大切にしています。\nユーザーが夢中になれる体験を届けるため、今の自分のスキルを最大限に活かして開発しています。",
+    "description": "Web & Mobile アプリの開発を行っています。\n「やりたい」と思ったことは中途半端にせず、納得できるまで磨き上げて形にすることを大切にしています。\nユーザーが楽しさで夢中になれる体験をような届けるために、今の自分のスキルを最大限に引き出しアプリケーションを開発しています！",
     "birthDate": "2008 05/04",
-    "birthplace": "Tokyo",
-    "hobby": "甘いものを食べまくること。"
+    "birthplace": "東京 江戸川区",
+    "hobby": "甘いものを食べまくること。",
+    "moreInfo": {
+      "title": "",
+      "description": "",
+      "items": [
+        {
+          "label": "趣味",
+          "value": "プログラミング, お料理, お洋服選び"
+        },
+        {
+          "label": "好きなゲーム",
+          "value": "Terraria, Rainbow Six Siege X"
+        },
+        {
+          "label": "好きな漫画",
+          "value": "葬送のフリーレン, アオのハコ, 推しの子"
+        },
+        {
+          "label": "好きなアーティスト",
+          "value": "Mrs. GREEN APPLE, YOASOBI, Eve"
+        },
+        {
+          "label": "好きな映画",
+          "value": "インターステラー, オデッセイ, トップガン"
+        }
+      ]
+    }
   },
   "contact": {
     "email": "taharacomeon.0504@gmail.com",

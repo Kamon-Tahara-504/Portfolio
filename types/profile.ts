@@ -1,3 +1,12 @@
+export interface MoreInfo {
+  title?: string;
+  items?: Array<{
+    label: string;
+    value: string;
+  }>;
+  description?: string;
+}
+
 export interface About {
   image: string;
   furigana?: string;
@@ -5,6 +14,7 @@ export interface About {
   birthDate?: string;
   birthplace?: string;
   hobby?: string;
+  moreInfo?: MoreInfo;
 }
 
 export interface Experience {

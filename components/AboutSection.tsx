@@ -29,6 +29,7 @@ export default function AboutSection({
   contact,
 }: AboutSectionProps) {
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
+  const [showMoreInfo, setShowMoreInfo] = useState(false);
 
   // 英語名を分割: "Tahara Kamon" -> ["Tahara", "kamon"]
   const nameEnParts = nameEn?.split(' ').map((part, index) => 
@@ -70,6 +71,15 @@ export default function AboutSection({
             ref={contentRef.ref as React.RefObject<HTMLDivElement>}
             className={`flex-1 space-y-6 fade-in-from-left ${contentRef.isVisible ? 'visible' : ''}`}
             >
+            {/* 切り替えボタン */}
+            {about.moreInfo && (
+              <button
+                onClick={() => setShowMoreInfo(!showMoreInfo)}
+                className="relative bg-white text-black border-[3px] !border-black rounded-2xl px-5 py-3 text-base font-bold text-center min-w-[160px] shadow-xl hover:shadow-2xl hover:scale-105 transition-all mb-2 before:content-[''] before:absolute before:bottom-0 before:left-4 before:translate-y-full before:w-0 before:h-0 before:border-l-[10px] before:border-l-transparent before:border-r-[10px] before:border-r-transparent before:border-t-[10px] before:!border-t-black"
+              >
+                {showMoreInfo ? "基本情報に戻る" : "もっと知る"}
+              </button>
+            )}
             <div className="space-y-1">
               <div className="flex items-center gap-4 flex-wrap">
                 <h3 className="text-3xl font-bold tracking-tight md:text-4xl">
@@ -95,15 +105,19 @@ export default function AboutSection({
                 </div>
               )}
             </div>
-            <div className="space-y-3 leading-relaxed text-black/80 md:text-lg">
-              {about.description.split('\n').map((line, index) => (
-                <p key={index} className="break-keep break-words">{line}</p>
-              ))}
-            </div>
-            {/* 連絡先情報 */}
-            {contact && (
-              <div className="space-y-4 pt-4">
-                <div className="space-y-2 text-sm text-black/70 md:text-base">
+            <div className="relative">
+              {/* 自己紹介文 - 通常のフロー */}
+              <div className="space-y-3 leading-relaxed text-black/80 md:text-lg">
+                {about.description.split("\n").map((line, index) => (
+                  <p key={index} className="break-keep break-words">
+                    {line}
+                  </p>
+                ))}
+              </div>
+
+              {/* 連絡先情報（TELまで） */}
+              {contact && (
+                <div className="space-y-2 pt-4 text-sm text-black/70 md:text-base">
                   {about.birthDate && (
                     <div className="flex items-center gap-2">
                       <span><span className="font-bold">生年月日</span>:</span>
@@ -145,8 +159,52 @@ export default function AboutSection({
                     </div>
                   )}
                 </div>
-                <div className="flex flex-wrap gap-4">
-                  {contact.github && (
+              )}
+
+              {/* 詳細情報カード - 重ねて表示 */}
+              {about.moreInfo && (
+                <div
+                  className={`absolute inset-0 z-10 bg-white border border-black/10 shadow-lg px-6 py-2 md:px-6 md:py-3 overflow-hidden transition-all duration-300 ease-in-out flex flex-col ${
+                    showMoreInfo
+                      ? "opacity-100 translate-x-0"
+                      : "opacity-0 translate-x-full pointer-events-none"
+                  }`}
+                >
+                  {about.moreInfo.title && (
+                    <h4 className="mb-2 text-xl font-bold tracking-tight md:text-2xl">
+                      {about.moreInfo.title}
+                    </h4>
+                  )}
+                  {about.moreInfo.description && (
+                    <div className="space-y-3 leading-relaxed text-black/80 md:text-lg">
+                      {about.moreInfo.description.split("\n").map((line, index) => (
+                        <p key={index} className="break-keep break-words">
+                          {line}
+                        </p>
+                      ))}
+                    </div>
+                  )}
+                  {about.moreInfo.items && about.moreInfo.items.length > 0 && (
+                    <div className="space-y-4 pt-1">
+                      {about.moreInfo.items.map((item, index) => (
+                        <div key={index} className="space-y-1">
+                          <span className="text-sm font-bold text-black/70 md:text-base">
+                            {item.label}:
+                          </span>
+                          <p className="text-sm text-black/80 md:text-base">
+                            {item.value}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+            {/* 連絡先情報のボタン（GitHub、お問い合わせ） */}
+            {contact && (
+              <div className="flex flex-wrap gap-4">
+                {contact.github && (
                     <Link
                       href={contact.github}
                       target="_blank"
@@ -188,7 +246,6 @@ export default function AboutSection({
                     </svg>
                     お問い合わせ
                   </button>
-                </div>
               </div>
             )}
           </div>
