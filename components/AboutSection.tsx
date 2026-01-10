@@ -7,6 +7,7 @@ import { About, Contact } from "@/types/profile";
 import EngineerExperienceCard from "./EngineerExperienceCard";
 import { useFadeInOnScroll } from "@/hooks/useFadeInOnScroll";
 import ContactModal from "./ContactModal";
+import AboutMoreInfoCard from "./AboutMoreInfoCard";
 
 // basePathの定義（開発環境では空、本番環境では'/Portfolio'）
 const basePath = process.env.NODE_ENV === 'production' ? '/Portfolio' : '';
@@ -163,42 +164,10 @@ export default function AboutSection({
 
               {/* 詳細情報カード - 重ねて表示 */}
               {about.moreInfo && (
-                <div
-                  className={`absolute inset-0 z-10 bg-white border border-black/10 shadow-lg px-6 py-2 md:px-6 md:py-3 overflow-hidden transition-all duration-300 ease-in-out flex flex-col ${
-                    showMoreInfo
-                      ? "opacity-100 translate-x-0"
-                      : "opacity-0 translate-x-full pointer-events-none"
-                  }`}
-                >
-                  {about.moreInfo.title && (
-                    <h4 className="mb-2 text-xl font-bold tracking-tight md:text-2xl">
-                      {about.moreInfo.title}
-                    </h4>
-                  )}
-                  {about.moreInfo.description && (
-                    <div className="space-y-3 leading-relaxed text-black/80 md:text-lg">
-                      {about.moreInfo.description.split("\n").map((line, index) => (
-                        <p key={index} className="break-keep break-words">
-                          {line}
-                        </p>
-                      ))}
-                    </div>
-                  )}
-                  {about.moreInfo.items && about.moreInfo.items.length > 0 && (
-                    <div className="space-y-4 pt-1">
-                      {about.moreInfo.items.map((item, index) => (
-                        <div key={index} className="space-y-1">
-                          <span className="text-sm font-bold text-black/70 md:text-base">
-                            {item.label}:
-                          </span>
-                          <p className="text-sm text-black/80 md:text-base">
-                            {item.value}
-                          </p>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
+                <AboutMoreInfoCard
+                  moreInfo={about.moreInfo}
+                  isVisible={showMoreInfo}
+                />
               )}
             </div>
             {/* 連絡先情報のボタン（GitHub、お問い合わせ） */}
