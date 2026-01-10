@@ -9,6 +9,7 @@ const sections = [
   { id: "experience", label: "Experience", offset: -170 },
   { id: "skills", label: "Skills", offset: -170 },
   { id: "projects", label: "Projects", offset: -50 },
+  { id: "development", label: "Development", offset: -100 },
 ];
 
 export default function Navigation() {
