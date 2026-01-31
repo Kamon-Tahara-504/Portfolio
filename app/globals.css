@@ -29,6 +29,7 @@ body {
 /* スクロールは html に一本化。環境差でスクロールが効かなくなるのを防ぐ */
 html {
   scroll-behavior: smooth;
+  overscroll-behavior-y: contain; /* 縦方向のオーバースクロール（端のバウンス）を抑える */
   overflow-x: hidden;
   overflow-y: scroll;
   scrollbar-width: thin;
