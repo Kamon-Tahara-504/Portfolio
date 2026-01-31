@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import Navigation from "./Navigation";
 import { VideoColorProvider } from "@/contexts/VideoColorContext";
 
@@ -8,61 +8,42 @@ interface LayoutProps {
   children: React.ReactNode;
 }
 
+/** スクロール範囲外に出たときだけ、スクロールが止まった後に補正する（毎フレーム補正しないので重くならない） */
+const SCROLL_CORRECT_TOLERANCE = 5; // このピクセル以上はみ出していたら補正
+const SCROLL_SETTLE_MS = 120; // スクロールが止まってからこの時間後に補正
+
 export default function Layout({ children }: LayoutProps) {
-  // スクロール範囲外へのスクロールを防止
+  const settleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
   useEffect(() => {
-    const getScrollBounds = () => {
-      const scrollHeight = document.documentElement.scrollHeight;
-      const clientHeight = window.innerHeight;
-      return {
-        min: 0,
-        max: Math.max(0, scrollHeight - clientHeight),
-      };
+    const correctIfOutOfBounds = () => {
+      const scrollTop = window.scrollY ?? document.documentElement.scrollTop;
+      const scrollHeight = Math.max(
+        document.body.scrollHeight,
+        document.documentElement.scrollHeight
+      );
+      const clientHeight = window.innerHeight ?? document.documentElement.clientHeight;
+      const maxScroll = Math.max(0, scrollHeight - clientHeight);
+
+      if (scrollTop < -SCROLL_CORRECT_TOLERANCE) {
+        window.scrollTo(0, 0);
+      } else if (scrollTop > maxScroll + SCROLL_CORRECT_TOLERANCE) {
+        window.scrollTo(0, maxScroll);
+      }
     };
 
     const handleScroll = () => {
-      const scrollTop = window.scrollY || document.documentElement.scrollTop;
-      const bounds = getScrollBounds();
-      
-      // 最小値（0）を下回らないように制限
-      if (scrollTop < bounds.min) {
-        window.scrollTo({ top: bounds.min, behavior: "auto" });
-        return;
-      }
-      
-      // 最大値を超えないように制限
-      if (scrollTop > bounds.max) {
-        window.scrollTo({ top: bounds.max, behavior: "auto" });
-        return;
-      }
+      if (settleTimerRef.current) clearTimeout(settleTimerRef.current);
+      settleTimerRef.current = setTimeout(() => {
+        settleTimerRef.current = null;
+        correctIfOutOfBounds();
+      }, SCROLL_SETTLE_MS);
     };
 
-    const handleWheel = (e: WheelEvent) => {
-      const scrollTop = window.scrollY || document.documentElement.scrollTop;
-      const bounds = getScrollBounds();
-      
-      // 上方向へのスクロールで範囲外に出ようとする場合のみ制限
-      if (e.deltaY < 0 && scrollTop <= bounds.min) {
-        e.preventDefault();
-        return;
-      }
-      
-      // 下方向へのスクロールで範囲外に出ようとする場合のみ制限
-      if (e.deltaY > 0 && scrollTop >= bounds.max) {
-        e.preventDefault();
-        return;
-      }
-    };
-
-    // スクロール位置を監視して制限（passive: trueでパフォーマンスを維持）
     window.addEventListener("scroll", handleScroll, { passive: true });
-    
-    // wheelイベントで範囲外へのスクロールを防ぐ（正常なスクロールは許可）
-    window.addEventListener("wheel", handleWheel, { passive: false });
-    
     return () => {
       window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("wheel", handleWheel);
+      if (settleTimerRef.current) clearTimeout(settleTimerRef.current);
     };
   }, []);
 

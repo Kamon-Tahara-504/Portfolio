@@ -26,18 +26,17 @@ body {
   border-color: rgba(0, 0, 0, 0.1);
 }
 
+/* スクロールは html に一本化。環境差でスクロールが効かなくなるのを防ぐ */
 html {
   scroll-behavior: smooth;
-  overscroll-behavior: none;
-  overscroll-behavior-y: none;
+  overscroll-behavior-y: contain; /* 縦方向のオーバースクロール（端のバウンス）を抑える */
   overflow-x: hidden;
+  overflow-y: scroll;
   scrollbar-width: thin;
   scrollbar-color: black transparent;
 }
 
 body {
-  overscroll-behavior: none;
-  overscroll-behavior-y: none;
   overflow-x: hidden;
   scrollbar-width: thin;
   scrollbar-color: black transparent;
