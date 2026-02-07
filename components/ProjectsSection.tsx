@@ -21,9 +21,9 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
       className="relative border-b border-black py-48 md:py-56"
     >
       <div className="mx-auto max-w-7xl px-6">
-        <h2 
+        <h2
           ref={titleRef.ref as React.RefObject<HTMLHeadingElement>}
-          className={`mb-20 text-center text-4xl font-bold tracking-tight md:text-5xl fade-in-from-left ${titleRef.isVisible ? 'visible' : ''}`}
+          className={`mb-20 text-center text-4xl font-bold tracking-tight md:text-5xl fade-in-from-left section-title-blink ${titleRef.isVisible ? "visible" : ""}`}
         >
           Projects
         </h2>

@@ -182,6 +182,78 @@ body::-webkit-scrollbar-thumb:hover {
   animation: bubble-float ease-in-out infinite;
 }
 
+/* タイピングカーソル点滅 */
+@keyframes cursor-blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+.animate-cursor-blink {
+  animation: cursor-blink 1s step-end infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-cursor-blink {
+    animation: none;
+    opacity: 1;
+  }
+}
+
+/* セクションタイトル たまにグリッチ（6秒に1回・左右オフセットなしで中央固定） */
+/* 横オフセット(4px 0 0)だと文字のコピーが左右に描画され二重写しになるため、縦方向の影のみ使用 */
+@keyframes section-title-glitch-sometimes {
+  0%, 82%, 100% {
+    text-shadow: none;
+  }
+  83% {
+    text-shadow: 0 2px 0 rgba(255,0,0,0.5), 0 -2px 0 rgba(0,255,255,0.5);
+  }
+  84% {
+    text-shadow: 0 -2px 0 rgba(255,0,0,0.45), 0 2px 0 rgba(0,255,255,0.45);
+  }
+  85% {
+    text-shadow: 0 1px 0 rgba(255,0,0,0.4), 0 -1px 0 rgba(0,255,255,0.4);
+  }
+  86% {
+    text-shadow: 0 -1px 0 rgba(255,0,0,0.35), 0 1px 0 rgba(0,255,255,0.35);
+  }
+  87%, 88% {
+    text-shadow: none;
+  }
+}
+
+/* ブロックのまま幅100%にして text-center で中央に。inline-block だと親の text-align が無いと左寄せになり下の要素に引っ張られる */
+.section-title-blink {
+  display: block;
+  width: 100%;
+  animation: section-title-glitch-sometimes 6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .section-title-blink {
+    animation: none;
+  }
+}
+
+/* コードスニペット 行ずつリビール */
+.code-snippet-line {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+}
+
+.code-snippet-reveal.visible .code-snippet-line {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .code-snippet-line {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 /* Custom Scrollbar Styles */
 .overflow-x-auto::-webkit-scrollbar {
   height: 10px;

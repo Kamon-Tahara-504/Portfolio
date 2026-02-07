@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useVideoColor } from "@/contexts/VideoColorContext";
 import { useVideoColorDetection } from "@/hooks/useVideoColorDetection";
+import { useTypewriter } from "@/hooks/useTypewriter";
 
 interface HeroSectionProps {
   image: string;
@@ -21,6 +22,25 @@ const videoSources = [
   `${basePath}/images/profile/Galaxy2.mp4`,
   `${basePath}/images/profile/Galaxy3.mp4`,
 ];
+
+function HeroDeveloperTitle({ text }: { text: string }) {
+  const { displayText, showCursor } = useTypewriter({
+    text,
+    speed: 65,
+    startDelay: 500,
+    showCursor: true,
+  });
+  return (
+    <div className="mb-4 animate-fade-in-left delay-200" aria-live="polite">
+      <p className="text-lg font-medium tracking-wide md:text-xl lg:text-2xl text-white/90 drop-shadow-lg inline">
+        {displayText}
+        {showCursor && (
+          <span className="typewriter-cursor ml-0.5 inline-block w-0.5 h-[1em] align-middle bg-white/90 animate-cursor-blink" aria-hidden />
+        )}
+      </p>
+    </div>
+  );
+}
 
 export default function HeroSection({
   image,
@@ -332,13 +352,9 @@ export default function HeroSection({
         </h1>
         )}
 
-        {/* 開発者タイトル */}
+        {/* 開発者タイトル（タイピング風） */}
         {developerTitle && (
-          <div className="mb-4 animate-fade-in-left delay-200">
-            <p className="text-lg font-medium tracking-wide md:text-xl lg:text-2xl text-white/90 drop-shadow-lg">
-              {developerTitle}
-            </p>
-          </div>
+          <HeroDeveloperTitle text={developerTitle} />
         )}
 
         {/* 既存のsubtitle（フォールバック） */}
