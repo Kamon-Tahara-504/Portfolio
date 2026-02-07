@@ -426,7 +426,7 @@ export default function SkillsTimeline({ skills }: SkillsTimelineProps) {
   };
 
   return (
-    <div className="mt-10 w-full mx-auto pb-10" style={{ maxWidth: "76rem" }}>
+    <div className="mt-10 w-full mx-auto pb-5" style={{ maxWidth: "76rem" }}>
       <div 
         className="relative w-full border border-black px-2 py-2"
       >
