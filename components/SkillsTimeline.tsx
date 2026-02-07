@@ -497,7 +497,7 @@ export default function SkillsTimeline({ skills }: SkillsTimelineProps) {
             />
             {/* 年数（中央線の真ん中） */}
             <div 
-              className="text-xs font-medium text-black/70 md:text-sm bg-white px-2 rounded"
+              className="text-xs font-medium text-white md:text-sm bg-black px-2 rounded"
               style={{ 
                 lineHeight: "1.2",
                 zIndex: 10
