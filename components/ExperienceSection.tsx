@@ -59,9 +59,9 @@ export default function ExperienceSection({
     >
       <GridPattern className="opacity-20" size={60} strokeWidth={0.5} />
       <div className="relative mx-auto max-w-3-5xl px-6">
-        <h2 
+        <h2
           ref={titleRef.ref as React.RefObject<HTMLHeadingElement>}
-          className={`mb-12 text-center text-4xl font-bold tracking-tight md:text-5xl fade-in-from-left ${titleRef.isVisible ? 'visible' : ''}`}
+          className={`mb-12 text-center text-4xl font-bold tracking-tight md:text-5xl fade-in-from-left section-title-blink ${titleRef.isVisible ? "visible" : ""}`}
         >
           Experience
         </h2>
