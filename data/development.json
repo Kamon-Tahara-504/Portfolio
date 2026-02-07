@@ -8,9 +8,9 @@
   ],
   "developmentProcess": {
     "designPhilosophy": "普段のアプリケーション開発では実現できなかった、\n考えたこと「やりたい」をそのままPortfolioで実現しました !",
-    "implementationHighlights": "Next.jsのImage最適化機能を最大限に活用し、画像の読み込み速度と品質を両立させました。",
-    "learnings": "",
-    "futureImprovements": ""
+    "implementationHighlights": "Next.jsのImage最適化機能を最大限に活用し、画像の読み込み速度と品質を両立させることができました !",
+    "learnings": "Next.jsのApp RouterとReact 19の組み合わせで、コンポーネントの責務分離とパフォーマンスの両立を実践できました。また、ポートフォリオという「自分だけのプロダクト」を通じて、デザインから実装まで一貫して意思決定する経験ができ、ユーザー体験と技術選定のバランスの取り方を学びました !",
+    "futureImprovements": "アクセシビリティ(キーボード操作・スクリーンリーダー対応)の強化、ブログや記事一覧の追加など「やりたいことをやる」ポートフォリオにしていきたいです !"
   },
   "dates": {
     "startDate": "2025-11-24",
