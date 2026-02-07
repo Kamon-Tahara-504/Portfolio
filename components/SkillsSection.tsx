@@ -98,7 +98,7 @@ export default function SkillsSection({ skills }: SkillsSectionProps) {
   return (
     <section
       id="skills"
-      className="border-b border-black bg-white py-48 md:py-56"
+      className="border-b border-black bg-white pt-48 pb-24 md:pt-56 md:pb-28"
     >
       <div className="mx-auto max-w-7-5xl px-6">
         <h2 

@@ -7,8 +7,8 @@
     "EmailJS"
   ],
   "developmentProcess": {
-    "designPhilosophy": "普段のアプリケーション開発では実現できなかった、\n考えたことをそのまま形にすることをPortfolioで実現しました !",
-    "implementationHighlights": "Next.jsのImage最適化機能を最大限に活用し、画像の読み込み速度と品質を両立させました。動画の色検出機能や自動的な最適化により、そのまま実現できました。",
+    "designPhilosophy": "普段のアプリケーション開発では実現できなかった、\n考えたこと「やりたい」をそのままPortfolioで実現しました !",
+    "implementationHighlights": "Next.jsのImage最適化機能を最大限に活用し、画像の読み込み速度と品質を両立させました。",
     "learnings": "",
     "futureImprovements": ""
   },
