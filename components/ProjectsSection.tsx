@@ -18,7 +18,7 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
   return (
     <section
       id="projects"
-      className="border-b border-black bg-white py-48 md:py-56"
+      className="relative border-b border-black py-48 md:py-56"
     >
       <div className="mx-auto max-w-7xl px-6">
         <h2 

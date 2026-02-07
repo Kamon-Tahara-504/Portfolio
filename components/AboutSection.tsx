@@ -44,7 +44,7 @@ export default function AboutSection({
   return (
     <section
       id="about"
-      className="border-b border-black bg-white py-48 md:py-56"
+      className="relative border-b border-black py-48 md:py-56"
     >
       <div className="mx-auto max-w-7-5xl px-6">
         <h2 
