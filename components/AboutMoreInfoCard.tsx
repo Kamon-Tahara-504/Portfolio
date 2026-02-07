@@ -27,7 +27,10 @@ export default function AboutMoreInfoCard({
       {moreInfo.description && (
         <div className="space-y-3 leading-relaxed text-black/80 md:text-lg">
           {moreInfo.description.split("\n").map((line, index) => (
-            <p key={index} className="break-keep break-words">
+            <p
+              key={index}
+              className={`break-keep break-words ${line.endsWith(":") ? "font-bold text-black/90" : ""}`}
+            >
               {line}
             </p>
           ))}
