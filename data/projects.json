@@ -46,7 +46,7 @@
     "description": "エンジニアの悩みであるタスクの共有不足を 1つのアプリで簡単解決 !\nタスクをチームで一括管理しスムーズな開発環境を構築します !\n【共同開発プロジェクト】",
     "category": "web",
     "images": [
-      "/images/projects/PlaceHolder.png"
+      "/images/projects/NexstTask/NexstTask.png"
     ],
     "technologies": ["React", "TypeScript", "Tailwind CSS", "Supabase"],
     "links": {
