@@ -145,11 +145,18 @@ export default function Navigation() {
   };
 
   const handlePrevious = () => {
-    // クリック時のactiveSectionの値を固定して使用
     const currentSectionId = activeSection;
     const currentIndex = sections.findIndex(s => s.id === currentSectionId);
     if (currentIndex > 0) {
-      scrollToSection(sections[currentIndex - 1].id);
+      const targetId = sections[currentIndex - 1].id;
+      if (targetId === "hero") {
+        window.scrollTo({
+          top: window.innerHeight,
+          behavior: "smooth",
+        });
+      } else {
+        scrollToSection(targetId);
+      }
     }
   };
 
@@ -195,12 +202,21 @@ export default function Navigation() {
           </svg>
         </button>
 
-        {/* セクションリスト */}
+        {/* セクションリスト（Top は表示しない） */}
         <ul className="flex flex-col gap-4">
-          {sections.map((section) => (
+          {sections.filter((s) => s.id !== "hero").map((section) => (
             <li key={section.id}>
               <button
-                onClick={() => scrollToSection(section.id)}
+                onClick={() => {
+                  if (section.id === "hero") {
+                    window.scrollTo({
+                      top: window.innerHeight,
+                      behavior: "smooth",
+                    });
+                  } else {
+                    scrollToSection(section.id);
+                  }
+                }}
                 className={`group relative flex items-center transition-colors ${
                   activeSection === section.id
                     ? effectiveIsDark ? "text-white" : "text-black"
