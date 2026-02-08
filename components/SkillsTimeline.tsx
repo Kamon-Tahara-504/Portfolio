@@ -2,6 +2,7 @@
 
 import { useRef, useEffect, useState } from "react";
 import { Skills, Skill } from "@/types/profile";
+import { getGitHubLanguageColor } from "@/utils/githubLanguageColors";
 
 interface SkillsTimelineProps {
   skills: Skills;
@@ -11,22 +12,6 @@ interface TimelineSkill extends Skill {
   startDate: string;
   endDate: string | null;
 }
-
-// 各スキルに色を割り当てる関数
-const getSkillColor = (skillName: string): string => {
-  const colorMap: Record<string, string> = {
-    "C#": "#ef4444", // red-500
-    "C": "#3b82f6", // blue-500
-    "Python": "#10b981", // emerald-500
-    "Django": "#059669", // emerald-600
-    "node.js": "#f59e0b", // amber-500
-    "Flutter": "#06b6d4", // cyan-500
-    "React": "#3b82f6", // blue-500
-    "Java": "#f97316", // orange-500
-    "Next.js": "#8b5cf6", // violet-500
-  };
-  return colorMap[skillName] || "#6b7280"; // デフォルトはgray-500
-};
 
 export default function SkillsTimeline({ skills }: SkillsTimelineProps) {
   // スクロール可能なコンテナへの参照
@@ -184,6 +169,9 @@ export default function SkillsTimeline({ skills }: SkillsTimelineProps) {
     return startA - startB;
   });
 
+  // React のレイヤーを覚えておき、React Native は同じ行に配置する
+  let reactLayerInfo: { isAbove: boolean; assignedLayer: number } | null = null;
+
   // 各スキルを適切なレイヤーに配置
   const skillPositions = sortedSkills.map((skill) => {
     const start = parseDate(skill.startDate);
@@ -197,36 +185,23 @@ export default function SkillsTimeline({ skills }: SkillsTimelineProps) {
     const left = (leftPx / timelineWidthPx) * 100;
     const width = (widthPx / timelineWidthPx) * 100;
 
-    const color = getSkillColor(skill.name);
+    const color = getGitHubLanguageColor(skill.name);
 
-    // 上下に交互に配置するが、重なりを避ける
-    // まず上下を決定（交互に配置）
-    const preferAbove = sortedSkills.indexOf(skill) % 2 === 0;
-
-    // 利用可能なレイヤーを見つける（まず希望側を試す）
     let assignedLayer = -1;
-    let isAbove = preferAbove;
-    let usedLayers = preferAbove ? aboveLayers : belowLayers;
+    let isAbove: boolean;
+    let usedLayers: LayerOccupancy[];
 
-    for (let i = 0; i < usedLayers.length; i++) {
-      const layer = usedLayers[i];
-      // このレイヤーに重なっているスキルがあるかチェック
-      const hasConflict = layer.some((occupied) =>
-        hasOverlap(start, end, occupied.start, occupied.end)
-      );
-
-      if (!hasConflict) {
-        assignedLayer = i;
-        // このレイヤーにスキルを記録
-        layer.push({ start, end });
-        break;
-      }
-    }
-
-    // 希望側で利用可能なレイヤーが見つからない場合、反対側を試す
-    if (assignedLayer === -1) {
-      isAbove = !preferAbove;
+    // React Native は React と同じ行（レイヤー）に意図的に配置する
+    if (skill.name === "React Native" && reactLayerInfo !== null) {
+      isAbove = reactLayerInfo.isAbove;
+      assignedLayer = reactLayerInfo.assignedLayer;
       usedLayers = isAbove ? aboveLayers : belowLayers;
+      usedLayers[assignedLayer].push({ start, end });
+    } else {
+      // 上下に交互に配置するが、重なりを避ける
+      const preferAbove = sortedSkills.indexOf(skill) % 2 === 0;
+      isAbove = preferAbove;
+      usedLayers = preferAbove ? aboveLayers : belowLayers;
 
       for (let i = 0; i < usedLayers.length; i++) {
         const layer = usedLayers[i];
@@ -240,12 +215,33 @@ export default function SkillsTimeline({ skills }: SkillsTimelineProps) {
           break;
         }
       }
-    }
 
-    // それでも見つからない場合、最初のレイヤーを使用（重なるが仕方ない）
-    if (assignedLayer === -1) {
-      assignedLayer = 0;
-      usedLayers[0].push({ start, end });
+      if (assignedLayer === -1) {
+        isAbove = !preferAbove;
+        usedLayers = isAbove ? aboveLayers : belowLayers;
+
+        for (let i = 0; i < usedLayers.length; i++) {
+          const layer = usedLayers[i];
+          const hasConflict = layer.some((occupied) =>
+            hasOverlap(start, end, occupied.start, occupied.end)
+          );
+
+          if (!hasConflict) {
+            assignedLayer = i;
+            layer.push({ start, end });
+            break;
+          }
+        }
+      }
+
+      if (assignedLayer === -1) {
+        assignedLayer = 0;
+        usedLayers[0].push({ start, end });
+      }
+
+      if (skill.name === "React") {
+        reactLayerInfo = { isAbove, assignedLayer };
+      }
     }
 
     // レイヤー高さを決定

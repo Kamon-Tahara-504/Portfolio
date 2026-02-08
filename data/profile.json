@@ -54,15 +54,15 @@
   ],
   "skills": {
     "frontend": [
-      { "name": "React", "level": 60, "startDate": "2025-04", "endDate": null },
-      { "name": "Next.js", "level": 45, "startDate": "2025-11", "endDate": null },
+      { "name": "React", "level": 60, "startDate": "2025-04", "endDate": "2026-01" },
+      { "name": "Next.js", "level": 60, "startDate": "2025-11", "endDate": null },
       { "name": "HTML", "level": 40 },
       { "name": "CSS", "level": 40 },
       { "name": "", "level": 0 }
     ], 
     "backend": [
       { "name": "C", "level": 80, "startDate": "2022-11", "endDate": "2024-03" },
-      { "name": "Python", "level": 65, "startDate": "2023-11", "endDate": "2025-02" },
+      { "name": "Python", "level": 50, "startDate": "2023-11", "endDate": "2025-02" },
       { "name": "Django", "level": 50, "startDate": "2024-10", "endDate": "2025-02" },
       { "name": "Java", "level": 65, "startDate": "2025-04", "endDate": null },
       { "name": "TypeScript", "level": 60 }
@@ -71,11 +71,11 @@
       { "name": "Flutter", "level": 80, "startDate": "2025-03", "endDate": null },
       { "name": "Kotlin", "level": 15 },
       { "name": "Swift", "level": 15 },
-      { "name": "React Native", "level": 5 },
+      { "name": "React Native", "level": 35, "startDate": "2026-02", "endDate": null },
       { "name": "", "level": 0 }
     ],
     "tools": [
-      { "name": "GitHub", "level": 60 },
+      { "name": "GitHub", "level": 65 },
       { "name": "Figma", "level": 40 },
       { "name": "VSCode", "level": 65 },
       { "name": "Eclipse", "level": 45 },
