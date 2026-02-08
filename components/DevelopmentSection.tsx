@@ -23,7 +23,7 @@ export default function DevelopmentSection({
   return (
     <section
       id="development"
-      className="relative border-b border-black py-48 md:py-56"
+      className="relative border-b border-black pt-24 pb-24 md:pt-28 md:pb-28"
     >
       <div className="mx-auto max-w-7xl px-6">
         <h2
