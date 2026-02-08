@@ -35,13 +35,10 @@ export function useFadeInOnScroll(options: UseFadeInOnScrollOptions = {}) {
           }
 
           if (entry.isIntersecting) {
-            // ビューポートに入ったとき：遅延後に表示
+            // ビューポートに入ったとき：遅延後に表示（一度 true になったら戻さない）
             delayTimeoutRef.current = setTimeout(() => {
               setIsVisible(true);
             }, delay);
-          } else {
-            // ビューポートから出たとき：即座に非表示
-            setIsVisible(false);
           }
         });
       },
