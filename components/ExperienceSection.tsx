@@ -55,7 +55,7 @@ export default function ExperienceSection({
   return (
     <section
       id="experience"
-      className="relative border-b border-black py-48 md:py-56"
+      className="relative border-b border-black pt-24 pb-48 md:pt-28 md:pb-56"
     >
       <GridPattern className="opacity-20" size={60} strokeWidth={0.5} />
       <div className="relative mx-auto max-w-3-5xl px-6">
