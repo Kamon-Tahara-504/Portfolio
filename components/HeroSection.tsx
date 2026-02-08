@@ -1,7 +1,7 @@
 "use client";
 
 import { useContext } from "react";
-import { ScrollLockContext } from "./Layout";
+import { ViewContext } from "./Layout";
 import { useTypewriter } from "@/hooks/useTypewriter";
 
 interface HeroSectionProps {
@@ -38,12 +38,10 @@ export default function HeroSection({
   nameEn,
   developerTitle,
 }: HeroSectionProps) {
-  const scrollLock = useContext(ScrollLockContext);
+  const viewContext = useContext(ViewContext);
 
   const handleStartClick = () => {
-    scrollLock?.hasClickedStartRef && (scrollLock.hasClickedStartRef.current = true);
-    const about = document.getElementById("about");
-    about?.scrollIntoView({ behavior: "smooth", block: "start" });
+    viewContext?.enterMain();
   };
 
   return (
@@ -87,7 +85,7 @@ export default function HeroSection({
           type="button"
           onClick={handleStartClick}
           className="mt-10 animate-fade-in-left delay-200 inline-block rounded-full border border-white/30 bg-white/5 px-8 py-4 text-sm font-semibold uppercase tracking-[0.2em] text-white/90 backdrop-blur-sm transition hover:bg-white/15 hover:text-white"
-          aria-label="About セクションへ移動"
+          aria-label="サイトへ入る"
         >
           START
         </button>

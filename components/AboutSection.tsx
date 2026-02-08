@@ -44,7 +44,7 @@ export default function AboutSection({
   return (
     <section
       id="about"
-      className="relative border-b border-black pt-12 pb-48 md:pt-28 md:pb-56"
+      className="relative border-b border-black pt-8 pb-24 md:pt-20 md:pb-56"
     >
       <div className="mx-auto max-w-7-5xl px-6">
         <h2
@@ -53,7 +53,7 @@ export default function AboutSection({
         >
           About
         </h2>
-        <div className="flex flex-col gap-16 md:flex-row md:items-center">
+        <div className="flex flex-col gap-6 md:flex-row md:items-center md:gap-16">
           {/* 4:3比率の画像 - 大きく左寄せ */}
           <div 
             ref={imageRef.ref as React.RefObject<HTMLDivElement>}
@@ -72,11 +72,11 @@ export default function AboutSection({
             ref={contentRef.ref as React.RefObject<HTMLDivElement>}
             className={`flex-1 space-y-6 fade-in-from-left ${contentRef.isVisible ? 'visible' : ''}`}
             >
-            {/* 切り替えボタン */}
+            {/* 切り替えボタン（スマホでは非表示） */}
             {about.moreInfo && (
               <button
                 onClick={() => setShowMoreInfo(!showMoreInfo)}
-                className="relative bg-white text-black border-[3px] !border-black rounded-2xl px-5 py-3 text-base font-bold text-center min-w-[160px] shadow-xl hover:shadow-2xl hover:scale-105 transition-all mb-2 before:content-[''] before:absolute before:bottom-0 before:left-4 before:translate-y-full before:w-0 before:h-0 before:border-l-[10px] before:border-l-transparent before:border-r-[10px] before:border-r-transparent before:border-t-[10px] before:!border-t-black"
+                className="hidden md:inline-flex relative bg-white text-black border-[3px] !border-black rounded-2xl px-5 py-3 text-base font-bold text-center min-w-[160px] shadow-xl hover:shadow-2xl hover:scale-105 transition-all mb-2 before:content-[''] before:absolute before:bottom-0 before:left-4 before:translate-y-full before:w-0 before:h-0 before:border-l-[10px] before:border-l-transparent before:border-r-[10px] before:border-r-transparent before:border-t-[10px] before:!border-t-black"
               >
                 {showMoreInfo ? "基本情報に戻る" : "もっと知る"}
               </button>

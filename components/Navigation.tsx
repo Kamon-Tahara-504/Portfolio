@@ -1,15 +1,15 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useContext } from "react";
 import { useVideoColor } from "@/contexts/VideoColorContext";
+import { ViewContext } from "./Layout";
 
 const sections = [
-  { id: "hero", label: "Top", offset: 0 },
-  { id: "about", label: "About", offset: -50 },
-  { id: "experience", label: "Experience", offset: -170 },
-  { id: "skills", label: "Skills", offset: -170 },
+  { id: "about", label: "About", offset: -40 },
+  { id: "experience", label: "Experience", offset: -60 },
+  { id: "skills", label: "Skills", offset: -180 },
   { id: "projects", label: "Projects", offset: -50 },
-  { id: "development", label: "Development", offset: -100 },
+  { id: "development", label: "Development", offset: -60 },
 ];
 
 const mobileSections = sections.filter((s) => s.id !== "hero");
@@ -70,65 +70,69 @@ function MobileNavIcon({
   }
 }
 
+const mainViewSections = sections.filter((s) => s.id !== "hero");
+
 export default function Navigation() {
   const [activeSection, setActiveSection] = useState("hero");
   const [hasColorDetected, setHasColorDetected] = useState(false);
   const { isDark } = useVideoColor();
-  
+  const viewContext = useContext(ViewContext);
+
+  const view = viewContext?.view ?? "main";
+  const effectiveActiveSection = view === "hero" ? "hero" : activeSection;
+
   // スクロール中かどうかを追跡するref
   const isScrollingRef = useRef(false);
   // スクロール目標のセクションIDを保存するref
   const scrollTargetRef = useRef<string | null>(null);
   // スクロール完了検知用のタイマーID
   const scrollEndTimerRef = useRef<NodeJS.Timeout | null>(null);
-  
+
   // 動画の色検知が動作したかどうかを追跡
   useEffect(() => {
     if (isDark) {
       setHasColorDetected(true);
     }
   }, [isDark]);
-  
+
+  // ヒーロービュー時は常に hero
+  useEffect(() => {
+    if (view === "hero") setActiveSection("hero");
+  }, [view]);
+
   // heroセクションの場合のみ動画の色検知を使用、それ以外は常に黒色
   // 初期状態では白色を表示し、動画の色検知が動作した後はその値に従って色が変わる
-  const shouldUseVideoColor = activeSection === "hero";
+  const shouldUseVideoColor = effectiveActiveSection === "hero";
   const effectiveIsDark = shouldUseVideoColor 
     ? (hasColorDetected ? isDark : true) // 初期状態では白色（true）、検知後はisDarkの値を使用
     : false; // 他のセクションは常に黒色（false）
 
   useEffect(() => {
     const handleScroll = () => {
-      // スクロール中（プログラムによるスクロール）の場合はactiveSectionの更新を抑制
-      if (isScrollingRef.current) {
-        return;
-      }
+      if (view === "hero") return;
+      if (isScrollingRef.current) return;
 
-      // ナビゲーションバーは画面中央（top-1/2）にあるので、画面中央の位置を基準に判定
       const viewportCenter = window.scrollY + window.innerHeight / 2;
+      const sectionsToUse = view === "main" ? mainViewSections : sections;
 
-      // 各セクションをチェックして、画面中央がどのセクション内にあるかを判定
-      for (let i = sections.length - 1; i >= 0; i--) {
-        const section = document.getElementById(sections[i].id);
+      for (let i = sectionsToUse.length - 1; i >= 0; i--) {
+        const section = document.getElementById(sectionsToUse[i].id);
         if (section) {
           const rect = section.getBoundingClientRect();
           const sectionTop = window.scrollY + rect.top;
           const sectionBottom = sectionTop + rect.height;
-          
-          // 画面中央がセクション内にあるか判定
           if (viewportCenter >= sectionTop && viewportCenter <= sectionBottom) {
-            setActiveSection(sections[i].id);
+            setActiveSection(sectionsToUse[i].id);
             break;
           }
         }
       }
     };
 
-    // 初回実行
     handleScroll();
-
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [view]);
 
   const scrollToSection = (sectionId: string) => {
     const section = document.getElementById(sectionId);
@@ -143,7 +147,7 @@ export default function Navigation() {
       isScrollingRef.current = true;
       scrollTargetRef.current = sectionId;
 
-      const sectionConfig = sections.find(s => s.id === sectionId);
+      const sectionConfig = sections.find((s) => s.id === sectionId);
       const offset = sectionConfig?.offset ?? -50; // セクションごとのオフセット、デフォルトは-50
       const elementPosition = section.getBoundingClientRect().top;
       const offsetPosition = elementPosition + window.pageYOffset - offset;
@@ -188,42 +192,31 @@ export default function Navigation() {
     }
   };
 
-  // 前のセクションを取得
+  const navSections = view === "main" ? mainViewSections : sections;
+
   const getPreviousSection = (): string | null => {
-    const currentIndex = sections.findIndex(s => s.id === activeSection);
+    const currentIndex = navSections.findIndex((s) => s.id === effectiveActiveSection);
     if (currentIndex <= 0) return null;
-    return sections[currentIndex - 1].id;
+    return navSections[currentIndex - 1].id;
   };
 
-  // 次のセクションを取得
   const getNextSection = (): string | null => {
-    const currentIndex = sections.findIndex(s => s.id === activeSection);
-    if (currentIndex >= sections.length - 1) return null;
-    return sections[currentIndex + 1].id;
+    const currentIndex = navSections.findIndex((s) => s.id === effectiveActiveSection);
+    if (currentIndex >= navSections.length - 1) return null;
+    return navSections[currentIndex + 1].id;
   };
 
   const handlePrevious = () => {
-    const currentSectionId = activeSection;
-    const currentIndex = sections.findIndex(s => s.id === currentSectionId);
+    const currentIndex = navSections.findIndex((s) => s.id === effectiveActiveSection);
     if (currentIndex > 0) {
-      const targetId = sections[currentIndex - 1].id;
-      if (targetId === "hero") {
-        window.scrollTo({
-          top: window.innerHeight,
-          behavior: "smooth",
-        });
-      } else {
-        scrollToSection(targetId);
-      }
+      scrollToSection(navSections[currentIndex - 1].id);
     }
   };
 
   const handleNext = () => {
-    // クリック時のactiveSectionの値を固定して使用
-    const currentSectionId = activeSection;
-    const currentIndex = sections.findIndex(s => s.id === currentSectionId);
-    if (currentIndex < sections.length - 1) {
-      scrollToSection(sections[currentIndex + 1].id);
+    const currentIndex = navSections.findIndex((s) => s.id === effectiveActiveSection);
+    if (currentIndex < navSections.length - 1) {
+      scrollToSection(navSections[currentIndex + 1].id);
     }
   };
 
@@ -263,21 +256,12 @@ export default function Navigation() {
 
         {/* セクションリスト（Top は表示しない） */}
         <ul className="flex flex-col gap-4">
-          {sections.filter((s) => s.id !== "hero").map((section) => (
+          {mainViewSections.map((section) => (
             <li key={section.id}>
               <button
-                onClick={() => {
-                  if (section.id === "hero") {
-                    window.scrollTo({
-                      top: window.innerHeight,
-                      behavior: "smooth",
-                    });
-                  } else {
-                    scrollToSection(section.id);
-                  }
-                }}
+                onClick={() => scrollToSection(section.id)}
                 className={`group relative flex items-center transition-colors ${
-                  activeSection === section.id
+                  effectiveActiveSection === section.id
                     ? effectiveIsDark ? "text-white" : "text-black"
                     : effectiveIsDark ? "text-white/40 hover:text-white/70" : "text-black/40 hover:text-black/70"
                 }`}
@@ -285,7 +269,7 @@ export default function Navigation() {
               >
                 <span
                   className={`absolute -left-8 h-0.5 transition-all ${
-                    activeSection === section.id
+                    effectiveActiveSection === section.id
                       ? `w-6 ${effectiveIsDark ? "bg-white" : "bg-black"}`
                       : `w-0 ${effectiveIsDark ? "bg-white/40" : "bg-black/40"} group-hover:w-4`
                   }`}
@@ -332,7 +316,7 @@ export default function Navigation() {
     >
       <div className="flex items-stretch justify-around">
         {mobileSections.map((section) => {
-          const isActive = activeSection === section.id;
+          const isActive = effectiveActiveSection === section.id;
           const label =
             section.id === "experience"
               ? "経歴"
