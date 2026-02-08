@@ -12,6 +12,64 @@ const sections = [
   { id: "development", label: "Development", offset: -100 },
 ];
 
+const mobileSections = sections.filter((s) => s.id !== "hero");
+
+function MobileNavIcon({
+  sectionId,
+  isActive,
+  className = "w-6 h-6",
+}: {
+  sectionId: string;
+  isActive: boolean;
+  className?: string;
+}) {
+  const stroke = isActive ? "currentColor" : "currentColor";
+  const strokeWidth = isActive ? 2.5 : 1.5;
+  const opacity = isActive ? 1 : 0.6;
+
+  switch (sectionId) {
+    case "about":
+      return (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke={stroke} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" className={className} style={{ opacity }}>
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+          <circle cx="12" cy="7" r="4" />
+        </svg>
+      );
+    case "experience":
+      return (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke={stroke} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" className={className} style={{ opacity }}>
+          <circle cx="5" cy="12" r="1.5" fill="currentColor" />
+          <circle cx="12" cy="12" r="1.5" fill="currentColor" />
+          <circle cx="19" cy="12" r="1.5" fill="currentColor" />
+          <path d="M5 12h7M12 12h7" />
+        </svg>
+      );
+    case "skills":
+      return (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke={stroke} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" className={className} style={{ opacity }}>
+          <polyline points="16 18 22 12 16 6" />
+          <polyline points="8 6 2 12 8 18" />
+        </svg>
+      );
+    case "projects":
+      return (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke={stroke} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" className={className} style={{ opacity }}>
+          <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
+        </svg>
+      );
+    case "development":
+      return (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke={stroke} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" className={className} style={{ opacity }}>
+          <rect x="2" y="3" width="20" height="18" rx="2" ry="2" />
+          <polyline points="6 9 10 12 6 15" />
+          <line x1="14" y1="15" x2="22" y2="15" />
+        </svg>
+      );
+    default:
+      return null;
+  }
+}
+
 export default function Navigation() {
   const [activeSection, setActiveSection] = useState("hero");
   const [hasColorDetected, setHasColorDetected] = useState(false);
@@ -175,6 +233,7 @@ export default function Navigation() {
   const isNextDisabled = nextSection === null;
 
   return (
+    <>
     <nav className="fixed right-8 top-1/2 z-50 -translate-y-1/2 hidden lg:block">
       <div className="flex flex-col items-center gap-4">
         {/* 上矢印ボタン */}
@@ -265,6 +324,45 @@ export default function Navigation() {
         </button>
       </div>
     </nav>
+
+    {/* モバイル用ボトムナビ（スマホのみ表示） */}
+    <nav
+      className="fixed bottom-0 left-0 right-0 z-50 lg:hidden border-t border-black/10 bg-white/95 backdrop-blur-sm pb-[env(safe-area-inset-bottom)]"
+      aria-label="セクションへ移動"
+    >
+      <div className="flex items-stretch justify-around">
+        {mobileSections.map((section) => {
+          const isActive = activeSection === section.id;
+          const label =
+            section.id === "experience"
+              ? "経歴"
+              : section.id === "development"
+                ? "Dev"
+                : section.label;
+          return (
+            <button
+              key={section.id}
+              onClick={() => scrollToSection(section.id)}
+              className={`flex flex-col items-center justify-center gap-0.5 flex-1 min-w-0 py-2.5 px-1 transition-colors ${
+                isActive ? "text-black" : "text-black/60"
+              }`}
+              aria-label={`${section.label}へスクロール`}
+              aria-current={isActive ? "true" : undefined}
+            >
+              <MobileNavIcon
+                sectionId={section.id}
+                isActive={isActive}
+                className="w-6 h-6 shrink-0"
+              />
+              <span className="text-[10px] font-medium truncate max-w-full">
+                {label}
+              </span>
+            </button>
+          );
+        })}
+      </div>
+    </nav>
+    </>
   );
 }
 

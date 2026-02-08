@@ -18,7 +18,7 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
   return (
     <section
       id="projects"
-      className="relative border-b border-black pt-24 pb-48 md:pt-28 md:pb-56"
+      className="relative border-b border-black pt-24 pb-24 md:pt-28 md:pb-56"
     >
       <div className="mx-auto max-w-7xl px-6">
         <h2
