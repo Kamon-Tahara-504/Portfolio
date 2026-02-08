@@ -1,3 +1,4 @@
+import Layout from "@/components/Layout";
 import HeroSection from "@/components/HeroSection";
 import AboutSection from "@/components/AboutSection";
 import ExperienceSection from "@/components/ExperienceSection";
@@ -16,31 +17,23 @@ export default function Home() {
   const projects = projectsData as Project[];
   const development = developmentData as Development;
 
-  return (
-    <>
-      <HeroSection
-        image="/images/hero/hero.jpg"
-        title={profile.name}
-        subtitle={profile.title}
-        nameEn={profile.nameEn}
-        developerTitle={profile.developerTitle}
-      />
+  const mainContent = (
+    <div
+      className="relative z-20 overflow-hidden rounded-[2rem] p-8 shadow-2xl bg-transparent"
+      style={{ minHeight: "100vh" }}
+    >
       <div
-        className="relative z-20 overflow-hidden rounded-[2rem] p-8 shadow-2xl bg-transparent"
-        style={{ minHeight: "100vh" }}
+        className="overflow-hidden rounded-[1.25rem] pt-8 relative"
+        style={{ minHeight: "calc(100vh - 64px)" }}
       >
         <div
-          className="overflow-hidden rounded-[1.25rem] pt-8 relative"
-          style={{ minHeight: "calc(100vh - 64px)" }}
-        >
-          <div
-            className="absolute inset-0 rounded-[1.25rem] z-0"
-            style={{
-              background: "rgb(255 255 255 / 0.92)",
-            }}
-            aria-hidden
-          />
-          <div className="relative z-10">
+          className="absolute inset-0 rounded-[1.25rem] z-0"
+          style={{
+            background: "rgb(255 255 255 / 0.90)",
+          }}
+          aria-hidden
+        />
+        <div className="relative z-10">
           <AboutSection
             name={profile.name}
             nameEn={profile.nameEn}
@@ -59,9 +52,23 @@ export default function Home() {
               <p className="mt-2">Licensed under MIT License</p>
             </div>
           </footer>
-          </div>
         </div>
       </div>
-    </>
+    </div>
+  );
+
+  return (
+    <Layout
+      hero={
+        <HeroSection
+          image="/images/hero/hero.jpg"
+          title={profile.name}
+          subtitle={profile.title}
+          nameEn={profile.nameEn}
+          developerTitle={profile.developerTitle}
+        />
+      }
+      mainContent={mainContent}
+    />
   );
 }
