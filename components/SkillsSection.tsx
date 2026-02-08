@@ -4,7 +4,30 @@ import { Skills, Skill } from "@/types/profile";
 import SkillsTimeline from "./SkillsTimeline";
 import { useFadeInOnScroll } from "@/hooks/useFadeInOnScroll";
 import { useCountUpAnimation } from "@/hooks/useCountUpAnimation";
+import { useTypewriter } from "@/hooks/useTypewriter";
 import { getGitHubLanguageColor } from "@/utils/githubLanguageColors";
+
+const SKILLS_CAPTION_TEXT = "この数値は技術力などの指標ではなく理解自信度です！";
+
+function SkillsTypewriterCaption() {
+  const { displayText, showCursor } = useTypewriter({
+    text: SKILLS_CAPTION_TEXT,
+    speed: 60,
+    startDelay: 500,
+    showCursor: true,
+  });
+  return (
+    <p className="mb-4 text-center text-sm text-black/70 md:text-base" aria-live="polite">
+      {displayText}
+      {showCursor && (
+        <span
+          className="typewriter-cursor ml-0.5 inline-block h-[1em] w-0.5 align-middle bg-black/70 animate-cursor-blink"
+          aria-hidden
+        />
+      )}
+    </p>
+  );
+}
 
 interface SkillsSectionProps {
   skills: Skills;
@@ -112,11 +135,12 @@ export default function SkillsSection({ skills }: SkillsSectionProps) {
       <div className="mx-auto max-w-7-5xl px-6">
         <h2
           ref={titleRef.ref as React.RefObject<HTMLHeadingElement>}
-          className={`mb-20 text-center text-4xl font-bold tracking-tight md:text-5xl fade-in-from-left section-title-blink ${titleRef.isVisible ? "visible" : ""}`}
+          className={`mb-10 text-center text-4xl font-bold tracking-tight md:text-5xl fade-in-from-left section-title-blink ${titleRef.isVisible ? "visible" : ""}`}
         >
           Skills
         </h2>
-        <div className="mt-20 grid gap-12 md:grid-cols-4">
+        <SkillsTypewriterCaption />
+        <div className="mt-10 grid gap-12 md:grid-cols-4">
           {skillCategories.map((category, categoryIndex) => (
             <SkillCategoryItem key={category.name} category={category} index={categoryIndex} />
           ))}

@@ -13,8 +13,14 @@ interface ExperienceItemProps {
   index: number;
 }
 
+function getCurrentYearMonth(): string {
+  const now = new Date();
+  return `${now.getFullYear()}年${now.getMonth() + 1}月`;
+}
+
 function ExperienceItem({ exp, index }: ExperienceItemProps) {
   const expRef = useFadeInOnScroll({ delay: 100 * (index + 1) });
+  const periodDisplay = exp.title === "現在" ? getCurrentYearMonth() : exp.period;
 
   return (
     <div
@@ -30,7 +36,7 @@ function ExperienceItem({ exp, index }: ExperienceItemProps) {
               {exp.title}
             </h3>
             <span className="text-sm font-medium text-black/60 md:text-base">
-              {exp.period}
+              {periodDisplay}
             </span>
           </div>
           <div className="text-lg font-medium text-black/70 md:text-xl">
