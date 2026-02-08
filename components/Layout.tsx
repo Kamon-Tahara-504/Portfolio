@@ -4,6 +4,7 @@ import React, { useEffect, useRef } from "react";
 import Navigation from "./Navigation";
 import { VideoColorProvider } from "@/contexts/VideoColorContext";
 import BubbleParticles from "./BubbleParticles";
+import FixedVideoBackground from "./FixedVideoBackground";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -50,19 +51,14 @@ export default function Layout({ children }: LayoutProps) {
 
   return (
     <VideoColorProvider>
-      <div className="relative min-h-screen bg-white text-black">
+      <FixedVideoBackground />
+      <div className="relative z-10 min-h-screen text-black">
         <div className="absolute inset-0 z-10 pointer-events-none" aria-hidden="true">
           <BubbleParticles />
         </div>
         <div className="relative z-20">
           <Navigation />
           <main>{children}</main>
-          <footer className="border-t border-black bg-white">
-            <div className="mx-auto max-w-7-5xl px-6 py-8 text-center text-sm text-black/60">
-              <p>©︎ 2025 Kamon-Tahara-504</p>
-              <p className="mt-2">Licensed under MIT License</p>
-            </div>
-          </footer>
         </div>
       </div>
     </VideoColorProvider>

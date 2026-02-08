@@ -4,7 +4,6 @@ import Link from "next/link";
 import { Development } from "@/types/development";
 import { useFadeInOnScroll } from "@/hooks/useFadeInOnScroll";
 import TerminalBlock from "@/components/TerminalBlock";
-import CodeSnippetReveal from "@/components/CodeSnippetReveal";
 
 interface DevelopmentSectionProps {
   development: Development;
@@ -137,9 +136,6 @@ export default function DevelopmentSection({
                     <p className="leading-relaxed text-black/80 md:text-lg">
                       {development.developmentProcess.futureImprovements}
                     </p>
-                  </div>
-                  <div className="pt-6">
-                    <CodeSnippetReveal />
                   </div>
                 </div>
               </div>
