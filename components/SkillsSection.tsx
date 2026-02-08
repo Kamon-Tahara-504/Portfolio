@@ -4,6 +4,7 @@ import { Skills, Skill } from "@/types/profile";
 import SkillsTimeline from "./SkillsTimeline";
 import { useFadeInOnScroll } from "@/hooks/useFadeInOnScroll";
 import { useCountUpAnimation } from "@/hooks/useCountUpAnimation";
+import { getGitHubLanguageColor } from "@/utils/githubLanguageColors";
 
 interface SkillsSectionProps {
   skills: Skills;
@@ -36,8 +37,13 @@ function SkillItem({ skill, isCategoryVisible, index }: SkillItemProps) {
     <div>
       <div className="mb-3 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          {/* 将来のアイコン挿入用のスペース */}
-          <div className="h-6 w-6 flex-shrink-0" />
+          {skill.name ? (
+            <span
+              className="h-2 w-2 flex-shrink-0 rounded-full md:h-2.5 md:w-2.5"
+              style={{ backgroundColor: getGitHubLanguageColor(skill.name) }}
+              aria-hidden
+            />
+          ) : null}
           <span 
             ref={skillNameRef.ref as React.RefObject<HTMLSpanElement>}
             className={`text-sm font-medium text-black md:text-base fade-in-from-left ${skillNameRef.isVisible ? 'visible' : ''}`}
@@ -51,8 +57,11 @@ function SkillItem({ skill, isCategoryVisible, index }: SkillItemProps) {
       </div>
       <div className="h-1.5 w-full bg-black/10">
         <div
-          className="h-full bg-black transition-all"
-          style={{ width: `${animatedValue}%` }}
+          className="h-full transition-all"
+          style={{
+            width: `${animatedValue}%`,
+            backgroundColor: getGitHubLanguageColor(skill.name),
+          }}
         />
       </div>
     </div>
