@@ -103,6 +103,45 @@
     "technologies": [],
     "links": {},
     "date": "2024-01-01"
+  },
+  {
+    "id": "project-7",
+    "slug": "coming-soon-3",
+    "title": "準備中",
+    "description": "準備中です",
+    "category": "web",
+    "images": [
+      "/images/projects/PlaceHolder.png"
+    ],
+    "technologies": [],
+    "links": {},
+    "date": "2024-01-01"
+  },
+  {
+    "id": "project-8",
+    "slug": "coming-soon-4",
+    "title": "準備中",
+    "description": "準備中です",
+    "category": "web",
+    "images": [
+      "/images/projects/PlaceHolder.png"
+    ],
+    "technologies": [],
+    "links": {},
+    "date": "2024-01-01"
+  },
+  {
+    "id": "project-9",
+    "slug": "coming-soon-5",
+    "title": "準備中",
+    "description": "準備中です",
+    "category": "web",
+    "images": [
+      "/images/projects/PlaceHolder.png"
+    ],
+    "technologies": [],
+    "links": {},
+    "date": "2024-01-01"
   }
 ]
 
