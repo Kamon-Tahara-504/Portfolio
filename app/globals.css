@@ -26,19 +26,19 @@ body {
   border-color: rgba(0, 0, 0, 0.1);
 }
 
-/* スクロールは html に一本化。環境差でスクロールが効かなくなるのを防ぐ */
+/* スクロールを html に一本化（環境差・MacBook Pro 等での不具合軽減） */
 html {
   scroll-behavior: smooth;
-  overscroll-behavior-y: none; /* 縦オーバースクロール・バウンスを無効化（ロック境界の揺れ防止） */
   overflow-x: hidden;
-  overflow-y: scroll;
+  overflow-y: auto;
+  touch-action: pan-y;
   scrollbar-width: thin;
   scrollbar-color: black transparent;
 }
 
 body {
   overflow-x: hidden;
-  overscroll-behavior-y: none;
+  /* overflow-y は指定しない → スクロールは html で行う */
   scrollbar-width: thin;
   scrollbar-color: black transparent;
 }
