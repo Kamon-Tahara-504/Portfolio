@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import Image from "next/image";
+import ProtectedImage from "@/components/ProtectedImage";
 import { Project } from "@/types/project";
 
 // basePathの定義（開発環境では空、本番環境では'/Portfolio'）
@@ -34,7 +34,8 @@ export default function ProjectCard({
     >
       {/* カード全体に画像を表示（フルブリード） */}
       {project.images && project.images.length > 0 ? (
-        <Image
+        <ProtectedImage
+          wrapperClassName="absolute inset-0"
           src={project.images[0].startsWith('/') ? `${basePath}${project.images[0]}` : project.images[0]}
           alt={project.title}
           fill

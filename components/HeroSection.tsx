@@ -49,7 +49,7 @@ export default function HeroSection({
       id="hero"
       className="relative flex min-h-screen items-center justify-center overflow-hidden bg-transparent"
     >
-      <div className="relative z-30 flex flex-col items-center justify-center text-center text-white px-4">
+      <div className="relative z-30 flex flex-col items-center justify-center text-center text-white px-4 select-none">
         {/* PORTFOLIO ラベル */}
         <div className="mb-6 animate-fade-in-left">
           <span className="inline-block px-4 py-2 text-xs font-semibold tracking-[0.2em] uppercase text-white/80 border border-white/30 rounded-full backdrop-blur-sm bg-white/5">

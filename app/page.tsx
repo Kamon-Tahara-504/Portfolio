@@ -33,7 +33,7 @@ export default function Home() {
           }}
           aria-hidden
         />
-        <div className="relative z-10">
+        <div className="relative z-10 select-none">
           <AboutSection
             name={profile.name}
             nameEn={profile.nameEn}

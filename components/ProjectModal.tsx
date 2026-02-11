@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import ProtectedImage from "@/components/ProtectedImage";
 import { Project } from "@/types/project";
 
 // basePathの定義（開発環境では空、本番環境では'/Portfolio'）
@@ -69,7 +70,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
       onWheel={handleWheel}
     >
       <div
-        className={`relative w-full max-w-[90vw] h-[90vh] bg-white border border-black transition-all duration-300 ease-out ${
+        className={`relative w-full max-w-[90vw] h-[90vh] bg-white border border-black transition-all duration-300 ease-out select-none ${
           isOpen ? "opacity-100 scale-100" : "opacity-0 scale-95"
         }`}
         onClick={(e) => e.stopPropagation()}
@@ -97,7 +98,8 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                 : modalImage;
               return (
                 <div className="relative w-full flex-shrink-0 overflow-hidden border border-black bg-black/5 md:w-1/2 aspect-[4/3]">
-                  <Image
+                  <ProtectedImage
+                    wrapperClassName="absolute inset-0"
                     src={imageSrc}
                     alt={project.title}
                     fill
