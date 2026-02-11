@@ -86,20 +86,27 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
         {/* コンテンツ */}
         <div className="h-full p-8 md:p-12 flex items-center">
           <div className="flex flex-col gap-12 md:flex-row md:items-center w-full">
-            {/* 左側: 画像エリア */}
-            {project.images && project.images.length > 0 && (
-              <div className="relative w-full flex-shrink-0 overflow-hidden border border-black bg-black/5 md:w-1/2 aspect-[4/3]">
-                <Image
-                  src={(project.images.length > 1 ? project.images[1] : project.images[0]).startsWith('/') 
-                    ? `${basePath}${project.images.length > 1 ? project.images[1] : project.images[0]}`
-                    : (project.images.length > 1 ? project.images[1] : project.images[0])}
-                  alt={project.title}
-                  fill
-                  className="object-contain"
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                />
-              </div>
-            )}
+            {/* 左側: 画像エリア（おじいちゃんゲーム以外はカードと同じ1枚目を表示） */}
+            {project.images && project.images.length > 0 && (() => {
+              const isOjiichanGame = project.slug === "ojiichan-game";
+              const modalImage = isOjiichanGame && project.images.length > 1
+                ? project.images[1]
+                : project.images[0];
+              const imageSrc = modalImage.startsWith("/")
+                ? `${basePath}${modalImage}`
+                : modalImage;
+              return (
+                <div className="relative w-full flex-shrink-0 overflow-hidden border border-black bg-black/5 md:w-1/2 aspect-[4/3]">
+                  <Image
+                    src={imageSrc}
+                    alt={project.title}
+                    fill
+                    className="object-contain"
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                  />
+                </div>
+              );
+            })()}
 
             {/* 右側: 情報エリア */}
             <div className="flex-1 space-y-6">
