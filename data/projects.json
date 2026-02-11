@@ -93,7 +93,7 @@
     "description": "準備中です",
     "category": "mobile",
     "images": [
-      "/images/projects/PlaceHolder.png"
+      "/images/projects/NexstTaskMobile/NexstTaskMobile.png"
     ],
     "technologies": ["Flutter", "Dart", "Supabase"],
     "links": {
@@ -127,7 +127,7 @@
     "category": "web",
     "productionType": "collaborative",
     "images": [
-      "/images/projects/PlaceHolder.png"
+      "/images/projects/FitnessGym/fitnessGym.png"
     ],
     "technologies": ["Java", "Spring", "React", "TypeScript", "Supabase"],
     "links": {
@@ -139,14 +139,14 @@
   },
   {
     "id": "project-8",
-    "slug": "flea-market-app",
-    "title": "男性特化型フリマアプリ",
+    "slug": "myshop",
+    "title": "Myshop",
     "catchphrase": "男性層のシェア奪取を目指す !",
     "description": "準備中です",
     "category": "web",
     "productionType": "collaborative",
     "images": [
-      "/images/projects/PlaceHolder.png"
+      "/images/projects/MyShop/MyShop.png"
     ],
     "technologies": ["Java", "Spring", "Thymeleaf", "CSS", "PostgreSQL", "AWS EC2"],
     "links": {
