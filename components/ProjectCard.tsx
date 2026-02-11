@@ -21,6 +21,8 @@ export default function ProjectCard({
   shouldAnimate,
 }: ProjectCardProps) {
   const categoryLabel = project.category === "web" ? "Web" : "Mobile";
+  const productionLabel =
+    project.productionType === "collaborative" ? "共同制作" : "自主制作";
   const animationClass = `fade-in-on-scroll ${shouldAnimate ? "visible" : ""}`;
 
   return (
@@ -45,20 +47,21 @@ export default function ProjectCard({
         </div>
       )}
 
-      {/* カテゴリーバッジ（上部右） */}
-      <div className="absolute top-4 right-4 z-10">
-        <span className="bg-white px-3 py-1 text-xs font-medium text-black border border-black rounded">
-          {categoryLabel}
-        </span>
-      </div>
-
-      {/* テキストエリア（下部に浮遊） */}
-      <div className="absolute bottom-4 left-4 right-4 md:bottom-6 md:left-6 md:right-6 z-10 bg-black rounded-2xl p-4 md:p-6 flex flex-col">
+      {/* テキストエリア（下部・黒リキッドグラス） */}
+      <div className="absolute bottom-4 left-4 right-4 md:bottom-6 md:left-6 md:right-6 z-10 bg-black/40 backdrop-blur-md rounded-2xl p-4 md:p-6 flex flex-col border border-white/10 shadow-lg">
+        <div className="mb-2 flex flex-wrap items-center gap-1">
+          <span className="shrink-0 bg-white/90 px-2.5 py-0.5 text-xs font-bold text-black border border-white rounded">
+            {categoryLabel}
+          </span>
+          <span className="shrink-0 bg-white/90 px-2.5 py-0.5 text-xs font-bold text-black border border-white rounded">
+            {productionLabel}
+          </span>
+        </div>
         <h3 className="mb-2 text-lg md:text-xl font-bold tracking-tight text-white line-clamp-1">
           {project.title}
         </h3>
         <p className="text-xs md:text-sm text-white/80 line-clamp-2 whitespace-pre-line">
-          {project.description}
+          {project.catchphrase ?? project.description}
         </p>
       </div>
     </button>
