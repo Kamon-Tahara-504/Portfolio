@@ -163,6 +163,64 @@ body::-webkit-scrollbar-thumb:hover {
   animation: pulse-scale 1.5s ease-in-out infinite;
 }
 
+/* グリッチメソッド：見出し用（黒字＋赤/シアンずれ） */
+@keyframes glitch {
+  0%, 90%, 100% {
+    text-shadow: 0 0 0 transparent, 0 0 0 transparent;
+    transform: translate(0);
+  }
+  92% {
+    text-shadow: -2px 1px 0 rgba(255, 0, 128, 0.6), 2px -1px 0 rgba(0, 255, 255, 0.6);
+    transform: translate(-1px, 1px);
+  }
+  94% {
+    text-shadow: 2px -1px 0 rgba(255, 0, 128, 0.6), -2px 1px 0 rgba(0, 255, 255, 0.6);
+    transform: translate(1px, -1px);
+  }
+  96% {
+    text-shadow: -1px -1px 0 rgba(255, 0, 128, 0.5), 1px 1px 0 rgba(0, 255, 255, 0.5);
+    transform: translate(-1px, -1px);
+  }
+  98% {
+    text-shadow: 1px 1px 0 rgba(255, 0, 128, 0.5), -1px -1px 0 rgba(0, 255, 255, 0.5);
+    transform: translate(1px, 1px);
+  }
+}
+
+.text-glitch {
+  color: #000;
+  font-weight: 600;
+  animation: glitch 4s ease-in-out infinite;
+}
+
+/* もっと知るカード用：枠のグリッチ（outline で shadow を維持） */
+@keyframes card-glitch {
+  0%, 88%, 100% {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+  }
+  89% {
+    outline: 2px solid rgba(255, 0, 128, 0.5);
+    outline-offset: -1px;
+  }
+  91% {
+    outline: 2px solid rgba(0, 255, 255, 0.5);
+    outline-offset: 1px;
+  }
+  93% {
+    outline: 1px solid rgba(255, 0, 128, 0.4);
+    outline-offset: -2px;
+  }
+  95% {
+    outline: 1px solid rgba(0, 255, 255, 0.4);
+    outline-offset: 2px;
+  }
+}
+
+.card-glitch {
+  animation: card-glitch 5s ease-in-out infinite;
+}
+
 /* 炭酸風パーティクル用：下から上へ一番上まで続けて浮かび、軽く左右に揺れる */
 @keyframes bubble-float {
   0% {

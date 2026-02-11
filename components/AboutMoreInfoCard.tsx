@@ -13,14 +13,14 @@ export default function AboutMoreInfoCard({
 }: AboutMoreInfoCardProps) {
   return (
     <div
-      className={`absolute inset-0 z-10 bg-white border border-black/10 shadow-lg px-4 py-2 md:px-6 md:py-3 overflow-hidden transition-all duration-300 ease-in-out flex flex-col ${
+      className={`card-glitch absolute inset-0 z-10 overflow-hidden rounded-xl border border-black/10 bg-gradient-to-br from-slate-50 via-slate-100 to-sky-50 px-4 py-4 md:px-6 md:py-5 shadow-lg backdrop-blur-[2px] transition-all duration-300 ease-in-out flex flex-col justify-center ${
         isVisible
           ? "opacity-100 translate-x-0"
           : "opacity-0 translate-x-full pointer-events-none"
       }`}
     >
       {moreInfo.title && (
-        <h4 className="mb-2 text-lg font-bold tracking-tight md:text-2xl">
+        <h4 className="text-glitch mb-2 text-lg font-bold tracking-tight md:text-2xl">
           {moreInfo.title}
         </h4>
       )}
@@ -29,7 +29,11 @@ export default function AboutMoreInfoCard({
           {moreInfo.description.split("\n").map((line, index) => (
             <p
               key={index}
-              className={`break-keep break-words ${line.endsWith(":") ? "font-bold text-black/90" : ""}`}
+              className={`break-keep break-words ${
+                line.endsWith(":")
+                  ? "section-title-blink font-semibold text-black"
+                  : ""
+              }`}
             >
               {line}
             </p>
@@ -40,7 +44,7 @@ export default function AboutMoreInfoCard({
         <div className="space-y-4 pt-1">
           {moreInfo.items.map((item, index) => (
             <div key={index} className="space-y-1">
-              <span className="text-xs font-bold text-black/70 md:text-base">
+              <span className="text-xs font-bold text-sky-700 md:text-base">
                 {item.label}:
               </span>
               <p className="text-xs text-black/80 md:text-base">

@@ -41,6 +41,10 @@ export default function AboutSection({
   const imageRef = useFadeInOnScroll({ delay: 100 });
   const contentRef = useFadeInOnScroll({ delay: 200 });
 
+  const defaultImageSrc =
+    about.image.startsWith("/") ? `${basePath}${about.image}` : about.image;
+  const moreImageSrc = `${basePath}/images/about/TAHARA02.JPG`;
+
   return (
     <section
       id="about"
@@ -55,16 +59,30 @@ export default function AboutSection({
         </h2>
         <div className="flex flex-col gap-6 md:flex-row md:items-center md:gap-16">
           {/* 4:3比率の画像 - 大きく左寄せ */}
-          <div 
+          <div
             ref={imageRef.ref as React.RefObject<HTMLDivElement>}
-            className={`relative aspect-[4/3] w-full flex-shrink-0 overflow-hidden border border-black bg-black/5 md:w-1/2 fade-in-from-left ${imageRef.isVisible ? 'visible' : ''}`}
+            className={`relative aspect-[4/3] w-full flex-shrink-0 overflow-hidden border border-black bg-black/5 md:w-1/2 fade-in-from-left ${
+              imageRef.isVisible ? "visible" : ""
+            }`}
           >
             <ProtectedImage
               wrapperClassName="absolute inset-0"
-              src={about.image.startsWith('/') ? `${basePath}${about.image}` : about.image}
+              src={defaultImageSrc}
               alt={name}
               fill
-              className="object-cover"
+              className={`object-cover transition-opacity duration-500 ease-out ${
+                showMoreInfo ? "opacity-0" : "opacity-100"
+              }`}
+              sizes="(max-width: 768px) 100vw, 50vw"
+            />
+            <ProtectedImage
+              wrapperClassName="absolute inset-0"
+              src={moreImageSrc}
+              alt={name}
+              fill
+              className={`object-cover transition-opacity duration-500 ease-out ${
+                showMoreInfo ? "opacity-100" : "opacity-0"
+              }`}
               sizes="(max-width: 768px) 100vw, 50vw"
             />
           </div>
@@ -73,15 +91,6 @@ export default function AboutSection({
             ref={contentRef.ref as React.RefObject<HTMLDivElement>}
             className={`flex-1 space-y-6 fade-in-from-left ${contentRef.isVisible ? 'visible' : ''}`}
             >
-            {/* 切り替えボタン（スマホでは非表示） */}
-            {about.moreInfo && (
-              <button
-                onClick={() => setShowMoreInfo(!showMoreInfo)}
-                className="hidden md:inline-flex relative bg-white text-black border-[3px] !border-black rounded-2xl px-5 py-3 text-base font-bold text-center min-w-[160px] shadow-xl hover:shadow-2xl hover:scale-105 transition-all mb-2 before:content-[''] before:absolute before:bottom-0 before:left-4 before:translate-y-full before:w-0 before:h-0 before:border-l-[10px] before:border-l-transparent before:border-r-[10px] before:border-r-transparent before:border-t-[10px] before:!border-t-black"
-              >
-                {showMoreInfo ? "基本情報に戻る" : "もっと知る"}
-              </button>
-            )}
             <div className="space-y-1">
               <div className="flex items-center gap-4 flex-wrap">
                 <h3 className="text-3xl font-bold tracking-tight md:text-4xl">
@@ -171,10 +180,18 @@ export default function AboutSection({
                 />
               )}
             </div>
-            {/* 連絡先情報のボタン（GitHub、お問い合わせ） */}
-            {contact && (
+            {/* 連絡先情報のボタン（もっと知る、GitHub、お問い合わせ） */}
+            {(contact || about.moreInfo) && (
               <div className="flex flex-wrap gap-4">
-                {contact.github && (
+                {about.moreInfo && (
+                  <button
+                    onClick={() => setShowMoreInfo(!showMoreInfo)}
+                    className="hidden md:inline-flex items-center gap-2 rounded-lg border-[3px] border-black bg-white px-6 py-3 text-sm font-bold text-black shadow-[4px_4px_0_0_#000] transition-transform hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0_0_#000] md:text-base"
+                  >
+                    {showMoreInfo ? "基本情報に戻る" : "もっと知る"}
+                  </button>
+                )}
+                {contact?.github && (
                     <Link
                       href={contact.github}
                       target="_blank"
@@ -196,6 +213,7 @@ export default function AboutSection({
                       GitHub
                     </Link>
                   )}
+                {contact && (
                   <button
                     onClick={() => setIsContactModalOpen(true)}
                     className="inline-flex items-center gap-2 rounded-md border border-black bg-white px-6 py-3 text-sm font-medium text-black transition-colors hover:bg-black/5 md:text-base"
@@ -216,6 +234,7 @@ export default function AboutSection({
                     </svg>
                     お問い合わせ
                   </button>
+                )}
               </div>
             )}
           </div>
