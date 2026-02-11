@@ -34,7 +34,8 @@
     "technologies": ["Flutter", "Dart", "Supabase"],
     "links": {
       "github": "https://github.com/Kamon-Tahara-504/ThisOne",
-      "appStore": "https://apps.apple.com/jp/app/thisone-1/id6755763891"
+      "appStore": "https://apps.apple.com/jp/app/thisone-1/id6755763891",
+      "docs": "https://www.canva.com/design/DAG-RV8Re2M/PwQ23PP6R2GkFJSjfWC0zQ/view?utm_content=DAG-RV8Re2M&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=ha0c2ce5613"
     },
     "date": {
       "startDate": "2025-05-27",
@@ -46,7 +47,7 @@
     "slug": "nexst-task",
     "title": "Nexst Task",
     "catchphrase": "開発環境をネクストステージに。",
-    "description": "エンジニアの悩みであるタスクの共有不足を 1つのアプリで簡単解決 !\nタスクをチームで一括管理しスムーズな開発環境を構築します !\n【共同開発プロジェクト】",
+    "description": "エンジニアの悩みであるタスクの共有不足を 1つのアプリで簡単解決 !\nタスクをチームで一括管理しスムーズな開発環境を構築します !",
     "category": "web",
     "productionType": "collaborative",
     "images": [
@@ -55,7 +56,8 @@
     "technologies": ["React", "TypeScript", "Tailwind CSS", "Supabase"],
     "links": {
       "github": "https://github.com/Hirotaka-Tambo/Engineer-Task-APP",
-      "demo": "https://hirotaka-tambo.github.io/Engineer-Task-APP/#/login"
+      "demo": "https://hirotaka-tambo.github.io/Engineer-Task-APP/#/login",
+      "docs": "https://www.canva.com/design/DAG_AxphI_M/Ny1f0HbOI874QyXvSxQQFA/view?utm_content=DAG_AxphI_M&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h46467f27e1"
     },
     "date": {
       "startDate": "2025-09-21",
@@ -93,8 +95,10 @@
     "images": [
       "/images/projects/PlaceHolder.png"
     ],
-    "technologies": [],
-    "links": {},
+    "technologies": ["Flutter", "Dart", "Supabase"],
+    "links": {
+      "github": "https://github.com/Kamon-Tahara-504/Nexst-Task-Mobile"
+    },
     "date": "2024-01-01"
   },
   {
@@ -105,11 +109,13 @@
     "description": "準備中です",
     "category": "web",
     "images": [
-      "/images/projects/oldguy/oldguy.png",
-      "/images/projects/oldguy/oldguy-modal.png"
+      "/images/projects/oldguy/oldguy.png"
     ],
-    "technologies": [],
-    "links": {},
+    "technologies": ["PixiJS", "Matter.js"],
+    "links": {
+      "github": "https://github.com/Kamon-Tahara-504/oldguy_game",
+      "demo": "https://kamon-tahara-504.github.io/oldguy_game/"
+    },
     "date": "2024-01-01"
   },
   {
@@ -123,8 +129,12 @@
     "images": [
       "/images/projects/PlaceHolder.png"
     ],
-    "technologies": [],
-    "links": {},
+    "technologies": ["Java", "Spring", "React", "TypeScript", "Supabase"],
+    "links": {
+      "githubBackend": "https://github.com/KDGT-DEVELOP-TEAM/Fitness-Gym-MG-backend",
+      "githubFrontend": "https://github.com/KDGT-DEVELOP-TEAM/Fitness-Gym-MG-frontend",
+      "docs": "https://www.canva.com/design/DAG_BP2B4vY/AafdFxcDcRXZKXLOi4w_hQ/view?utm_content=DAG_BP2B4vY&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h18a9c6d7ad"
+    },
     "date": "2024-01-01"
   },
   {
@@ -138,8 +148,11 @@
     "images": [
       "/images/projects/PlaceHolder.png"
     ],
-    "technologies": [],
-    "links": {},
+    "technologies": ["Java", "Spring", "Thymeleaf", "CSS", "PostgreSQL", "AWS EC2"],
+    "links": {
+      "github": "https://github.com/Java-Second-term-assignment/FleaMarket-App",
+      "docs": "https://www.canva.com/design/DAHAuHQCEpw/KS22mRhfMOrePifmJI4Jbw/view?utm_content=DAHAuHQCEpw&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h80f986e7b0"
+    },
     "date": "2024-01-01"
   },
   {
@@ -153,8 +166,12 @@
     "images": [
       "/images/projects/koko/koko.png"
     ],
-    "technologies": [],
-    "links": {},
+    "technologies": ["Django", "Python", "React Native", "TypeScript", "Supabase"],
+    "links": {
+      "githubBackend": "https://github.com/Tech-Jam-KDG-2026-Winter/Team-11-django-backend",
+      "githubFrontend": "https://github.com/Tech-Jam-KDG-2026-Winter/Team-11-reactnative-frontend",
+      "docs": "https://www.canva.com/design/DAG_xSt56PE/2BWip6MEMN2siDam7NNirQ/view?utm_content=DAG_xSt56PE&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h4e7caa28fa"
+    },
     "date": "2024-01-01"
   }
 ]

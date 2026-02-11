@@ -6,6 +6,10 @@ export type ProjectProductionType = "solo" | "collaborative";
 export interface ProjectLinks {
   docs?: string;
   github?: string;
+  /** バックエンドリポジトリ（backend/frontend が分かれている場合） */
+  githubBackend?: string;
+  /** フロントエンドリポジトリ（backend/frontend が分かれている場合） */
+  githubFrontend?: string;
   demo?: string;
   appStore?: string;
 }
