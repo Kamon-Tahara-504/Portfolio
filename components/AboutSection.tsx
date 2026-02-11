@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
+import ProtectedImage from "@/components/ProtectedImage";
 import Link from "next/link";
 import { About, Contact } from "@/types/profile";
 import EngineerExperienceCard from "./EngineerExperienceCard";
@@ -59,7 +59,8 @@ export default function AboutSection({
             ref={imageRef.ref as React.RefObject<HTMLDivElement>}
             className={`relative aspect-[4/3] w-full flex-shrink-0 overflow-hidden border border-black bg-black/5 md:w-1/2 fade-in-from-left ${imageRef.isVisible ? 'visible' : ''}`}
           >
-            <Image
+            <ProtectedImage
+              wrapperClassName="absolute inset-0"
               src={about.image.startsWith('/') ? `${basePath}${about.image}` : about.image}
               alt={name}
               fill
