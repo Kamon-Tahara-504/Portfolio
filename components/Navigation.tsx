@@ -5,7 +5,7 @@ import { useVideoColor } from "@/contexts/VideoColorContext";
 import { ViewContext } from "./Layout";
 
 const sections = [
-  { id: "about", label: "About", offset: -40 },
+  { id: "about", label: "About", offset: -0 },
   { id: "experience", label: "Experience", offset: -60 },
   { id: "skills", label: "Skills", offset: -180 },
   { id: "projects", label: "Projects", offset: -50 },
