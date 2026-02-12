@@ -41,10 +41,6 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
     };
   }, [onClose]);
 
-  const categoryLabel = project.category === "web" ? "Web" : "Mobile";
-  const productionLabel =
-    project.productionType === "collaborative" ? "共同制作" : "自主制作";
-
   // 日付を「YYYY / M / D」形式にフォーマット
   const formatDate = (dateString: string): string => {
     const date = new Date(dateString);
@@ -88,7 +84,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
 
         {/* コンテンツ */}
         <div className="h-full overflow-auto p-6 md:p-10 flex items-center">
-          <div className="flex flex-col gap-8 md:flex-row md:items-center w-full">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10 w-full md:items-center">
             {/* 左側: 画像エリア（1枚目を表示） */}
             {project.images && project.images.length > 0 && (() => {
               const modalImage = project.images[0];
@@ -96,14 +92,14 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                 ? `${basePath}${modalImage}`
                 : modalImage;
               return (
-                <div className="relative w-full max-w-[440px] mx-auto flex-shrink-0 overflow-hidden border border-black bg-black/5 aspect-square md:ml-14 md:w-[560px] md:min-w-[560px] md:h-[560px] md:aspect-auto">
+                <div className="relative w-full max-w-[440px] mx-auto md:max-w-none md:mx-0 overflow-hidden border border-black bg-black/5 aspect-square md:min-h-0">
                   <ProtectedImage
                     wrapperClassName="absolute inset-0"
                     src={imageSrc}
                     alt={project.title}
                     fill
                     className="object-contain"
-                    sizes="(max-width: 768px) 440px, 560px"
+                    sizes="(max-width: 768px) 440px, 50vw"
                   />
                 </div>
               );
@@ -117,22 +113,16 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
               </h2>
 
               {/* 説明文 */}
-              <p className="leading-relaxed text-black/80 md:text-lg whitespace-pre-line">
+              <p className="leading-relaxed text-sm text-black/80 md:text-base whitespace-pre-line">
                 {project.description}
               </p>
 
-              {/* 技術スタック（カテゴリ・制作タグを先頭に表示） */}
+              {/* 技術スタック */}
               <div>
                 <h3 className="mb-4 text-xl font-bold tracking-tight md:text-2xl">
                   Technologies
                 </h3>
                 <div className="flex flex-wrap gap-2">
-                  <span className="bg-black px-4 py-2 text-sm font-medium text-white">
-                    {categoryLabel}
-                  </span>
-                  <span className="bg-black px-4 py-2 text-sm font-bold text-white">
-                    {productionLabel}
-                  </span>
                   {project.technologies.map((tech) => (
                     <span
                       key={tech}
@@ -192,7 +182,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                             clipRule="evenodd"
                           />
                         </svg>
-                        GitHub (Backend)
+                        GitHub(Backend)
                       </a>
                     )}
                     {project.links.githubFrontend && (
@@ -214,7 +204,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                             clipRule="evenodd"
                           />
                         </svg>
-                        GitHub (Frontend)
+                        GitHub(Frontend)
                       </a>
                     )}
                     {project.links.demo && (

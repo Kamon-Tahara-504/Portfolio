@@ -98,12 +98,9 @@ export default function DevelopmentSection({
               </div>
             </div>
 
-            {/* 右カラム: 開発プロセス */}
+            {/* 右カラム */}
             <div className="space-y-8">
               <div>
-                <h3 className="mb-6 text-2xl font-bold tracking-tight md:text-3xl">
-                  開発プロセス
-                </h3>
                 <div className="space-y-6">
                   <div>
                     <h4 className="mb-2 text-lg font-bold md:text-xl">

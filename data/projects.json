@@ -70,7 +70,7 @@
     "slug": "kanban",
     "title": "Kanban",
     "catchphrase": "あなたのワークスペース、あなたの色に。",
-    "description": "「あなたのワークスペース、あなたの色に。」\nタスク管理としても、メモとしても使える。 \n自分好みにカスタマイズ可能なマルチ自己管理アプリケーションです !",
+    "description": "「あなたのワークスペース、あなたの色に。」\nタスク管理としても、メモとしても使える。 \n自分好みにカスタマイズ可能なマルチ管理アプリケーションです !",
     "category": "web",
     "images": [
       "/images/projects/Kanban/Kanban.png"
@@ -82,6 +82,7 @@
     },
     "date": {
       "startDate": "2025-11-24",
+      "endDate": "2025-12-25",
       "deployDate": "2025-11-24"
     }
   },
@@ -90,7 +91,7 @@
     "slug": "nexst-task-mobile",
     "title": "Nexst Task",
     "catchphrase": "開発環境をネクストステージに。",
-    "description": "準備中です",
+    "description": "Web版の開発を通じて、外出先でもタスクを快適に扱える環境の必要性を感じました。\nその実現と、React(Web版)およびFlutterの理解を深めることを目的として開発しました !",
     "category": "mobile",
     "images": [
       "/images/projects/NexstTaskMobile/NexstTaskMobile.png"
@@ -99,14 +100,16 @@
     "links": {
       "github": "https://github.com/Kamon-Tahara-504/Nexst-Task-Mobile"
     },
-    "date": "2024-01-01"
+    "date": {
+      "startDate": "2025-10-18"
+    }
   },
   {
     "id": "project-6",
     "slug": "ojiichan-game",
     "title": "おじいちゃんゲーム",
     "catchphrase": "子供を合体させて おじいちゃんを作ろう！",
-    "description": "準備中です",
+    "description": "子供キャラをくっつけておじいちゃんを目指す、\nブラウザで遊べるパズルゲームです。\n2D 描画に PixiJS、物理演算に Matter.js を使い、\nドラッグや衝突を活かした操作感を実現しました !",
     "category": "web",
     "images": [
       "/images/projects/oldguy/oldguy.png"
@@ -116,14 +119,18 @@
       "github": "https://github.com/Kamon-Tahara-504/oldguy_game",
       "demo": "https://kamon-tahara-504.github.io/oldguy_game/"
     },
-    "date": "2024-01-01"
+    "date": {
+      "startDate": "2025-12-27",
+      "endDate": "2026-01-13",
+      "deployDate": "2026-01-13"
+    }
   },
   {
     "id": "project-7",
     "slug": "fitness-customer-app",
     "title": "フィットネス顧客管理アプリ",
     "catchphrase": "KDG 2年次共同開発プロジェクト",
-    "description": "準備中です",
+    "description": "スクール内でより実務に近い開発を行うために企画した、\nフィットネスジム向けの顧客管理アプリです。\nスクールスタッフを仮想クライアントとし、\n要件ヒアリングから設計・実装、納品までの \n一連のプロセスを経験することを目的としています。",
     "category": "web",
     "productionType": "collaborative",
     "images": [
@@ -135,32 +142,40 @@
       "githubFrontend": "https://github.com/KDGT-DEVELOP-TEAM/Fitness-Gym-MG-frontend",
       "docs": "https://www.canva.com/design/DAG_BP2B4vY/AafdFxcDcRXZKXLOi4w_hQ/view?utm_content=DAG_BP2B4vY&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h18a9c6d7ad"
     },
-    "date": "2024-01-01"
+    "date": {
+      "startDate": "2026-01-13",
+      "endDate": "2026-02-08",
+      "deployDate": "2026-02-06"
+    }
   },
   {
     "id": "project-8",
     "slug": "myshop",
-    "title": "Myshop",
+    "title": "MyShop",
     "catchphrase": "男性層のシェア奪取を目指す !",
-    "description": "準備中です",
+    "description": "2年次後期の開発課題として、男性ユーザーを主なターゲットにしたフリマアプリに取り組みました。\nSpring と Thymeleaf でバックエンドと画面を組み、AWS EC2 でデプロイしています。",
     "category": "web",
     "productionType": "collaborative",
     "images": [
       "/images/projects/MyShop/MyShop.png"
     ],
-    "technologies": ["Java", "Spring", "Thymeleaf", "CSS", "PostgreSQL", "AWS EC2"],
+    "technologies": ["Java", "Spring", "Thymeleaf", "CSS", "AWS EC2"],
     "links": {
       "github": "https://github.com/Java-Second-term-assignment/FleaMarket-App",
       "docs": "https://www.canva.com/design/DAHAuHQCEpw/KS22mRhfMOrePifmJI4Jbw/view?utm_content=DAHAuHQCEpw&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h80f986e7b0"
     },
-    "date": "2024-01-01"
+    "date": {
+      "startDate": "2026-01-13",
+      "endDate": "2026-02-08",
+      "deployDate": "2026-02-06"
+    }
   },
   {
     "id": "project-9",
     "slug": "koko",
     "title": "koko",
     "catchphrase": "メンタル連動型フィットネスアプリ !",
-    "description": "準備中です",
+    "description": "RIZAPテクノロジーズ株式会社様との産学連携プロジェクトとして開発した、メンタル連動型フィットネスアプリです。\n運動習慣がない人でも頑張りすぎずに続けられることをテーマに、日々のコンディションに寄り添う健康促進体験を目指しました。\n全19チームの中から学内審査1位を受賞しました !",
     "category": "mobile",
     "productionType": "collaborative",
     "images": [
@@ -172,7 +187,10 @@
       "githubFrontend": "https://github.com/Tech-Jam-KDG-2026-Winter/Team-11-reactnative-frontend",
       "docs": "https://www.canva.com/design/DAG_xSt56PE/2BWip6MEMN2siDam7NNirQ/view?utm_content=DAG_xSt56PE&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h4e7caa28fa"
     },
-    "date": "2024-01-01"
+    "date": {
+      "startDate": "2026-01-27",
+      "endDate": "2026-02-04"
+    }
   }
 ]
 
