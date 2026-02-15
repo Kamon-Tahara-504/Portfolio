@@ -116,10 +116,32 @@ function SkillCategoryItem({ category, index }: SkillCategoryItemProps) {
   );
 }
 
+// Backend 表示用: Django と Python を「Django / Python」1行にまとめる（タイムラインは別々のまま）
+function getBackendSkillsForDisplay(backend: Skill[]): Skill[] {
+  const hasDjango = backend.some((s) => s.name === "Django");
+  const hasPython = backend.some((s) => s.name === "Python");
+  if (!hasDjango || !hasPython) return backend;
+  const django = backend.find((s) => s.name === "Django");
+  const merged: Skill[] = [];
+  let inserted = false;
+  for (const s of backend) {
+    if (s.name === "Django" || s.name === "Python") {
+      if (!inserted) {
+        merged.push({ name: "Django / Python", level: django?.level ?? 50 });
+        inserted = true;
+      }
+    } else {
+      merged.push(s);
+    }
+  }
+  return merged;
+}
+
 export default function SkillsSection({ skills }: SkillsSectionProps) {
+  const backendForDisplay = getBackendSkillsForDisplay(skills.backend);
   const skillCategories = [
     { name: "Frontend", skills: skills.frontend },
-    { name: "Backend", skills: skills.backend },
+    { name: "Backend", skills: backendForDisplay },
     { name: "Mobile", skills: skills.mobile },
     { name: "Tools", skills: skills.tools },
   ];

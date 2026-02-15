@@ -5,15 +5,21 @@ import ExperienceSection from "@/components/ExperienceSection";
 import SkillsSection from "@/components/SkillsSection";
 import ProjectsSection from "@/components/ProjectsSection";
 import DevelopmentSection from "@/components/DevelopmentSection";
-import { Profile } from "@/types/profile";
+import { HeroData, AboutData, Experience, Skills } from "@/types/profile";
 import { Project } from "@/types/project";
 import { Development } from "@/types/development";
-import profileData from "@/data/profile.json";
+import heroData from "@/data/hero.json";
+import aboutData from "@/data/about.json";
+import experienceData from "@/data/experience.json";
+import skillsData from "@/data/skills.json";
 import projectsData from "@/data/projects.json";
 import developmentData from "@/data/development.json";
 
 export default function Home() {
-  const profile = profileData as Profile;
+  const hero = heroData as HeroData;
+  const about = aboutData as AboutData;
+  const experience = experienceData as Experience[];
+  const skills = skillsData as Skills;
   const projects = projectsData as Project[];
   const development = developmentData as Development;
 
@@ -35,15 +41,15 @@ export default function Home() {
         />
         <div className="relative z-10 select-none">
           <AboutSection
-            name={profile.name}
-            nameEn={profile.nameEn}
-            age={profile.age}
-            title={profile.title}
-            about={profile.about}
-            contact={profile.contact}
+            name={about.name}
+            nameEn={about.nameEn}
+            age={about.age}
+            title={about.title}
+            about={about.about}
+            contact={about.contact}
           />
-          <ExperienceSection experience={profile.experience} />
-          <SkillsSection skills={profile.skills} />
+          <ExperienceSection experience={experience} />
+          <SkillsSection skills={skills} />
           <ProjectsSection projects={projects} />
           <DevelopmentSection development={development} />
           <footer className="border-t border-black mt-auto">
@@ -62,10 +68,10 @@ export default function Home() {
       hero={
         <HeroSection
           image="/images/hero/hero.jpg"
-          title={profile.name}
-          subtitle={profile.title}
-          nameEn={profile.nameEn}
-          developerTitle={profile.developerTitle}
+          title={hero.name}
+          subtitle={hero.title}
+          nameEn={hero.nameEn}
+          developerTitle={hero.developerTitle}
         />
       }
       mainContent={mainContent}

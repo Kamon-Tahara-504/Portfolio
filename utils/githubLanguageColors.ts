@@ -15,11 +15,16 @@ const GITHUB_LANGUAGE_COLORS: Record<string, string> = {
   Java: "#b07219",
   Dart: "#00B4AB",
   Flutter: "#00B4AB", // Dart ベース
+  "Flutter / Dart": "#00B4AB",
+  "Spring / Java": "#6DB33F", // Spring Framework のメインカラー（黄緑）
+  "Django / Python": "#092e20",
   Kotlin: "#A97BFF",
   Swift: "#F05138",
+  "SwiftUI / Swift": "#F05138",
   "React Native": "#61dafb",
   "node.js": "#f7df1e", // JavaScript
   React: "#61dafb",
+  "React.js": "#61dafb",
   "Next.js": "#000000", // 公式ロゴに合わせる（Linguist には未登録のため）
 };
 
