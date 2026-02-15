@@ -40,7 +40,7 @@ export default function HeroSection({
 }: HeroSectionProps) {
   const viewContext = useContext(ViewContext);
 
-  const handleStartClick = () => {
+  const handleLeadClick = () => {
     viewContext?.enterMain();
   };
 
@@ -80,14 +80,17 @@ export default function HeroSection({
           </div>
         )}
 
-        {/* スタートボタン */}
+        {/* LEAD ボタン（ポートフォリオを見る） */}
         <button
           type="button"
-          onClick={handleStartClick}
-          className="mt-10 animate-fade-in-left delay-200 inline-block rounded-full border border-white/30 bg-white/5 px-8 py-4 text-sm font-semibold uppercase tracking-[0.2em] text-white/90 backdrop-blur-sm transition hover:bg-white/15 hover:text-white"
-          aria-label="サイトへ入る"
+          onClick={handleLeadClick}
+          className="mt-10 animate-fade-in-left delay-200 group inline-flex items-center gap-3 rounded-full border-2 border-white/50 px-10 py-4 text-sm font-bold uppercase tracking-[0.25em] text-white bg-gradient-to-r from-white/20 via-white/25 to-white/20 backdrop-blur-md shadow-[0_0_24px_rgba(255,255,255,0.15),inset_0_1px_0_rgba(255,255,255,0.3)] transition-all duration-300 hover:scale-105 hover:border-white/70 hover:from-white/30 hover:via-white/35 hover:to-white/30 hover:shadow-[0_0_36px_rgba(255,255,255,0.35),0_0_60px_rgba(255,255,255,0.1),inset_0_1px_0_rgba(255,255,255,0.5)] hover:text-white active:scale-[1.02]"
+          aria-label="ポートフォリオを見る"
         >
-          START
+          <span>LEAD</span>
+          <svg className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+            <path d="M5 12h14M12 5l7 7-7 7" />
+          </svg>
         </button>
       </div>
     </section>

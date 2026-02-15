@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useContext } from "react";
 import ProtectedImage from "@/components/ProtectedImage";
+import { ViewContext } from "./Layout";
 import Link from "next/link";
 import { About, Contact } from "@/types/profile";
 import EngineerExperienceCard from "./EngineerExperienceCard";
@@ -29,6 +30,7 @@ export default function AboutSection({
   about,
   contact,
 }: AboutSectionProps) {
+  const viewContext = useContext(ViewContext);
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
   const [showMoreInfo, setShowMoreInfo] = useState(false);
 
@@ -50,6 +52,21 @@ export default function AboutSection({
       id="about"
       className="relative border-b border-black pt-8 pb-24 md:pt-20 md:pb-56"
     >
+      {viewContext?.enterHero && (
+        <div className="absolute top-4 left-6 z-10 md:top-8 md:left-8">
+          <button
+            type="button"
+            onClick={viewContext.enterHero}
+            className="inline-flex items-center gap-1.5 text-sm text-black/80 hover:text-black hover:underline cursor-pointer"
+            aria-label="トップに戻る"
+          >
+            <svg className="h-3.5 w-3.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+              <path d="M19 12H5M12 19l-7-7 7-7" />
+            </svg>
+            トップに戻る
+          </button>
+        </div>
+      )}
       <div className="mx-auto max-w-7-5xl px-6">
         <h2
           ref={titleRef.ref as React.RefObject<HTMLHeadingElement>}
