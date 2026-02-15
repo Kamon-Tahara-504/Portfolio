@@ -45,6 +45,22 @@ export interface Contact {
   github?: string;
 }
 
+export interface HeroData {
+  name: string;
+  nameEn?: string;
+  title: string;
+  developerTitle?: string;
+}
+
+export interface AboutData {
+  name: string;
+  nameEn?: string;
+  age?: number | string;
+  title: string;
+  about: About;
+  contact?: Contact;
+}
+
 export interface Profile {
   name: string;
   nameEn?: string;

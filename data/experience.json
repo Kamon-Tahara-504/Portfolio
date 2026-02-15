@@ -1,0 +1,30 @@
+[
+  {
+    "id": "exp-1",
+    "title": "プログラミングスクール受講",
+    "company": "NcodeLabo",
+    "period": "2022年5月",
+    "description": "プログラミングを学び始める"
+  },
+  {
+    "id": "exp-2",
+    "title": "卒業",
+    "company": "江戸川区東葛西中学校",
+    "period": "2024年3月",
+    "description": "中学校を卒業"
+  },
+  {
+    "id": "exp-3",
+    "title": "入学",
+    "company": "KADOKAWAドワンゴ情報工科学院 高等部 東京校 IT総合科\n学校法人 角川ドワンゴ学園 S高等学校 普通科",
+    "period": "2024年4月",
+    "description": "エンジニアとして働きたいと思い入学を決める"
+  },
+  {
+    "id": "exp-4",
+    "title": "現在",
+    "company": "WEBアプリケーションを 複数作成\n Mobileアプリケーションを 1つリリース",
+    "period": "2025年12月",
+    "description": "エンジニアリングを学びながら、Web & Mobileアプリの開発に取り組んでいます"
+  }
+]
