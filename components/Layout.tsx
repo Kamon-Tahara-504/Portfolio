@@ -18,6 +18,7 @@ export type ViewMode = "hero" | "main";
 export const ViewContext = createContext<{
   view: ViewMode;
   enterMain: () => void;
+  enterHero: () => void;
 } | null>(null);
 
 const DARKEN_DURATION_MS = 400;
@@ -39,6 +40,11 @@ export default function Layout({ children, hero, mainContent }: LayoutProps) {
     if (transitionPhase !== null) return;
     setTransitionPhase("out");
   }, [transitionPhase]);
+
+  const enterHero = useCallback(() => {
+    setView("hero");
+    if (typeof window !== "undefined") window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
 
   // 暗転 0→1: phase "out" の次のフレームでオーバーレイを 1 にする
   useEffect(() => {
@@ -68,7 +74,7 @@ export default function Layout({ children, hero, mainContent }: LayoutProps) {
 
   const useViewSwitch = hero != null && mainContent != null;
 
-  const viewContextValue = useViewSwitch ? { view, enterMain } : null;
+  const viewContextValue = useViewSwitch ? { view, enterMain, enterHero } : null;
 
   const overlayOpacity =
     transitionPhase === "out" ? (overlayVisible ? 1 : 0) : transitionPhase === "in" ? 0 : 0;
