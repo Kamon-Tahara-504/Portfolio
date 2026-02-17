@@ -225,8 +225,14 @@ export default function Navigation() {
   const isPreviousDisabled = previousSection === null;
   const isNextDisabled = nextSection === null;
 
+  const showNav = viewContext === null || view === "main";
+
   return (
-    <>
+    <div
+      className={`transition-opacity duration-[700ms] ease-out ${
+        showNav ? "opacity-100" : "opacity-0 pointer-events-none"
+      }`}
+    >
     <nav className="fixed right-8 top-1/2 z-50 -translate-y-1/2 hidden lg:block">
       <div className="flex flex-col items-center gap-4">
         {/* 上矢印ボタン */}
@@ -309,12 +315,12 @@ export default function Navigation() {
       </div>
     </nav>
 
-    {/* モバイル用ボトムナビ（スマホのみ表示） */}
-    <nav
-      className="fixed bottom-0 left-0 right-0 z-50 lg:hidden border-t border-black/10 bg-white/95 backdrop-blur-sm pb-[env(safe-area-inset-bottom)]"
-      aria-label="セクションへ移動"
-    >
-      <div className="flex items-stretch justify-around">
+    {/* モバイル用: 浮いたリキッドグラス風バー */}
+    <div className="fixed bottom-0 left-0 right-0 z-50 lg:hidden px-4 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-2 flex justify-center">
+      <nav
+        className="mobile-nav-liquid-glass flex items-stretch justify-around w-full max-w-sm min-h-[4rem] py-2 rounded-full bg-gradient-to-b from-white/30 to-blue-500/20 backdrop-blur-xl border border-white/20"
+        aria-label="セクションへ移動"
+      >
         {mobileSections.map((section) => {
           const isActive = effectiveActiveSection === section.id;
           const label =
@@ -328,7 +334,7 @@ export default function Navigation() {
               key={section.id}
               onClick={() => scrollToSection(section.id)}
               className={`flex flex-col items-center justify-center gap-0.5 flex-1 min-w-0 py-2.5 px-1 transition-colors ${
-                isActive ? "text-black" : "text-black/60"
+                isActive ? "text-white" : "text-white/70"
               }`}
               aria-label={`${section.label}へスクロール`}
               aria-current={isActive ? "true" : undefined}
@@ -344,9 +350,9 @@ export default function Navigation() {
             </button>
           );
         })}
-      </div>
-    </nav>
-    </>
+      </nav>
+    </div>
+    </div>
   );
 }
 

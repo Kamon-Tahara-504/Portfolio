@@ -365,3 +365,11 @@ body::-webkit-scrollbar-thumb:hover {
   scrollbar-width: thin;
   scrollbar-color: black rgba(0, 0, 0, 0.05);
 }
+
+/* モバイルナビ: リキッドグラス風の浮遊感シャドウ */
+.mobile-nav-liquid-glass {
+  box-shadow:
+    0 8px 32px -8px rgba(0, 0, 0, 0.18),
+    0 4px 12px -4px rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(255, 255, 255, 0.08) inset;
+}
