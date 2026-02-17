@@ -42,6 +42,7 @@ export default function AboutSection({
   const titleRef = useFadeInOnScroll({ delay: 0 });
   const imageRef = useFadeInOnScroll({ delay: 100 });
   const contentRef = useFadeInOnScroll({ delay: 200 });
+  const backToTopRef = useFadeInOnScroll({ delay: 0 });
 
   const defaultImageSrc =
     about.image.startsWith("/") ? `${basePath}${about.image}` : about.image;
@@ -53,7 +54,10 @@ export default function AboutSection({
       className="relative border-b border-black pt-8 pb-24 md:pt-20 md:pb-56"
     >
       {viewContext?.enterHero && (
-        <div className="absolute top-4 left-6 z-10 md:top-8 md:left-8">
+        <div
+          ref={backToTopRef.ref as React.RefObject<HTMLDivElement>}
+          className={`absolute top-4 left-6 z-10 md:top-8 md:left-8 fade-in-from-left section-title-blink ${backToTopRef.isVisible ? "visible" : ""}`}
+        >
           <button
             type="button"
             onClick={viewContext.enterHero}
