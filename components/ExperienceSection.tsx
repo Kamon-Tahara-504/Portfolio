@@ -25,27 +25,27 @@ function ExperienceItem({ exp, index }: ExperienceItemProps) {
   return (
     <div
       ref={expRef.ref as React.RefObject<HTMLDivElement>}
-      className={`relative pl-16 md:pl-20 fade-in-on-scroll ${expRef.isVisible ? 'visible' : ''}`}
+      className={`relative pl-12 md:pl-20 fade-in-on-scroll ${expRef.isVisible ? 'visible' : ''}`}
     >
       {/* タイムラインのドット */}
-      <div className="absolute left-[25px] top-4 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-black md:left-[33px]" />
-      <div className="space-y-3">
-        <div className="mb-4">
-          <div className="mb-2 flex flex-col gap-1 md:flex-row md:items-baseline md:gap-4">
-            <h3 className="text-2xl font-bold tracking-tight md:text-3xl">
+      <div className="absolute left-6 top-4 h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-black md:left-8 md:h-3 md:w-3" />
+      <div className="space-y-2 md:space-y-3">
+        <div className="mb-3 md:mb-4">
+          <div className="mb-1 flex flex-col gap-0.5 md:mb-2 md:flex-row md:items-baseline md:gap-4">
+            <h3 className="text-xl font-bold tracking-tight md:text-3xl">
               {exp.title}
             </h3>
-            <span className="text-sm font-semibold text-black/60 md:text-base">
+            <span className="text-xs font-semibold text-black/60 md:text-base">
               {periodDisplay}
             </span>
           </div>
-          <div className="text-lg font-semibold text-black/70 md:text-xl">
+          <div className="text-base font-semibold text-black/70 md:text-xl">
             {exp.company.split('\n').map((line, index) => (
               <p key={index}>{line}</p>
             ))}
           </div>
         </div>
-        <p className="font-semibold leading-relaxed text-black/80 md:text-lg">
+        <p className="text-sm font-semibold leading-relaxed text-black/80 md:text-lg">
           {exp.description}
         </p>
       </div>
@@ -67,14 +67,14 @@ export default function ExperienceSection({
       <div className="relative mx-auto max-w-3-5xl px-6">
         <h2
           ref={titleRef.ref as React.RefObject<HTMLHeadingElement>}
-          className={`mb-12 text-center text-4xl font-bold tracking-tight md:text-5xl fade-in-from-left section-title-blink ${titleRef.isVisible ? "visible" : ""}`}
+          className={`mb-10 text-center text-3xl font-bold tracking-tight md:mb-12 md:text-5xl fade-in-from-left section-title-blink ${titleRef.isVisible ? "visible" : ""}`}
         >
           Experience
         </h2>
         <div className="relative">
           {/* タイムラインの縦線 */}
           <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-black/30 md:left-8" />
-          <div className="space-y-16">
+          <div className="space-y-12 md:space-y-16">
             {experience.map((exp, index) => (
               <ExperienceItem key={exp.id} exp={exp} index={index} />
             ))}

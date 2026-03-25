@@ -17,15 +17,17 @@ function SkillsTypewriterCaption() {
     showCursor: true,
   });
   return (
-    <p className="mb-4 text-center text-sm font-semibold text-black/70 md:text-base" aria-live="polite">
-      {displayText}
-      {showCursor && (
-        <span
-          className="typewriter-cursor ml-0.5 inline-block h-[1em] w-0.5 align-middle bg-black/70 animate-cursor-blink"
-          aria-hidden
-        />
-      )}
-    </p>
+    <div className="mb-4 flex justify-center px-4 md:px-0">
+      <p className="inline-block text-center text-[10px] font-semibold text-black/70 whitespace-nowrap md:text-base" aria-live="polite">
+        {displayText}
+        {showCursor && (
+          <span
+            className="typewriter-cursor ml-0.5 inline-block h-[1em] w-0.5 align-middle bg-black/70 animate-cursor-blink"
+            aria-hidden
+          />
+        )}
+      </p>
+    </div>
   );
 }
 
