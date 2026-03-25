@@ -58,16 +58,17 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
   };
 
   const handleTouchMove = (e: React.TouchEvent) => {
-    e.preventDefault();
+    // Passive listener error を防ぐため、ここでは preventDefault しない
+    // body { overflow: hidden } で背景スクロールは制御済み
   };
 
   const handleWheel = (e: React.WheelEvent) => {
-    e.preventDefault();
+    // 同上
   };
 
   return (
     <div
-      className={`fixed inset-0 z-[100] flex items-center justify-center bg-black/70 backdrop-blur-md p-4 touch-none transition-opacity duration-300 ease-out ${
+      className={`fixed inset-0 z-[100] flex items-center justify-center bg-black/70 backdrop-blur-md p-4 transition-opacity duration-300 ease-out ${
         isOpen ? "opacity-100" : "opacity-0"
       }`}
       onClick={onClose}
@@ -99,7 +100,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                 ? `${basePath}${modalImage}`
                 : modalImage;
               return (
-                <div className="relative w-full max-w-[440px] mx-auto md:max-w-none md:mx-0 overflow-hidden aspect-[4/5] md:aspect-square">
+                <div className="relative w-full max-w-[440px] mx-auto md:max-w-none md:mx-0 overflow-hidden aspect-[4/5] md:aspect-square bg-white">
                   <ProtectedImage
                     wrapperClassName="absolute inset-0"
                     src={imageSrc}
