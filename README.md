@@ -2,6 +2,10 @@
 
 **Live Site**: [https://kamon-tahara-504.github.io/Portfolio/](https://kamon-tahara-504.github.io/Portfolio/)
 
+> 本プロジェクトは趣味のポートフォリオサイトのため、**GitHub の Issue やトピックブランチを積極的に使う運用はしていません**。<br>
+> 変更は主に既定ブランチへのコミットで積み上げています。<br>
+> チーム開発向けのブランチ戦略や Issue 駆動の履歴は期待しないでください。
+
 ## 技術スタック
 
 ### フレームワーク・ライブラリ

@@ -17,7 +17,10 @@ export default function DevelopmentSection({
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    return `${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日`;
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, "0");
+    const d = String(date.getDate()).padStart(2, "0");
+    return `${y}/${m}/${d}`;
   };
 
   return (
@@ -78,21 +81,23 @@ export default function DevelopmentSection({
                   </svg>
                   {development.repository.label}
                 </Link>
-                <div className="space-y-2 text-sm font-semibold text-black/70 md:text-base">
-                  <div className="flex items-center gap-2">
-                    <span>
-                      <span className="font-bold">開発期間</span>:
+                <div className="space-y-1.5 text-xs font-semibold text-black/70 md:text-sm">
+                  <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+                    <span className="shrink-0 whitespace-nowrap font-bold">
+                      開発期間:
                     </span>
-                    <span>
+                    <span className="whitespace-nowrap tabular-nums">
                       {formatDate(development.dates.startDate)} 〜{" "}
                       {formatDate(development.dates.endDate)}
                     </span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <span>
-                      <span className="font-bold">最終更新日</span>:
+                  <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+                    <span className="shrink-0 whitespace-nowrap font-bold">
+                      最終更新日:
                     </span>
-                    <span>{formatDate(development.dates.lastUpdated)}</span>
+                    <span className="whitespace-nowrap tabular-nums">
+                      {formatDate(development.dates.lastUpdated)}
+                    </span>
                   </div>
                 </div>
               </div>
