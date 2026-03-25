@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import Image from "next/image";
 import ProtectedImage from "@/components/ProtectedImage";
 import { Project } from "@/types/project";
+import { ViewContext } from "./Layout";
 
 // basePathの定義（開発環境では空、本番環境では'/Portfolio'）
 const basePath = process.env.NODE_ENV === 'production' ? '/Portfolio' : '';
@@ -15,11 +16,17 @@ interface ProjectModalProps {
 
 export default function ProjectModal({ project, onClose }: ProjectModalProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const viewContext = useContext(ViewContext);
 
   useEffect(() => {
     // マウント時にアニメーションをトリガー
     setIsOpen(true);
-  }, []);
+    viewContext?.setIsModalOpen(true);
+
+    return () => {
+      viewContext?.setIsModalOpen(false);
+    };
+  }, [viewContext]);
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -60,7 +67,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
 
   return (
     <div
-      className={`fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-md p-4 touch-none transition-opacity duration-300 ease-out ${
+      className={`fixed inset-0 z-[100] flex items-center justify-center bg-black/70 backdrop-blur-md p-4 touch-none transition-opacity duration-300 ease-out ${
         isOpen ? "opacity-100" : "opacity-0"
       }`}
       onClick={onClose}
@@ -68,7 +75,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
       onWheel={handleWheel}
     >
       <div
-        className={`relative w-full max-w-[82vw] h-[85vh] max-h-[85vh] bg-white border border-black transition-all duration-300 ease-out select-none ${
+        className={`relative w-full max-w-[95vw] md:max-w-[82vw] h-[92vh] md:h-[85vh] max-h-[92vh] md:max-h-[85vh] bg-white border border-black transition-all duration-300 ease-out select-none ${
           isOpen ? "opacity-100 scale-100" : "opacity-0 scale-95"
         }`}
         onClick={(e) => e.stopPropagation()}
@@ -83,8 +90,8 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
         </button>
 
         {/* コンテンツ */}
-        <div className="h-full overflow-auto p-6 md:p-10 flex items-center">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10 w-full md:items-center">
+        <div className="h-full overflow-y-auto p-4 md:p-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10 w-full items-start md:items-center min-h-full py-4">
             {/* 左側: 画像エリア（1枚目を表示） */}
             {project.images && project.images.length > 0 && (() => {
               const modalImage = project.images[0];
@@ -92,14 +99,14 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                 ? `${basePath}${modalImage}`
                 : modalImage;
               return (
-                <div className="relative w-full max-w-[440px] mx-auto md:max-w-none md:mx-0 overflow-hidden border border-black bg-black/5 aspect-square md:min-h-0">
+                <div className="relative w-full max-w-[440px] mx-auto md:max-w-none md:mx-0 overflow-hidden aspect-[4/5] md:aspect-square">
                   <ProtectedImage
                     wrapperClassName="absolute inset-0"
                     src={imageSrc}
                     alt={project.title}
                     fill
                     className="object-contain"
-                    sizes="(max-width: 768px) 440px, 50vw"
+                    sizes="(max-width: 768px) 95vw, 50vw"
                   />
                 </div>
               );

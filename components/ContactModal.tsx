@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import emailjs from "@emailjs/browser";
+import { ViewContext } from "./Layout";
 
 interface ContactModalProps {
   onClose: () => void;
@@ -23,6 +24,7 @@ interface FormErrors {
 
 export default function ContactModal({ onClose }: ContactModalProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const viewContext = useContext(ViewContext);
   const [formData, setFormData] = useState<FormData>({
     name: "",
     email: "",
@@ -36,7 +38,12 @@ export default function ContactModal({ onClose }: ContactModalProps) {
   useEffect(() => {
     // マウント時にアニメーションをトリガー
     setIsOpen(true);
-  }, []);
+    viewContext?.setIsModalOpen(true);
+
+    return () => {
+      viewContext?.setIsModalOpen(false);
+    };
+  }, [viewContext]);
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -159,7 +166,7 @@ export default function ContactModal({ onClose }: ContactModalProps) {
 
   return (
     <div
-      className={`fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-md p-4 touch-none transition-opacity duration-300 ease-out ${
+      className={`fixed inset-0 z-[100] flex items-center justify-center bg-black/70 backdrop-blur-md p-4 touch-none transition-opacity duration-300 ease-out ${
         isOpen ? "opacity-100" : "opacity-0"
       }`}
       onClick={onClose}
@@ -167,7 +174,7 @@ export default function ContactModal({ onClose }: ContactModalProps) {
       onWheel={handleWheel}
     >
       <div
-        className={`relative max-h-[90vh] w-full max-w-2xl overflow-y-auto bg-white border border-black transition-all duration-300 ease-out ${
+        className={`relative max-h-[92vh] w-full max-w-2xl overflow-y-auto bg-white border border-black transition-all duration-300 ease-out ${
           isOpen ? "opacity-100 scale-100" : "opacity-0 scale-95"
         }`}
         onClick={(e) => e.stopPropagation()}

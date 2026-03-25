@@ -18,6 +18,8 @@ export const ViewContext = createContext<{
   view: ViewMode;
   enterMain: () => void;
   enterHero: () => void;
+  isModalOpen: boolean;
+  setIsModalOpen: (open: boolean) => void;
 } | null>(null);
 
 const DARKEN_DURATION_MS = 400;
@@ -34,6 +36,7 @@ export default function Layout({ children, hero, mainContent }: LayoutProps) {
     null
   );
   const [overlayVisible, setOverlayVisible] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const enterMain = useCallback(() => {
     if (transitionPhase !== null) return;
@@ -73,7 +76,9 @@ export default function Layout({ children, hero, mainContent }: LayoutProps) {
 
   const useViewSwitch = hero != null && mainContent != null;
 
-  const viewContextValue = useViewSwitch ? { view, enterMain, enterHero } : null;
+  const viewContextValue = useViewSwitch 
+    ? { view, enterMain, enterHero, isModalOpen, setIsModalOpen } 
+    : { view: "main" as ViewMode, enterMain: () => {}, enterHero: () => {}, isModalOpen, setIsModalOpen };
 
   const overlayOpacity =
     transitionPhase === "out" ? (overlayVisible ? 1 : 0) : transitionPhase === "in" ? 0 : 0;

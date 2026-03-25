@@ -155,7 +155,7 @@ export default function Navigation() {
     }
   };
 
-  const showNav = viewContext === null || view === "main";
+  const showNav = (viewContext === null || view === "main") && !viewContext?.isModalOpen;
 
   return (
     <div
