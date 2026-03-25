@@ -21,7 +21,7 @@ function HeroDeveloperTitle({ text }: { text: string }) {
   });
   return (
     <div className="mb-4 animate-fade-in-left delay-200" aria-live="polite">
-      <p className="text-lg font-medium tracking-wide md:text-xl lg:text-2xl text-white/90 drop-shadow-lg inline">
+      <p className="text-lg font-semibold tracking-wide md:text-xl lg:text-2xl text-white/90 drop-shadow-lg inline">
         {displayText}
         {showCursor && (
           <span className="typewriter-cursor ml-0.5 inline-block w-0.5 h-[1em] align-middle bg-white/90 animate-cursor-blink" aria-hidden />
@@ -74,7 +74,7 @@ export default function HeroSection({
         {/* 既存のsubtitle（フォールバック） */}
         {!developerTitle && subtitle && (
           <div className="mb-4 animate-fade-in-left delay-200">
-            <p className="text-lg font-medium tracking-wide md:text-xl lg:text-2xl text-white/90 drop-shadow-lg">
+            <p className="text-lg font-semibold tracking-wide md:text-xl lg:text-2xl text-white/90 drop-shadow-lg">
               {subtitle}
             </p>
           </div>

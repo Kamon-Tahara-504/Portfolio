@@ -55,7 +55,7 @@ export default function AboutSection({
           <button
             type="button"
             onClick={viewContext.enterHero}
-            className="inline-flex items-center gap-1.5 text-sm text-black/80 hover:text-black hover:underline cursor-pointer"
+            className="inline-flex items-center gap-1.5 text-sm font-semibold text-black/80 hover:text-black hover:underline cursor-pointer"
             aria-label="トップに戻る"
           >
             <svg className="h-3.5 w-3.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
@@ -100,7 +100,7 @@ export default function AboutSection({
                   {name}
                 </h3>
                 {age && (
-                  <span className="text-lg font-medium text-black/70 md:text-xl whitespace-nowrap">
+                  <span className="text-lg font-semibold text-black/70 md:text-xl whitespace-nowrap">
                     {age}歳
                   </span>
                 )}
@@ -113,7 +113,7 @@ export default function AboutSection({
                   {nameEnParts.map((part, index) => (
                     <span
                       key={index}
-                      className="text-sm font-medium tracking-tight text-black/60 md:text-base"
+                      className="text-sm font-semibold tracking-tight text-black/60 md:text-base"
                     >
                       {part}
                     </span>
@@ -123,7 +123,7 @@ export default function AboutSection({
             </div>
             <div>
               {/* 自己紹介文 */}
-              <div className="max-w-prose space-y-4 text-xs leading-[1.75] text-black/80 md:text-sm md:leading-[1.8]">
+              <div className="max-w-prose space-y-4 text-xs font-semibold leading-[1.75] text-black/80 md:text-sm md:leading-[1.8]">
                 {about.description.split("\n").map((line, index) => (
                   <p key={index} className="break-keep break-words">
                     {line}
@@ -133,7 +133,7 @@ export default function AboutSection({
 
               {/* 連絡先情報（TELまで） */}
               {contact && (
-                <div className="space-y-2 pt-4 text-sm text-black/70 md:text-base">
+                <div className="space-y-2 pt-4 text-sm font-semibold text-black/70 md:text-base">
                   {about.birthDate && (
                     <div className="flex items-center gap-2">
                       <span><span className="font-bold">生年月日</span>:</span>
@@ -186,7 +186,7 @@ export default function AboutSection({
                     href={contact.github}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 rounded-md border border-black bg-black px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-black/90 md:text-base"
+                    className="inline-flex items-center gap-2 rounded-md border border-black bg-black px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-black/90 md:text-base"
                   >
                     <svg
                       className="h-5 w-5"
@@ -206,7 +206,7 @@ export default function AboutSection({
                 {contact && (
                   <button
                     onClick={() => setIsContactModalOpen(true)}
-                    className="inline-flex items-center gap-2 rounded-md border border-black bg-white px-6 py-3 text-sm font-medium text-black transition-colors hover:bg-black/5 md:text-base"
+                    className="inline-flex items-center gap-2 rounded-md border border-black bg-white px-6 py-3 text-sm font-semibold text-black transition-colors hover:bg-black/5 md:text-base"
                   >
                     <svg
                       className="h-5 w-5"

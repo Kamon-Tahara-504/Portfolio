@@ -22,7 +22,7 @@ export default function TerminalBlock({ lines = DEFAULT_LINES, className = "" }:
       className={`fade-in-on-scroll ${ref.isVisible ? "visible" : ""} ${className}`}
     >
       <div
-        className="rounded-xl border border-black bg-[#1e1e1e] px-4 py-3 font-mono text-sm shadow-lg md:text-base"
+        className="rounded-xl border border-black bg-[#1e1e1e] px-4 py-3 font-mono text-sm font-semibold shadow-lg md:text-base"
         role="img"
         aria-label="ターミナル: npm run dev の実行例"
       >
@@ -30,7 +30,7 @@ export default function TerminalBlock({ lines = DEFAULT_LINES, className = "" }:
           <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f56]" />
           <span className="h-2.5 w-2.5 rounded-full bg-[#ffbd2e]" />
           <span className="h-2.5 w-2.5 rounded-full bg-[#27c93f]" />
-          <span className="ml-2 text-xs text-white/50">zsh</span>
+          <span className="ml-2 text-xs font-semibold text-white/50">zsh</span>
         </div>
         <div className="space-y-1.5">
           {lines.map((line, index) => (

@@ -35,17 +35,17 @@ function ExperienceItem({ exp, index }: ExperienceItemProps) {
             <h3 className="text-2xl font-bold tracking-tight md:text-3xl">
               {exp.title}
             </h3>
-            <span className="text-sm font-medium text-black/60 md:text-base">
+            <span className="text-sm font-semibold text-black/60 md:text-base">
               {periodDisplay}
             </span>
           </div>
-          <div className="text-lg font-medium text-black/70 md:text-xl">
+          <div className="text-lg font-semibold text-black/70 md:text-xl">
             {exp.company.split('\n').map((line, index) => (
               <p key={index}>{line}</p>
             ))}
           </div>
         </div>
-        <p className="leading-relaxed text-black/80 md:text-lg">
+        <p className="font-semibold leading-relaxed text-black/80 md:text-lg">
           {exp.description}
         </p>
       </div>

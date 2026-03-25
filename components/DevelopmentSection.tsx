@@ -48,7 +48,7 @@ export default function DevelopmentSection({
                   {development.techStack.map((tech, index) => (
                     <li
                       key={index}
-                      className="flex items-center rounded-lg border border-black px-4 py-3 text-base font-medium md:text-lg"
+                      className="flex items-center rounded-lg border border-black px-4 py-3 text-base font-semibold md:text-lg"
                     >
                       {tech}
                     </li>
@@ -62,7 +62,7 @@ export default function DevelopmentSection({
                   href={development.repository.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex shrink-0 items-center gap-2 rounded-md border border-black bg-black px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-black/90 md:text-base"
+                  className="inline-flex shrink-0 items-center gap-2 rounded-md border border-black bg-black px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-black/90 md:text-base"
                 >
                   <svg
                     className="h-5 w-5"
@@ -78,7 +78,7 @@ export default function DevelopmentSection({
                   </svg>
                   {development.repository.label}
                 </Link>
-                <div className="space-y-2 text-sm text-black/70 md:text-base">
+                <div className="space-y-2 text-sm font-semibold text-black/70 md:text-base">
                   <div className="flex items-center gap-2">
                     <span>
                       <span className="font-bold">開発期間</span>:
@@ -106,7 +106,7 @@ export default function DevelopmentSection({
                     <h4 className="mb-2 text-lg font-bold md:text-xl">
                       デザインの考え方
                     </h4>
-                    <p className="leading-relaxed text-black/80 md:text-lg">
+                    <p className="font-normal leading-relaxed text-black/80 md:text-lg">
                       {development.developmentProcess.designPhilosophy}
                     </p>
                   </div>
@@ -114,7 +114,7 @@ export default function DevelopmentSection({
                     <h4 className="mb-2 text-lg font-bold md:text-xl">
                       実装で工夫した点
                     </h4>
-                    <p className="leading-relaxed text-black/80 md:text-lg">
+                    <p className="font-normal leading-relaxed text-black/80 md:text-lg">
                       {development.developmentProcess.implementationHighlights}
                     </p>
                   </div>
@@ -122,7 +122,7 @@ export default function DevelopmentSection({
                     <h4 className="mb-2 text-lg font-bold md:text-xl">
                       学んだこと
                     </h4>
-                    <p className="leading-relaxed text-black/80 md:text-lg">
+                    <p className="font-normal leading-relaxed text-black/80 md:text-lg">
                       {development.developmentProcess.learnings}
                     </p>
                   </div>
@@ -130,7 +130,7 @@ export default function DevelopmentSection({
                     <h4 className="mb-2 text-lg font-bold md:text-xl">
                       今後の改善点
                     </h4>
-                    <p className="leading-relaxed text-black/80 md:text-lg">
+                    <p className="font-normal leading-relaxed text-black/80 md:text-lg">
                       {development.developmentProcess.futureImprovements}
                     </p>
                   </div>

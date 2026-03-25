@@ -152,7 +152,7 @@
     "id": "project-8",
     "slug": "myshop",
     "title": "MyShop",
-    "catchphrase": "男性層のシェア奪取を目指す !",
+    "catchphrase": "男性層のシェア奪取を目指す！",
     "description": "2年次後期の開発課題として、男性ユーザーを主なターゲットにしたフリマアプリに取り組みました。\nSpring と Thymeleaf でバックエンドと画面を組み、AWS EC2 でデプロイしています。",
     "category": "web",
     "productionType": "collaborative",

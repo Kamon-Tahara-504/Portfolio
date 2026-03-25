@@ -113,7 +113,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
               </h2>
 
               {/* 説明文 */}
-              <p className="leading-relaxed text-sm text-black/80 md:text-base whitespace-pre-line">
+              <p className="font-normal leading-relaxed text-sm text-black/80 md:text-base whitespace-pre-line">
                 {project.description}
               </p>
 
@@ -126,7 +126,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                   {project.technologies.map((tech) => (
                     <span
                       key={tech}
-                      className="border border-black bg-white px-4 py-2 text-sm font-medium text-black"
+                      className="border border-black bg-white px-4 py-2 text-sm font-semibold text-black"
                     >
                       {tech}
                     </span>
@@ -140,16 +140,16 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                   <h3 className="mb-4 text-xl font-bold tracking-tight md:text-2xl">
                     URL
                   </h3>
-                  <div className="flex flex-wrap gap-4">
+                  <div className="flex flex-wrap gap-2">
                     {project.links.github && (
                       <a
                         href={project.links.github}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 rounded-md border border-black bg-black px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-black/90 md:text-base"
+                        className="inline-flex items-center gap-1.5 border border-black bg-black px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-black/90"
                       >
                         <svg
-                          className="h-5 w-5"
+                          className="h-4 w-4 shrink-0"
                           fill="currentColor"
                           viewBox="0 0 24 24"
                           aria-hidden="true"
@@ -168,10 +168,10 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                         href={project.links.githubBackend}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 rounded-md border border-black bg-black px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-black/90 md:text-base"
+                        className="inline-flex items-center gap-1.5 border border-black bg-black px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-black/90"
                       >
                         <svg
-                          className="h-5 w-5"
+                          className="h-4 w-4 shrink-0"
                           fill="currentColor"
                           viewBox="0 0 24 24"
                           aria-hidden="true"
@@ -190,10 +190,10 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                         href={project.links.githubFrontend}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 rounded-md border border-black bg-black px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-black/90 md:text-base"
+                        className="inline-flex items-center gap-1.5 border border-black bg-black px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-black/90"
                       >
                         <svg
-                          className="h-5 w-5"
+                          className="h-4 w-4 shrink-0"
                           fill="currentColor"
                           viewBox="0 0 24 24"
                           aria-hidden="true"
@@ -212,10 +212,10 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                         href={project.links.demo}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 rounded-md border border-black bg-white px-6 py-3 text-sm font-medium text-black transition-colors hover:bg-black/5 md:text-base"
+                        className="inline-flex items-center gap-1.5 border border-black bg-white px-4 py-2 text-sm font-semibold text-black transition-colors hover:bg-black/5"
                       >
                         <svg
-                          className="h-5 w-5"
+                          className="h-4 w-4 shrink-0"
                           fill="none"
                           stroke="currentColor"
                           viewBox="0 0 24 24"
@@ -236,15 +236,15 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                         href={project.links.appStore}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex rounded-md bg-gradient-to-r from-blue-500 to-blue-600 p-[2px] transition-all hover:from-blue-600 hover:to-blue-700"
+                        className="inline-flex bg-gradient-to-r from-blue-500 to-blue-600 p-px transition-all hover:from-blue-600 hover:to-blue-700"
                       >
-                        <span className="inline-flex items-center gap-2 rounded-md bg-white px-6 py-3 text-sm font-medium text-gray-900 md:text-base">
+                        <span className="inline-flex items-center gap-1.5 bg-white px-4 py-2 text-sm font-semibold text-gray-900">
                           <Image
                             src={`${basePath}/images/projects/appstore.png`}
                             alt="App Store"
-                            width={20}
-                            height={20}
-                            className="h-5 w-5 rounded-sm"
+                            width={16}
+                            height={16}
+                            className="h-4 w-4 shrink-0 rounded-sm"
                           />
                           Apple Store
                         </span>
@@ -255,11 +255,11 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                         href={project.links.docs}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 rounded-lg border-2 border-yellow-400 bg-white px-6 py-3 text-sm font-bold text-black shadow-[inset_0_1px_0_0_rgba(255,255,255,0.9),0_2px_4px_rgba(0,0,0,0.06)] ring-1 ring-yellow-400/60 md:text-base"
+                        className="inline-flex items-center gap-1.5 border border-black bg-white px-4 py-2 text-sm font-semibold text-black transition-colors hover:bg-black/5"
                       >
-                        <span className="rounded border border-yellow-300 bg-yellow-100 p-1 ring-1 ring-yellow-400/70">
+                        <span className="flex shrink-0 items-center justify-center border border-black/20 bg-black/5 p-0.5">
                           <svg
-                            className="h-4 w-4 text-yellow-900"
+                            className="h-3.5 w-3.5 text-black"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -284,7 +284,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
               <div>
                 <h3 className="mb-2 text-xl font-bold tracking-tight md:text-2xl">Date</h3>
                 {typeof project.date === "string" ? (
-                  <p className="text-black/70">
+                  <p className="font-semibold text-black/70">
                     {new Date(project.date).toLocaleDateString("ja-JP", {
                       year: "numeric",
                       month: "long",
@@ -292,7 +292,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                     })}
                   </p>
                 ) : (
-                  <div className="space-y-2 text-black/70">
+                  <div className="space-y-2 font-semibold text-black/70">
                     {project.date.startDate && (
                       <p>
                         開発開始日: {formatDate(project.date.startDate)}
