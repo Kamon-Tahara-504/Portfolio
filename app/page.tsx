@@ -25,18 +25,13 @@ export default function Home() {
 
   const mainContent = (
     <div
-      className="relative z-20 overflow-hidden rounded-[2rem] p-8 shadow-2xl bg-transparent"
-      style={{ minHeight: "100vh" }}
+      className="relative z-20 min-h-screen w-full max-w-none overflow-hidden bg-transparent p-0 shadow-none md:rounded-[2rem] md:p-8 md:shadow-2xl"
     >
       <div
-        className="overflow-hidden rounded-[1.25rem] pt-8 relative"
-        style={{ minHeight: "calc(100vh - 64px)" }}
+        className="relative min-h-screen overflow-hidden rounded-none pt-8 md:min-h-[calc(100vh-4rem)] md:rounded-[1.25rem]"
       >
         <div
-          className="absolute inset-0 rounded-[1.25rem] z-0"
-          style={{
-            background: "rgb(255 255 255 / 0.90)",
-          }}
+          className="absolute inset-0 z-0 rounded-none bg-[rgb(255_255_255/0.9)] md:rounded-[1.25rem]"
           aria-hidden
         />
         <div className="relative z-10 select-none">
@@ -44,7 +39,6 @@ export default function Home() {
             name={about.name}
             nameEn={about.nameEn}
             age={about.age}
-            title={about.title}
             about={about.about}
             contact={about.contact}
           />

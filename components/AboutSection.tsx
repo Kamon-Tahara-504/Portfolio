@@ -8,7 +8,6 @@ import { About, Contact } from "@/types/profile";
 import EngineerExperienceCard from "./EngineerExperienceCard";
 import { useFadeInOnScroll } from "@/hooks/useFadeInOnScroll";
 import ContactModal from "./ContactModal";
-import AboutMoreInfoCard from "./AboutMoreInfoCard";
 
 // basePathの定義（開発環境では空、本番環境では'/Portfolio'）
 const basePath = process.env.NODE_ENV === 'production' ? '/Portfolio' : '';
@@ -17,7 +16,6 @@ interface AboutSectionProps {
   name: string;
   nameEn?: string;
   age?: number | string;
-  title: string;
   about: About;
   contact?: Contact;
 }
@@ -26,13 +24,11 @@ export default function AboutSection({
   name,
   nameEn,
   age,
-  title,
   about,
   contact,
 }: AboutSectionProps) {
   const viewContext = useContext(ViewContext);
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
-  const [showMoreInfo, setShowMoreInfo] = useState(false);
 
   // 英語名を分割: "Tahara Kamon" -> ["Tahara", "kamon"]
   const nameEnParts = nameEn?.split(' ').map((part, index) => 
@@ -46,8 +42,6 @@ export default function AboutSection({
 
   const defaultImageSrc =
     about.image.startsWith("/") ? `${basePath}${about.image}` : about.image;
-  const moreImageSrc = `${basePath}/images/about/TAHARA02.JPG`;
-
   return (
     <section
       id="about"
@@ -91,19 +85,7 @@ export default function AboutSection({
               src={defaultImageSrc}
               alt={name}
               fill
-              className={`object-cover transition-opacity duration-500 ease-out ${
-                showMoreInfo ? "opacity-0" : "opacity-100"
-              }`}
-              sizes="(max-width: 768px) 100vw, 50vw"
-            />
-            <ProtectedImage
-              wrapperClassName="absolute inset-0"
-              src={moreImageSrc}
-              alt={name}
-              fill
-              className={`object-cover transition-opacity duration-500 ease-out ${
-                showMoreInfo ? "opacity-100" : "opacity-0"
-              }`}
+              className="object-cover"
               sizes="(max-width: 768px) 100vw, 50vw"
             />
           </div>
@@ -122,7 +104,9 @@ export default function AboutSection({
                     {age}歳
                   </span>
                 )}
-                <EngineerExperienceCard />
+                <div className="hidden md:block">
+                  <EngineerExperienceCard />
+                </div>
               </div>
               {nameEnParts.length > 0 && (
                 <div className="flex items-baseline gap-2">
@@ -137,9 +121,9 @@ export default function AboutSection({
                 </div>
               )}
             </div>
-            <div className="relative">
-              {/* 自己紹介文 - 通常のフロー */}
-              <div className="space-y-3 leading-relaxed text-black/80 md:text-lg">
+            <div>
+              {/* 自己紹介文 */}
+              <div className="max-w-prose space-y-4 text-xs leading-[1.75] text-black/80 md:text-sm md:leading-[1.8]">
                 {about.description.split("\n").map((line, index) => (
                   <p key={index} className="break-keep break-words">
                     {line}
@@ -193,16 +177,9 @@ export default function AboutSection({
                 </div>
               )}
 
-              {/* 詳細情報カード - 重ねて表示 */}
-              {about.moreInfo && (
-                <AboutMoreInfoCard
-                  moreInfo={about.moreInfo}
-                  isVisible={showMoreInfo}
-                />
-              )}
             </div>
-            {/* 連絡先情報のボタン（GitHub、お問い合わせ、もっと知る） */}
-            {(contact || about.moreInfo) && (
+            {/* 連絡先情報のボタン（GitHub、お問い合わせ） */}
+            {contact && (
               <div className="flex flex-wrap gap-4">
                 {contact?.github && (
                   <Link
@@ -246,14 +223,6 @@ export default function AboutSection({
                       />
                     </svg>
                     お問い合わせ
-                  </button>
-                )}
-                {about.moreInfo && (
-                  <button
-                    onClick={() => setShowMoreInfo(!showMoreInfo)}
-                    className="hidden md:inline-flex items-center gap-2 rounded-lg border-[3px] border-black bg-white px-6 py-3 text-sm font-bold text-black shadow-[4px_4px_0_0_#000] transition-transform hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0_0_#000] md:text-base"
-                  >
-                    {showMoreInfo ? "基本情報に戻る" : "もっと知る"}
                   </button>
                 )}
               </div>

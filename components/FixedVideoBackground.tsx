@@ -1,8 +1,6 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
-import { useVideoColor } from "@/contexts/VideoColorContext";
-import { useVideoColorDetection } from "@/hooks/useVideoColorDetection";
 
 const basePath =
   process.env.NODE_ENV === "production" ? "/Portfolio" : "";
@@ -16,30 +14,15 @@ const videoSources = [
 export default function FixedVideoBackground() {
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [isNextVideoActive, setIsNextVideoActive] = useState(false);
-  const [displayedVideoElement, setDisplayedVideoElement] =
-    useState<HTMLVideoElement | null>(null);
 
   const activeVideoRef = useRef<HTMLVideoElement>(null);
   const nextVideoRef = useRef<HTMLVideoElement>(null);
   const nextVideoPreloadedRef = useRef<boolean>(false);
-  const { setIsDark } = useVideoColor();
 
   const getNextIndex = useCallback(
     (index: number) => (index + 1) % videoSources.length,
     []
   );
-
-  const { canvasRef } = useVideoColorDetection({
-    videoElement: displayedVideoElement,
-    onColorDetected: setIsDark,
-    enabled: true,
-  });
-
-  // Sync displayedVideoElement when isNextVideoActive changes (refs don't trigger re-render)
-  useEffect(() => {
-    const el = isNextVideoActive ? nextVideoRef.current : activeVideoRef.current;
-    setDisplayedVideoElement(el);
-  }, [isNextVideoActive]);
 
   // Initial load: set first video on activeVideo
   useEffect(() => {
@@ -231,22 +214,6 @@ export default function FixedVideoBackground() {
     };
   }, [currentVideoIndex, isNextVideoActive, getNextIndex]);
 
-  const setActiveRef = useCallback(
-    (el: HTMLVideoElement | null) => {
-      activeVideoRef.current = el;
-      if (!isNextVideoActive) setDisplayedVideoElement(el);
-    },
-    [isNextVideoActive]
-  );
-
-  const setNextRef = useCallback(
-    (el: HTMLVideoElement | null) => {
-      nextVideoRef.current = el;
-      if (isNextVideoActive) setDisplayedVideoElement(el);
-    },
-    [isNextVideoActive]
-  );
-
   return (
     <div
       className="fixed inset-0 z-0 pointer-events-none bg-black"
@@ -254,7 +221,7 @@ export default function FixedVideoBackground() {
     >
       <div className="absolute inset-0">
         <video
-          ref={setActiveRef}
+          ref={activeVideoRef}
           muted
           playsInline
           preload="auto"
@@ -263,7 +230,7 @@ export default function FixedVideoBackground() {
           }`}
         />
         <video
-          ref={setNextRef}
+          ref={nextVideoRef}
           muted
           playsInline
           preload="auto"
@@ -273,7 +240,6 @@ export default function FixedVideoBackground() {
         />
         <div className="absolute inset-0 z-20 bg-black/40" />
       </div>
-      <canvas ref={canvasRef} className="hidden" />
     </div>
   );
 }

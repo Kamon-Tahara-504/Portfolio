@@ -8,7 +8,6 @@ import React, {
   useEffect,
 } from "react";
 import Navigation from "./Navigation";
-import { VideoColorProvider } from "@/contexts/VideoColorContext";
 import BubbleParticles from "./BubbleParticles";
 import FixedVideoBackground from "./FixedVideoBackground";
 
@@ -81,31 +80,29 @@ export default function Layout({ children, hero, mainContent }: LayoutProps) {
 
   return (
     <ViewContext.Provider value={viewContextValue}>
-      <VideoColorProvider>
-        <FixedVideoBackground />
-        <div className="relative z-10 min-h-screen text-black">
-          <div className="absolute inset-0 z-10 pointer-events-none" aria-hidden="true">
-            <BubbleParticles />
-          </div>
-          <div className="relative z-20">
-            <Navigation />
-            <main>
-              {useViewSwitch
-                ? view === "hero"
-                  ? hero
-                  : mainContent
-                : children}
-            </main>
-          </div>
+      <FixedVideoBackground />
+      <div className="relative z-10 min-h-screen text-black">
+        <div className="absolute inset-0 z-10 pointer-events-none" aria-hidden="true">
+          <BubbleParticles />
         </div>
-        {useViewSwitch && transitionPhase !== null && (
-          <div
-            className="fixed inset-0 z-50 bg-black pointer-events-none transition-opacity duration-[400ms] ease-out"
-            style={{ opacity: overlayOpacity }}
-            aria-hidden
-          />
-        )}
-      </VideoColorProvider>
+        <div className="relative z-20">
+          <Navigation />
+          <main>
+            {useViewSwitch
+              ? view === "hero"
+                ? hero
+                : mainContent
+              : children}
+          </main>
+        </div>
+      </div>
+      {useViewSwitch && transitionPhase !== null && (
+        <div
+          className="fixed inset-0 z-50 bg-black pointer-events-none transition-opacity duration-[400ms] ease-out"
+          style={{ opacity: overlayOpacity }}
+          aria-hidden
+        />
+      )}
     </ViewContext.Provider>
   );
 }
