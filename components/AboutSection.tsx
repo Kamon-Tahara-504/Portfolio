@@ -124,11 +124,18 @@ export default function AboutSection({
             <div>
               {/* 自己紹介文 */}
               <div className="max-w-prose space-y-4 text-xs font-semibold leading-[1.75] text-black/80 md:text-sm md:leading-[1.8]">
-                {about.description.split("\n").map((line, index) => (
-                  <p key={index} className="break-keep break-words">
-                    {line}
-                  </p>
-                ))}
+                {about.description
+                  .split(/\n\n+/)
+                  .map((block) => block.trim())
+                  .filter(Boolean)
+                  .map((block, index) => (
+                    <p
+                      key={index}
+                      className="whitespace-pre-line break-keep break-words"
+                    >
+                      {block}
+                    </p>
+                  ))}
               </div>
 
               {/* 連絡先情報（TELまで） */}
