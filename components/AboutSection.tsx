@@ -55,13 +55,23 @@ export default function AboutSection({
           <button
             type="button"
             onClick={viewContext.enterHero}
-            className="inline-flex items-center gap-1.5 text-sm font-semibold text-black/80 hover:text-black hover:underline cursor-pointer"
+            className="group inline-flex items-center gap-2 rounded-full border border-black px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-black transition-all hover:bg-black hover:text-white"
             aria-label="トップに戻る"
           >
-            <svg className="h-3.5 w-3.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+            <svg
+              className="h-3 w-3 transition-transform group-hover:-translate-x-1"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2.5}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden
+            >
               <path d="M19 12H5M12 19l-7-7 7-7" />
             </svg>
-            トップに戻る
+            Top
           </button>
         </div>
       )}
@@ -138,51 +148,27 @@ export default function AboutSection({
                   ))}
               </div>
 
-              {/* 連絡先情報（TELまで） */}
-              {contact && (
-                <div className="space-y-2 pt-4 text-sm font-semibold text-black/70 md:text-base">
-                  {about.birthDate && (
-                    <div className="flex items-center gap-2">
-                      <span><span className="font-bold">生年月日</span>:</span>
-                      <span>{about.birthDate}</span>
-                    </div>
-                  )}
-                  {about.birthplace && (
-                    <div className="flex items-center gap-2">
-                      <span><span className="font-bold">出身</span>:</span>
-                      <span>{about.birthplace}</span>
-                    </div>
-                  )}
-                  {about.hobby && (
-                    <div className="flex items-center gap-2">
-                      <span><span className="font-bold">好きなこと</span>:</span>
-                      <span>{about.hobby}</span>
-                    </div>
-                  )}
-                  {contact.email && (
-                    <div className="flex items-center gap-2">
-                      <span><span className="font-bold">Email</span>:</span>
-                      <a
-                        href={`mailto:${contact.email}`}
-                        className="hover:text-black transition-colors underline"
-                      >
-                        {contact.email}
-                      </a>
-                    </div>
-                  )}
-                  {contact.phone && (
-                    <div className="flex items-center gap-2">
-                      <span><span className="font-bold">TEL</span>:</span>
-                      <a
-                        href={`tel:${contact.phone}`}
-                        className="hover:text-black transition-colors"
-                      >
-                        {contact.phone}
-                      </a>
-                    </div>
-                  )}
-                </div>
-              )}
+              {/* パーソナル情報タグ */}
+              <div className="flex flex-wrap gap-2 pt-4">
+                {about.birthDate && (
+                  <span className="inline-flex items-center gap-1.5 rounded-full border border-black/20 bg-black/5 px-3 py-1 text-xs">
+                    <span className="font-bold text-black/50 text-[10px] md:text-xs">生年月日</span>
+                    <span className="font-semibold text-black/80 text-[10px] md:text-xs">{about.birthDate}</span>
+                  </span>
+                )}
+                {about.birthplace && (
+                  <span className="inline-flex items-center gap-1.5 rounded-full border border-black/20 bg-black/5 px-3 py-1 text-xs">
+                    <span className="font-bold text-black/50 text-[10px] md:text-xs">出身</span>
+                    <span className="font-semibold text-black/80 text-[10px] md:text-xs">{about.birthplace}</span>
+                  </span>
+                )}
+                {about.hobby && (
+                  <span className="inline-flex items-center gap-1.5 rounded-full border border-black/20 bg-black/5 px-3 py-1 text-xs">
+                    <span className="font-bold text-black/50 text-[10px] md:text-xs">好きなこと</span>
+                    <span className="font-semibold text-black/80 text-[10px] md:text-xs">{about.hobby}</span>
+                  </span>
+                )}
+              </div>
 
             </div>
             {/* 連絡先情報のボタン（GitHub、お問い合わせ） */}
