@@ -158,13 +158,13 @@ export default function Navigation() {
   const showNav = (viewContext === null || view === "main") && !viewContext?.isModalOpen;
 
   return (
-    <div
-      className={`transition-opacity duration-[700ms] ease-out ${
+    <>
+    {/* デスクトップ用: 右側垂直ナビゲーション */}
+    <nav 
+      className={`fixed right-10 top-1/2 z-50 -translate-y-1/2 hidden lg:block transition-opacity duration-500 ease-in-out ${
         showNav ? "opacity-100" : "opacity-0 pointer-events-none"
       }`}
     >
-    {/* デスクトップ用: 右側垂直ナビゲーション */}
-    <nav className="fixed right-10 top-1/2 z-50 -translate-y-1/2 hidden lg:block">
       <div className="flex flex-col items-center gap-3 rounded-full border border-white/15 bg-neutral-900/92 p-1.5 backdrop-blur-xl shadow-lg">
         {sections.map((section) => {
           const isActive = effectiveActiveSection === section.id;
@@ -194,7 +194,11 @@ export default function Navigation() {
     </nav>
 
     {/* モバイル用: 下部リキッドグラスナビ（PCでは隠す） */}
-    <div className="fixed bottom-8 left-0 right-0 z-50 px-4 flex justify-center lg:hidden">
+    <div 
+      className={`fixed bottom-8 left-0 right-0 z-50 px-4 flex justify-center lg:hidden transition-opacity duration-500 ease-in-out ${
+        showNav ? "opacity-100" : "opacity-0 pointer-events-none"
+      }`}
+    >
       <nav
         className="mobile-nav-liquid-glass flex items-center justify-around w-full max-w-[300px] h-[60px] px-2 rounded-full border border-white/15 bg-neutral-900/92 backdrop-blur-xl shadow-2xl"
         aria-label="セクションへ移動"
@@ -234,7 +238,7 @@ export default function Navigation() {
         })}
       </nav>
     </div>
-    </div>
+    </>
   );
 }
 

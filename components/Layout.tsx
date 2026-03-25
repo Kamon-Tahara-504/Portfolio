@@ -6,6 +6,7 @@ import React, {
   useState,
   useCallback,
   useEffect,
+  useMemo,
 } from "react";
 import Navigation from "./Navigation";
 import BubbleParticles from "./BubbleParticles";
@@ -76,9 +77,18 @@ export default function Layout({ children, hero, mainContent }: LayoutProps) {
 
   const useViewSwitch = hero != null && mainContent != null;
 
-  const viewContextValue = useViewSwitch 
-    ? { view, enterMain, enterHero, isModalOpen, setIsModalOpen } 
-    : { view: "main" as ViewMode, enterMain: () => {}, enterHero: () => {}, isModalOpen, setIsModalOpen };
+  const viewContextValue = useMemo(() => {
+    if (useViewSwitch) {
+      return { view, enterMain, enterHero, isModalOpen, setIsModalOpen };
+    }
+    return {
+      view: "main" as ViewMode,
+      enterMain: () => {},
+      enterHero: () => {},
+      isModalOpen,
+      setIsModalOpen,
+    };
+  }, [useViewSwitch, view, enterMain, enterHero, isModalOpen]);
 
   const overlayOpacity =
     transitionPhase === "out" ? (overlayVisible ? 1 : 0) : transitionPhase === "in" ? 0 : 0;

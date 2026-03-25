@@ -157,16 +157,16 @@ export default function ContactModal({ onClose }: ContactModalProps) {
   };
 
   const handleTouchMove = (e: React.TouchEvent) => {
-    e.preventDefault();
+    // body { overflow: hidden } で背景スクロールは制御済み
   };
 
   const handleWheel = (e: React.WheelEvent) => {
-    e.preventDefault();
+    // 同上
   };
 
   return (
     <div
-      className={`fixed inset-0 z-[100] flex items-center justify-center bg-black/70 backdrop-blur-md p-4 touch-none transition-opacity duration-300 ease-out ${
+      className={`fixed inset-0 z-[100] flex items-center justify-center bg-black/70 backdrop-blur-md p-4 transition-opacity duration-300 ease-out ${
         isOpen ? "opacity-100" : "opacity-0"
       }`}
       onClick={onClose}
