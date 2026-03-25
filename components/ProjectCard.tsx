@@ -61,7 +61,7 @@ export default function ProjectCard({
         <h3 className="mb-2 text-lg md:text-xl font-bold tracking-tight text-white line-clamp-1">
           {project.title}
         </h3>
-        <p className="text-xs md:text-sm text-white/80 line-clamp-2 whitespace-pre-line">
+        <p className="text-xs font-normal text-white/80 line-clamp-2 whitespace-pre-line md:text-sm">
           {project.catchphrase ?? project.description}
         </p>
       </div>

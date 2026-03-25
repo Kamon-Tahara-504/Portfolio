@@ -192,7 +192,7 @@ export default function Navigation() {
                 isActive={isActive}
                 className="w-6 h-6 shrink-0"
               />
-              <span className="text-[10px] font-medium truncate max-w-full">
+              <span className="text-[10px] font-semibold truncate max-w-full">
                 {label}
               </span>
             </button>

@@ -56,7 +56,7 @@ export default function EngineerExperienceCard() {
 
   return (
     <div className="flex items-center rounded-md border border-black bg-white px-3 py-2 shadow-sm w-[300px] md:w-[340px] flex-shrink-0">
-      <span className="text-xs font-medium text-black/70 md:text-sm whitespace-nowrap flex-shrink-0">
+      <span className="text-xs font-semibold text-black/70 md:text-sm whitespace-nowrap flex-shrink-0">
         エンジニア歴
       </span>
       <span className="text-sm font-bold text-black md:text-base tabular-nums whitespace-nowrap -ml-3">

@@ -47,7 +47,7 @@ export default function TimelineRuler({
             }}
           />
           <div
-            className="text-xs font-medium text-white md:text-sm bg-black px-2 rounded"
+            className="text-xs font-semibold text-white md:text-sm bg-black px-2 rounded"
             style={{
               lineHeight: "1.2",
               zIndex: 10,

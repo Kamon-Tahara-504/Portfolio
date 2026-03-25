@@ -47,7 +47,7 @@ export default function Home() {
           <ProjectsSection projects={projects} />
           <DevelopmentSection development={development} />
           <footer className="border-t border-black mt-auto">
-            <div className="mx-auto max-w-7-5xl px-6 py-8 text-center text-sm text-black/60">
+            <div className="mx-auto max-w-7-5xl px-6 py-8 text-center text-sm font-semibold text-black/60">
               <p>©︎ 2025 Kamon-Tahara-504</p>
               <p className="mt-2">Licensed under MIT License</p>
             </div>

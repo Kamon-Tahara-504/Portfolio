@@ -17,7 +17,7 @@ function SkillsTypewriterCaption() {
     showCursor: true,
   });
   return (
-    <p className="mb-4 text-center text-sm text-black/70 md:text-base" aria-live="polite">
+    <p className="mb-4 text-center text-sm font-semibold text-black/70 md:text-base" aria-live="polite">
       {displayText}
       {showCursor && (
         <span
@@ -69,12 +69,12 @@ function SkillItem({ skill, isCategoryVisible, index }: SkillItemProps) {
           ) : null}
           <span 
             ref={skillNameRef.ref as React.RefObject<HTMLSpanElement>}
-            className={`text-sm font-medium text-black md:text-base fade-in-from-left ${skillNameRef.isVisible ? 'visible' : ''}`}
+            className={`text-sm font-semibold text-black md:text-base fade-in-from-left ${skillNameRef.isVisible ? 'visible' : ''}`}
           >
             {skill.name}
           </span>
         </div>
-        <span className="text-xs text-black/60 md:text-sm">
+        <span className="text-xs font-semibold text-black/60 md:text-sm">
           {animatedValue}%
         </span>
       </div>

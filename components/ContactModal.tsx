@@ -190,16 +190,16 @@ export default function ContactModal({ onClose }: ContactModalProps) {
           {submitStatus === "success" ? (
             <div className="space-y-4">
               <div className="rounded-md border border-green-500 bg-green-50 p-4 text-green-800">
-                <p className="font-medium">送信が完了しました！</p>
-                <p className="mt-2 text-sm">
+                <p className="font-semibold">送信が完了しました！</p>
+                <p className="mt-2 text-sm font-semibold">
                   お問い合わせありがとうございます。できるだけ早くご返信いたします。
                 </p>
               </div>
             </div>
           ) : submitStatus === "error" ? (
             <div className="mb-6 rounded-md border border-red-500 bg-red-50 p-4 text-red-800">
-              <p className="font-medium">送信に失敗しました</p>
-              <p className="mt-2 text-sm">
+              <p className="font-semibold">送信に失敗しました</p>
+              <p className="mt-2 text-sm font-semibold">
                 しばらく時間をおいて再度お試しください。問題が続く場合は、直接メールでご連絡ください。
               </p>
             </div>
@@ -210,7 +210,7 @@ export default function ContactModal({ onClose }: ContactModalProps) {
             <div>
               <label
                 htmlFor="name"
-                className="mb-2 block text-sm font-medium text-black"
+                className="mb-2 block text-sm font-semibold text-black"
               >
                 名前 <span className="text-red-500">*</span>
               </label>
@@ -220,13 +220,13 @@ export default function ContactModal({ onClose }: ContactModalProps) {
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
-                className={`w-full border px-4 py-2 text-black focus:outline-none focus:ring-2 focus:ring-black ${
+                className={`w-full border px-4 py-2 font-semibold text-black focus:outline-none focus:ring-2 focus:ring-black ${
                   errors.name ? "border-red-500" : "border-black"
                 }`}
                 placeholder="お名前を入力してください"
               />
               {errors.name && (
-                <p className="mt-1 text-sm text-red-500">{errors.name}</p>
+                <p className="mt-1 text-sm font-semibold text-red-500">{errors.name}</p>
               )}
             </div>
 
@@ -234,7 +234,7 @@ export default function ContactModal({ onClose }: ContactModalProps) {
             <div>
               <label
                 htmlFor="email"
-                className="mb-2 block text-sm font-medium text-black"
+                className="mb-2 block text-sm font-semibold text-black"
               >
                 メールアドレス <span className="text-red-500">*</span>
               </label>
@@ -244,13 +244,13 @@ export default function ContactModal({ onClose }: ContactModalProps) {
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
-                className={`w-full border px-4 py-2 text-black focus:outline-none focus:ring-2 focus:ring-black ${
+                className={`w-full border px-4 py-2 font-semibold text-black focus:outline-none focus:ring-2 focus:ring-black ${
                   errors.email ? "border-red-500" : "border-black"
                 }`}
                 placeholder="your.email@example.com"
               />
               {errors.email && (
-                <p className="mt-1 text-sm text-red-500">{errors.email}</p>
+                <p className="mt-1 text-sm font-semibold text-red-500">{errors.email}</p>
               )}
             </div>
 
@@ -258,7 +258,7 @@ export default function ContactModal({ onClose }: ContactModalProps) {
             <div>
               <label
                 htmlFor="subject"
-                className="mb-2 block text-sm font-medium text-black"
+                className="mb-2 block text-sm font-semibold text-black"
               >
                 件名 <span className="text-red-500">*</span>
               </label>
@@ -268,13 +268,13 @@ export default function ContactModal({ onClose }: ContactModalProps) {
                 name="subject"
                 value={formData.subject}
                 onChange={handleChange}
-                className={`w-full border px-4 py-2 text-black focus:outline-none focus:ring-2 focus:ring-black ${
+                className={`w-full border px-4 py-2 font-semibold text-black focus:outline-none focus:ring-2 focus:ring-black ${
                   errors.subject ? "border-red-500" : "border-black"
                 }`}
                 placeholder="お問い合わせの件名を入力してください"
               />
               {errors.subject && (
-                <p className="mt-1 text-sm text-red-500">{errors.subject}</p>
+                <p className="mt-1 text-sm font-semibold text-red-500">{errors.subject}</p>
               )}
             </div>
 
@@ -282,7 +282,7 @@ export default function ContactModal({ onClose }: ContactModalProps) {
             <div>
               <label
                 htmlFor="message"
-                className="mb-2 block text-sm font-medium text-black"
+                className="mb-2 block text-sm font-semibold text-black"
               >
                 メッセージ <span className="text-red-500">*</span>
               </label>
@@ -292,13 +292,13 @@ export default function ContactModal({ onClose }: ContactModalProps) {
                 value={formData.message}
                 onChange={handleChange}
                 rows={6}
-                className={`w-full border px-4 py-2 text-black focus:outline-none focus:ring-2 focus:ring-black resize-none ${
+                className={`w-full border px-4 py-2 font-semibold text-black focus:outline-none focus:ring-2 focus:ring-black resize-none ${
                   errors.message ? "border-red-500" : "border-black"
                 }`}
                 placeholder="お問い合わせ内容を入力してください（10文字以上）"
               />
               {errors.message && (
-                <p className="mt-1 text-sm text-red-500">{errors.message}</p>
+                <p className="mt-1 text-sm font-semibold text-red-500">{errors.message}</p>
               )}
             </div>
 
@@ -307,7 +307,7 @@ export default function ContactModal({ onClose }: ContactModalProps) {
               <button
                 type="button"
                 onClick={onClose}
-                className="flex-1 border border-black bg-white px-6 py-3 text-sm font-medium text-black transition-colors hover:bg-black/5 md:text-base"
+                className="flex-1 border border-black bg-white px-6 py-3 text-sm font-semibold text-black transition-colors hover:bg-black/5 md:text-base"
                 disabled={isSubmitting}
               >
                 キャンセル
@@ -315,7 +315,7 @@ export default function ContactModal({ onClose }: ContactModalProps) {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="flex-1 border border-black bg-black px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-black/90 disabled:cursor-not-allowed disabled:opacity-50 md:text-base"
+                className="flex-1 border border-black bg-black px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-black/90 disabled:cursor-not-allowed disabled:opacity-50 md:text-base"
               >
                 {isSubmitting ? "送信中..." : "送信"}
               </button>

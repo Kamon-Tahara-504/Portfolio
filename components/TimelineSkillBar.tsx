@@ -92,8 +92,8 @@ export default function TimelineSkillBar({
           className="flex flex-col whitespace-nowrap"
           style={{ color }}
         >
-          <span className="text-xs font-medium md:text-sm">{skill.name}</span>
-          <span className="text-[10px] text-black/60 md:text-xs">
+          <span className="text-xs font-semibold md:text-sm">{skill.name}</span>
+          <span className="text-[10px] font-semibold text-black/60 md:text-xs">
             {formatDate(startDate)} ～ {endDate ? formatDate(endDate) : "現在"}
           </span>
         </div>
