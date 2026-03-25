@@ -28,7 +28,7 @@ export default function ProjectCard({
   return (
     <button
       onClick={() => onClick?.(project)}
-      className={`group relative block w-full aspect-[3/4] overflow-hidden rounded-3xl bg-black/5 text-left border border-black hover:shadow-[0_0_0_2px_black] transition-all ${animationClass}`}
+      className={`group relative block w-full aspect-[3/4] overflow-hidden rounded-2xl md:rounded-3xl bg-black/5 text-left border border-black hover:shadow-[0_0_0_2px_black] transition-all ${animationClass}`}
       // 表示時は上から順に100ms刻み、巻き戻し時も同じディレイで戻る
       style={{ transitionDelay: `${index * 100}ms` }}
     >
@@ -49,19 +49,19 @@ export default function ProjectCard({
       )}
 
       {/* テキストエリア（下部・黒リキッドグラス） */}
-      <div className="absolute bottom-4 left-4 right-4 md:bottom-6 md:left-6 md:right-6 z-10 bg-black/40 backdrop-blur-md rounded-2xl p-4 md:p-6 flex flex-col border border-white/10 shadow-lg">
-        <div className="mb-2 flex flex-wrap items-center gap-1">
-          <span className="shrink-0 bg-white/90 px-2.5 py-0.5 text-xs font-bold text-black border border-white rounded">
+      <div className="absolute bottom-2 left-2 right-2 md:bottom-6 md:left-6 md:right-6 z-10 bg-black/40 backdrop-blur-md rounded-xl md:rounded-2xl p-3 md:p-6 flex flex-col border border-white/10 shadow-lg">
+        <div className="mb-1 md:mb-2 flex flex-wrap items-center gap-1">
+          <span className="shrink-0 bg-white/90 px-1.5 py-0.5 text-[8px] md:px-2.5 md:text-xs font-bold text-black border border-white rounded">
             {categoryLabel}
           </span>
-          <span className="shrink-0 bg-white/90 px-2.5 py-0.5 text-xs font-bold text-black border border-white rounded">
+          <span className="shrink-0 bg-white/90 px-1.5 py-0.5 text-[8px] md:px-2.5 md:text-xs font-bold text-black border border-white rounded">
             {productionLabel}
           </span>
         </div>
-        <h3 className="mb-2 text-lg md:text-xl font-bold tracking-tight text-white line-clamp-1">
+        <h3 className="mb-1 md:mb-2 text-sm md:text-xl font-bold tracking-tight text-white line-clamp-1">
           {project.title}
         </h3>
-        <p className="text-xs font-normal text-white/80 line-clamp-2 whitespace-pre-line md:text-sm">
+        <p className="text-[10px] font-normal text-white/80 line-clamp-2 whitespace-pre-line md:text-sm">
           {project.catchphrase ?? project.description}
         </p>
       </div>
