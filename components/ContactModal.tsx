@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useState, useContext } from "react";
+import { useContext, useState } from "react";
 import emailjs from "@emailjs/browser";
 import { ViewContext } from "./Layout";
 import ContactModalStatus from "./ContactModal/ContactModalStatus";
 import ContactFormFields from "./ContactModal/ContactFormFields";
+import { useModalLifecycle } from "@/hooks/useModalLifecycle";
 
 interface ContactModalProps {
   onClose: () => void;
@@ -25,8 +26,11 @@ interface FormErrors {
 }
 
 export default function ContactModal({ onClose }: ContactModalProps) {
-  const [isOpen, setIsOpen] = useState(false);
   const viewContext = useContext(ViewContext);
+  const { isOpen } = useModalLifecycle({
+    onClose,
+    setIsModalOpen: viewContext?.setIsModalOpen,
+  });
   const [formData, setFormData] = useState<FormData>({
     name: "",
     email: "",
@@ -36,36 +40,6 @@ export default function ContactModal({ onClose }: ContactModalProps) {
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<"success" | "error" | null>(null);
-
-  useEffect(() => {
-    // マウント時にアニメーションをトリガー
-    setIsOpen(true);
-    viewContext?.setIsModalOpen(true);
-
-    return () => {
-      viewContext?.setIsModalOpen(false);
-    };
-  }, [viewContext]);
-
-  useEffect(() => {
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        onClose();
-      }
-    };
-
-    // 背景のスクロールを防ぐ（htmlとbodyの両方に適用）
-    document.documentElement.style.overflow = "hidden";
-    document.body.style.overflow = "hidden";
-
-    document.addEventListener("keydown", handleEscape);
-
-    return () => {
-      document.removeEventListener("keydown", handleEscape);
-      document.documentElement.style.overflow = "";
-      document.body.style.overflow = "";
-    };
-  }, [onClose]);
 
   const validateEmail = (email: string): boolean => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
