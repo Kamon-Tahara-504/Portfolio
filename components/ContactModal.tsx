@@ -1,8 +1,11 @@
 "use client";
 
-import { useEffect, useState, useContext } from "react";
+import { useContext, useState } from "react";
 import emailjs from "@emailjs/browser";
 import { ViewContext } from "./Layout";
+import ContactModalStatus from "./ContactModal/ContactModalStatus";
+import ContactFormFields from "./ContactModal/ContactFormFields";
+import { useModalLifecycle } from "@/hooks/useModalLifecycle";
 
 interface ContactModalProps {
   onClose: () => void;
@@ -23,8 +26,11 @@ interface FormErrors {
 }
 
 export default function ContactModal({ onClose }: ContactModalProps) {
-  const [isOpen, setIsOpen] = useState(false);
   const viewContext = useContext(ViewContext);
+  const { isOpen } = useModalLifecycle({
+    onClose,
+    setIsModalOpen: viewContext?.setIsModalOpen,
+  });
   const [formData, setFormData] = useState<FormData>({
     name: "",
     email: "",
@@ -34,36 +40,6 @@ export default function ContactModal({ onClose }: ContactModalProps) {
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<"success" | "error" | null>(null);
-
-  useEffect(() => {
-    // マウント時にアニメーションをトリガー
-    setIsOpen(true);
-    viewContext?.setIsModalOpen(true);
-
-    return () => {
-      viewContext?.setIsModalOpen(false);
-    };
-  }, [viewContext]);
-
-  useEffect(() => {
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        onClose();
-      }
-    };
-
-    // 背景のスクロールを防ぐ（htmlとbodyの両方に適用）
-    document.documentElement.style.overflow = "hidden";
-    document.body.style.overflow = "hidden";
-
-    document.addEventListener("keydown", handleEscape);
-
-    return () => {
-      document.removeEventListener("keydown", handleEscape);
-      document.documentElement.style.overflow = "";
-      document.body.style.overflow = "";
-    };
-  }, [onClose]);
 
   const validateEmail = (email: string): boolean => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -194,120 +170,14 @@ export default function ContactModal({ onClose }: ContactModalProps) {
             お問い合わせ
           </h2>
 
-          {submitStatus === "success" ? (
-            <div className="space-y-4">
-              <div className="rounded-md border border-green-500 bg-green-50 p-4 text-green-800">
-                <p className="font-semibold">送信が完了しました！</p>
-                <p className="mt-2 text-sm font-semibold">
-                  お問い合わせありがとうございます。できるだけ早くご返信いたします。
-                </p>
-              </div>
-            </div>
-          ) : submitStatus === "error" ? (
-            <div className="mb-6 rounded-md border border-red-500 bg-red-50 p-4 text-red-800">
-              <p className="font-semibold">送信に失敗しました</p>
-              <p className="mt-2 text-sm font-semibold">
-                しばらく時間をおいて再度お試しください。問題が続く場合は、直接メールでご連絡ください。
-              </p>
-            </div>
-          ) : null}
+          <ContactModalStatus submitStatus={submitStatus} />
 
           <form onSubmit={handleSubmit} className="space-y-6">
-            {/* 名前 */}
-            <div>
-              <label
-                htmlFor="name"
-                className="mb-2 block text-sm font-semibold text-black"
-              >
-                名前 <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                className={`w-full border px-4 py-2 font-semibold text-black focus:outline-none focus:ring-2 focus:ring-black ${
-                  errors.name ? "border-red-500" : "border-black"
-                }`}
-                placeholder="お名前を入力してください"
-              />
-              {errors.name && (
-                <p className="mt-1 text-sm font-semibold text-red-500">{errors.name}</p>
-              )}
-            </div>
-
-            {/* メールアドレス */}
-            <div>
-              <label
-                htmlFor="email"
-                className="mb-2 block text-sm font-semibold text-black"
-              >
-                メールアドレス <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                className={`w-full border px-4 py-2 font-semibold text-black focus:outline-none focus:ring-2 focus:ring-black ${
-                  errors.email ? "border-red-500" : "border-black"
-                }`}
-                placeholder="your.email@example.com"
-              />
-              {errors.email && (
-                <p className="mt-1 text-sm font-semibold text-red-500">{errors.email}</p>
-              )}
-            </div>
-
-            {/* 件名 */}
-            <div>
-              <label
-                htmlFor="subject"
-                className="mb-2 block text-sm font-semibold text-black"
-              >
-                件名 <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="text"
-                id="subject"
-                name="subject"
-                value={formData.subject}
-                onChange={handleChange}
-                className={`w-full border px-4 py-2 font-semibold text-black focus:outline-none focus:ring-2 focus:ring-black ${
-                  errors.subject ? "border-red-500" : "border-black"
-                }`}
-                placeholder="お問い合わせの件名を入力してください"
-              />
-              {errors.subject && (
-                <p className="mt-1 text-sm font-semibold text-red-500">{errors.subject}</p>
-              )}
-            </div>
-
-            {/* メッセージ */}
-            <div>
-              <label
-                htmlFor="message"
-                className="mb-2 block text-sm font-semibold text-black"
-              >
-                メッセージ <span className="text-red-500">*</span>
-              </label>
-              <textarea
-                id="message"
-                name="message"
-                value={formData.message}
-                onChange={handleChange}
-                rows={6}
-                className={`w-full border px-4 py-2 font-semibold text-black focus:outline-none focus:ring-2 focus:ring-black resize-none ${
-                  errors.message ? "border-red-500" : "border-black"
-                }`}
-                placeholder="お問い合わせ内容を入力してください（10文字以上）"
-              />
-              {errors.message && (
-                <p className="mt-1 text-sm font-semibold text-red-500">{errors.message}</p>
-              )}
-            </div>
+            <ContactFormFields
+              formData={formData}
+              errors={errors}
+              onChange={handleChange}
+            />
 
             {/* 送信ボタン */}
             <div className="flex gap-4">
