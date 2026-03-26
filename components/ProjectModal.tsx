@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useState, useContext } from "react";
+import { useContext } from "react";
 import { Project } from "@/types/project";
 import { ViewContext } from "./Layout";
 import ProjectModalDate from "./ProjectModal/ProjectModalDate";
 import ProjectModalImage from "./ProjectModal/ProjectModalImage";
 import ProjectModalLinks from "./ProjectModal/ProjectModalLinks";
 import ProjectModalTechnologies from "./ProjectModal/ProjectModalTechnologies";
+import { useModalLifecycle } from "@/hooks/useModalLifecycle";
 
 // basePathの定義（開発環境では空、本番環境では'/Portfolio'）
 const basePath = process.env.NODE_ENV === 'production' ? '/Portfolio' : '';
@@ -17,38 +18,11 @@ interface ProjectModalProps {
 }
 
 export default function ProjectModal({ project, onClose }: ProjectModalProps) {
-  const [isOpen, setIsOpen] = useState(false);
   const viewContext = useContext(ViewContext);
-
-  useEffect(() => {
-    // マウント時にアニメーションをトリガー
-    setIsOpen(true);
-    viewContext?.setIsModalOpen(true);
-
-    return () => {
-      viewContext?.setIsModalOpen(false);
-    };
-  }, [viewContext]);
-
-  useEffect(() => {
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        onClose();
-      }
-    };
-
-    // 背景のスクロールを防ぐ（htmlとbodyの両方に適用）
-    document.documentElement.style.overflow = "hidden";
-    document.body.style.overflow = "hidden";
-
-    document.addEventListener("keydown", handleEscape);
-
-    return () => {
-      document.removeEventListener("keydown", handleEscape);
-      document.documentElement.style.overflow = "";
-      document.body.style.overflow = "";
-    };
-  }, [onClose]);
+  const { isOpen } = useModalLifecycle({
+    onClose,
+    setIsModalOpen: viewContext?.setIsModalOpen,
+  });
 
   const handleTouchMove = (e: React.TouchEvent) => {
     // Passive listener error を防ぐため、ここでは preventDefault しない
