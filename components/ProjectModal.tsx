@@ -1,10 +1,12 @@
 "use client";
 
 import { useEffect, useState, useContext } from "react";
-import Image from "next/image";
-import ProtectedImage from "@/components/ProtectedImage";
 import { Project } from "@/types/project";
 import { ViewContext } from "./Layout";
+import ProjectModalDate from "./ProjectModal/ProjectModalDate";
+import ProjectModalImage from "./ProjectModal/ProjectModalImage";
+import ProjectModalLinks from "./ProjectModal/ProjectModalLinks";
+import ProjectModalTechnologies from "./ProjectModal/ProjectModalTechnologies";
 
 // basePathの定義（開発環境では空、本番環境では'/Portfolio'）
 const basePath = process.env.NODE_ENV === 'production' ? '/Portfolio' : '';
@@ -47,15 +49,6 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
       document.body.style.overflow = "";
     };
   }, [onClose]);
-
-  // 日付を「YYYY / M / D」形式にフォーマット
-  const formatDate = (dateString: string): string => {
-    const date = new Date(dateString);
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
-    return `${year} / ${month} / ${day}`;
-  };
 
   const handleTouchMove = (e: React.TouchEvent) => {
     // Passive listener error を防ぐため、ここでは preventDefault しない
@@ -100,16 +93,10 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                 ? `${basePath}${modalImage}`
                 : modalImage;
               return (
-                <div className="relative w-full max-w-[440px] mx-auto md:max-w-none md:mx-0 overflow-hidden aspect-[4/5] md:aspect-square bg-white">
-                  <ProtectedImage
-                    wrapperClassName="absolute inset-0"
-                    src={imageSrc}
-                    alt={project.title}
-                    fill
-                    className="object-contain"
-                    sizes="(max-width: 768px) 95vw, 50vw"
-                  />
-                </div>
+                <ProjectModalImage
+                  projectTitle={project.title}
+                  imageSrc={imageSrc}
+                />
               );
             })()}
 
@@ -126,204 +113,13 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
               </p>
 
               {/* 技術スタック */}
-              <div>
-                <h3 className="mb-4 text-xl font-bold tracking-tight md:text-2xl">
-                  Technologies
-                </h3>
-                <div className="flex flex-wrap gap-2">
-                  {project.technologies.map((tech) => (
-                    <span
-                      key={tech}
-                      className="border border-black bg-white px-4 py-2 text-sm font-semibold text-black"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-              </div>
+              <ProjectModalTechnologies technologies={project.technologies} />
 
               {/* URL */}
-              {(project.links.github || project.links.githubBackend || project.links.githubFrontend || project.links.demo || project.links.appStore || project.links.docs) && (
-                <div>
-                  <h3 className="mb-4 text-xl font-bold tracking-tight md:text-2xl">
-                    URL
-                  </h3>
-                  <div className="flex flex-wrap gap-2">
-                    {project.links.github && (
-                      <a
-                        href={project.links.github}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 border border-black bg-black px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-black/90"
-                      >
-                        <svg
-                          className="h-4 w-4 shrink-0"
-                          fill="currentColor"
-                          viewBox="0 0 24 24"
-                          aria-hidden="true"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                        GitHub
-                      </a>
-                    )}
-                    {project.links.githubBackend && (
-                      <a
-                        href={project.links.githubBackend}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 border border-black bg-black px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-black/90"
-                      >
-                        <svg
-                          className="h-4 w-4 shrink-0"
-                          fill="currentColor"
-                          viewBox="0 0 24 24"
-                          aria-hidden="true"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                        GitHub(Backend)
-                      </a>
-                    )}
-                    {project.links.githubFrontend && (
-                      <a
-                        href={project.links.githubFrontend}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 border border-black bg-black px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-black/90"
-                      >
-                        <svg
-                          className="h-4 w-4 shrink-0"
-                          fill="currentColor"
-                          viewBox="0 0 24 24"
-                          aria-hidden="true"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                        GitHub(Frontend)
-                      </a>
-                    )}
-                    {project.links.demo && (
-                      <a
-                        href={project.links.demo}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 border border-black bg-white px-4 py-2 text-sm font-semibold text-black transition-colors hover:bg-black/5"
-                      >
-                        <svg
-                          className="h-4 w-4 shrink-0"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                          aria-hidden="true"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                          />
-                        </svg>
-                        Live Demo
-                      </a>
-                    )}
-                    {project.links.appStore && (
-                      <a
-                        href={project.links.appStore}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex bg-gradient-to-r from-blue-500 to-blue-600 p-px transition-all hover:from-blue-600 hover:to-blue-700"
-                      >
-                        <span className="inline-flex items-center gap-1.5 bg-white px-4 py-2 text-sm font-semibold text-gray-900">
-                          <Image
-                            src={`${basePath}/images/projects/appstore.png`}
-                            alt="App Store"
-                            width={16}
-                            height={16}
-                            className="h-4 w-4 shrink-0 rounded-sm"
-                          />
-                          Apple Store
-                        </span>
-                      </a>
-                    )}
-                    {project.links.docs && (
-                      <a
-                        href={project.links.docs}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 border border-black bg-white px-4 py-2 text-sm font-semibold text-black transition-colors hover:bg-black/5"
-                      >
-                        <span className="flex shrink-0 items-center justify-center border border-black/20 bg-black/5 p-0.5">
-                          <svg
-                            className="h-3.5 w-3.5 text-black"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                            aria-hidden="true"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                            />
-                          </svg>
-                        </span>
-                        企画書
-                      </a>
-                    )}
-                  </div>
-                </div>
-              )}
+              <ProjectModalLinks links={project.links} basePath={basePath} />
 
               {/* 日付 */}
-              <div>
-                <h3 className="mb-2 text-xl font-bold tracking-tight md:text-2xl">Date</h3>
-                {typeof project.date === "string" ? (
-                  <p className="font-semibold text-black/70">
-                    {new Date(project.date).toLocaleDateString("ja-JP", {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                    })}
-                  </p>
-                ) : (
-                  <div className="space-y-2 font-semibold text-black/70">
-                    {project.date.startDate && (
-                      <p>
-                        開発開始日: {formatDate(project.date.startDate)}
-                      </p>
-                    )}
-                    {project.date.endDate && (
-                      <p>
-                        開発終了日: {formatDate(project.date.endDate)}
-                      </p>
-                    )}
-                    {project.date.releaseDate && (
-                      <p>
-                        リリース日: {formatDate(project.date.releaseDate)}
-                      </p>
-                    )}
-                    {project.date.deployDate && (
-                      <p>
-                        デプロイ日: {formatDate(project.date.deployDate)}
-                      </p>
-                    )}
-                  </div>
-                )}
-              </div>
+              <ProjectModalDate date={project.date} />
             </div>
           </div>
         </div>
