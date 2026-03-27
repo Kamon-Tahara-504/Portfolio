@@ -373,3 +373,44 @@ body::-webkit-scrollbar-thumb:hover {
     0 4px 12px -4px rgba(0, 0, 0, 0.1),
     0 0 0 1px rgba(255, 255, 255, 0.08) inset;
 }
+
+/* モーダル: TV電源ON/OFF風（中央線から上下へ展開） */
+@keyframes tv-open {
+  0% {
+    transform: scaleY(0.01);
+    filter: brightness(3);
+  }
+  60% {
+    filter: brightness(1.2);
+  }
+  100% {
+    transform: scaleY(1);
+    filter: brightness(1);
+  }
+}
+
+@keyframes tv-close {
+  0% {
+    transform: scaleY(1);
+    filter: brightness(1);
+  }
+  40% {
+    filter: brightness(2);
+  }
+  100% {
+    transform: scaleY(0.01);
+    filter: brightness(3);
+  }
+}
+
+.animate-tv-open {
+  animation: tv-open 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  transform-origin: center;
+  will-change: transform, filter;
+}
+
+.animate-tv-close {
+  animation: tv-close 0.25s ease-in forwards;
+  transform-origin: center;
+  will-change: transform, filter;
+}

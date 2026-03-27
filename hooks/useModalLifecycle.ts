@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 interface UseModalLifecycleOptions {
   onClose: () => void;
@@ -12,6 +12,16 @@ export function useModalLifecycle({
   setIsModalOpen,
 }: UseModalLifecycleOptions) {
   const [isOpen, setIsOpen] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
+
+  const handleClose = useCallback(() => {
+    if (isClosing) return;
+    setIsClosing(true);
+
+    setTimeout(() => {
+      onClose();
+    }, 250);
+  }, [isClosing, onClose]);
 
   useEffect(() => {
     setIsOpen(true);
@@ -25,7 +35,7 @@ export function useModalLifecycle({
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
-        onClose();
+        handleClose();
       }
     };
 
@@ -38,7 +48,7 @@ export function useModalLifecycle({
       document.documentElement.style.overflow = "";
       document.body.style.overflow = "";
     };
-  }, [onClose]);
+  }, [handleClose]);
 
-  return { isOpen };
+  return { isOpen, isClosing, handleClose };
 }
