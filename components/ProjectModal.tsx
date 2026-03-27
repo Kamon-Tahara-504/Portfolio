@@ -19,7 +19,7 @@ interface ProjectModalProps {
 
 export default function ProjectModal({ project, onClose }: ProjectModalProps) {
   const viewContext = useContext(ViewContext);
-  const { isOpen } = useModalLifecycle({
+  const { isOpen, isClosing, handleClose } = useModalLifecycle({
     onClose,
     setIsModalOpen: viewContext?.setIsModalOpen,
   });
@@ -36,21 +36,25 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
   return (
     <div
       className={`fixed inset-0 z-[100] flex items-center justify-center bg-black/70 backdrop-blur-md p-4 transition-opacity duration-300 ease-out ${
-        isOpen ? "opacity-100" : "opacity-0"
+        isOpen && !isClosing ? "opacity-100" : "opacity-0"
       }`}
-      onClick={onClose}
+      onClick={handleClose}
       onTouchMove={handleTouchMove}
       onWheel={handleWheel}
     >
       <div
-        className={`relative w-full max-w-[95vw] md:max-w-[82vw] h-[92vh] md:h-[85vh] max-h-[92vh] md:max-h-[85vh] bg-white border border-black transition-all duration-300 ease-out select-none ${
-          isOpen ? "opacity-100 scale-100" : "opacity-0 scale-95"
+        className={`relative w-full max-w-[95vw] md:max-w-[82vw] h-[92vh] md:h-[85vh] max-h-[92vh] md:max-h-[85vh] bg-white border border-black select-none ${
+          isClosing
+            ? "animate-tv-close"
+            : isOpen
+            ? "animate-tv-open"
+            : "scale-y-0 opacity-0"
         }`}
         onClick={(e) => e.stopPropagation()}
       >
         {/* 閉じるボタン */}
         <button
-          onClick={onClose}
+          onClick={handleClose}
           className="absolute right-4 top-4 z-10 flex h-10 w-10 items-center justify-center border border-black bg-white text-black transition-colors hover:bg-black/5"
           aria-label="Close modal"
         >

@@ -27,7 +27,7 @@ interface FormErrors {
 
 export default function ContactModal({ onClose }: ContactModalProps) {
   const viewContext = useContext(ViewContext);
-  const { isOpen } = useModalLifecycle({
+  const { isOpen, isClosing, handleClose } = useModalLifecycle({
     onClose,
     setIsModalOpen: viewContext?.setIsModalOpen,
   });
@@ -122,7 +122,7 @@ export default function ContactModal({ onClose }: ContactModalProps) {
 
       // 3秒後にモーダルを閉じる
       setTimeout(() => {
-        onClose();
+        handleClose();
       }, 3000);
     } catch (error) {
       console.error("Email送信エラー:", error);
@@ -143,21 +143,25 @@ export default function ContactModal({ onClose }: ContactModalProps) {
   return (
     <div
       className={`fixed inset-0 z-[100] flex items-center justify-center bg-black/70 backdrop-blur-md p-4 transition-opacity duration-300 ease-out ${
-        isOpen ? "opacity-100" : "opacity-0"
+        isOpen && !isClosing ? "opacity-100" : "opacity-0"
       }`}
-      onClick={onClose}
+      onClick={handleClose}
       onTouchMove={handleTouchMove}
       onWheel={handleWheel}
     >
       <div
-        className={`relative max-h-[92vh] w-full max-w-2xl overflow-y-auto bg-white border border-black transition-all duration-300 ease-out ${
-          isOpen ? "opacity-100 scale-100" : "opacity-0 scale-95"
+        className={`relative max-h-[92vh] w-full max-w-2xl overflow-y-auto bg-white border border-black ${
+          isClosing
+            ? "animate-tv-close"
+            : isOpen
+            ? "animate-tv-open"
+            : "scale-y-0 opacity-0"
         }`}
         onClick={(e) => e.stopPropagation()}
       >
         {/* 閉じるボタン */}
         <button
-          onClick={onClose}
+          onClick={handleClose}
           className="absolute right-4 top-4 z-10 flex h-10 w-10 items-center justify-center border border-black bg-white text-black transition-colors hover:bg-black/5"
           aria-label="モーダルを閉じる"
         >
@@ -183,7 +187,7 @@ export default function ContactModal({ onClose }: ContactModalProps) {
             <div className="flex gap-4">
               <button
                 type="button"
-                onClick={onClose}
+                onClick={handleClose}
                 className="flex-1 border border-black bg-white px-6 py-3 text-sm font-semibold text-black transition-colors hover:bg-black/5 md:text-base"
                 disabled={isSubmitting}
               >
