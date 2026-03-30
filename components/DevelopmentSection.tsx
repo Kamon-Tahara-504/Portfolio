@@ -28,10 +28,10 @@ export default function DevelopmentSection({
       id="development"
       className="relative border-b border-black pt-24 pb-12 md:pt-28 md:pb-28"
     >
-      <div className="mx-auto max-w-7xl px-6">
+      <div className="section-container-responsive mx-auto max-w-7xl px-6">
         <h2
           ref={titleRef.ref as React.RefObject<HTMLHeadingElement>}
-          className={`mb-20 text-center text-4xl font-bold tracking-tight md:text-5xl fade-in-from-left section-title-blink ${titleRef.isVisible ? "visible" : ""}`}
+          className={`mb-20 text-center text-4xl font-bold tracking-tight md:text-5xl fade-in-from-left section-title-blink section-title-responsive ${titleRef.isVisible ? "visible" : ""}`}
         >
           Development
         </h2>

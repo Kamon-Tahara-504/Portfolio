@@ -75,10 +75,10 @@ export default function AboutSection({
           </button>
         </div>
       )}
-      <div className="mx-auto max-w-7-5xl px-6">
+      <div className="section-container-responsive mx-auto max-w-7-5xl px-6">
         <h2
           ref={titleRef.ref as React.RefObject<HTMLHeadingElement>}
-          className={`mb-12 text-center text-4xl font-bold tracking-tight md:text-5xl fade-in-from-left section-title-blink ${titleRef.isVisible ? "visible" : ""}`}
+          className={`mb-12 text-center text-4xl font-bold tracking-tight md:text-5xl fade-in-from-left section-title-blink section-title-responsive ${titleRef.isVisible ? "visible" : ""}`}
         >
           About
         </h2>
