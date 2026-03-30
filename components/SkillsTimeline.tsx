@@ -42,7 +42,7 @@ export default function SkillsTimeline({ skills }: SkillsTimelineProps) {
   } = layout;
 
   return (
-    <div className="mt-10 w-full mx-auto pb-5" style={{ maxWidth: "76rem" }}>
+    <div className="mt-10 w-full pb-5">
       <div className="relative w-full border border-black px-2 py-2">
         <TimelineHeader onPlay={handlePlay} isPlaying={isPlaying} />
         <div
