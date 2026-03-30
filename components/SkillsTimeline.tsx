@@ -43,7 +43,7 @@ export default function SkillsTimeline({ skills }: SkillsTimelineProps) {
 
   return (
     <div className="mt-10 w-full pb-5">
-      <div className="relative w-full border border-black px-2 py-2">
+      <div className="relative w-full border border-black p-4 md:p-6">
         <TimelineHeader onPlay={handlePlay} isPlaying={isPlaying} />
         <div
           ref={scrollContainerRef}
@@ -56,7 +56,7 @@ export default function SkillsTimeline({ skills }: SkillsTimelineProps) {
           }}
         >
           <div
-            className="relative mx-auto px-4"
+            className="relative mx-auto px-2 md:px-4"
             style={{
               height: `${timelineHeight}px`,
               minWidth: `${minTimelineWidth}px`,

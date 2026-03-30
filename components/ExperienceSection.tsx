@@ -64,20 +64,22 @@ export default function ExperienceSection({
       className="relative border-b border-black pt-24 pb-24 md:pt-28 md:pb-56"
     >
       <GridPattern className="opacity-20" size={60} strokeWidth={0.5} />
-      <div className="relative mx-auto max-w-3-5xl px-6">
+      <div className="section-container-responsive relative mx-auto max-w-7-5xl px-6">
         <h2
           ref={titleRef.ref as React.RefObject<HTMLHeadingElement>}
-          className={`mb-10 text-center text-3xl font-bold tracking-tight md:mb-12 md:text-5xl fade-in-from-left section-title-blink ${titleRef.isVisible ? "visible" : ""}`}
+          className={`mb-10 text-center text-3xl font-bold tracking-tight md:mb-12 md:text-5xl fade-in-from-left section-title-blink section-title-responsive ${titleRef.isVisible ? "visible" : ""}`}
         >
           Experience
         </h2>
-        <div className="relative">
-          {/* タイムラインの縦線 */}
-          <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-black/30 md:left-8" />
-          <div className="space-y-12 md:space-y-16">
-            {experience.map((exp, index) => (
-              <ExperienceItem key={exp.id} exp={exp} index={index} />
-            ))}
+        <div className="mx-auto w-full max-w-2xl">
+          <div className="relative">
+            {/* タイムラインの縦線 */}
+            <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-black/30 md:left-8" />
+            <div className="space-y-12 md:space-y-16">
+              {experience.map((exp, index) => (
+                <ExperienceItem key={exp.id} exp={exp} index={index} />
+              ))}
+            </div>
           </div>
         </div>
       </div>

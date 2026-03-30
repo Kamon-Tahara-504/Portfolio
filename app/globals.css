@@ -374,6 +374,20 @@ body::-webkit-scrollbar-thumb:hover {
     0 0 0 1px rgba(255, 255, 255, 0.08) inset;
 }
 
+/* 大画面(2K/4K)での控えめ拡大 */
+@media (min-width: 1600px) {
+  .section-container-responsive {
+    max-width: min(92vw, 96rem) !important;
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+  }
+
+  .section-title-responsive {
+    font-size: 3.5rem !important;
+    line-height: 1.05;
+  }
+}
+
 /* モーダル: TV電源ON/OFF風（中央線から上下へ展開） */
 @keyframes tv-open {
   0% {
