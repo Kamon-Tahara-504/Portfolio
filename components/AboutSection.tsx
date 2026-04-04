@@ -55,11 +55,11 @@ export default function AboutSection({
           <button
             type="button"
             onClick={viewContext.enterHero}
-            className="group inline-flex items-center gap-2 rounded-full border border-black px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-black transition-all hover:bg-black hover:text-white"
+            className="group inline-flex items-center gap-2 rounded-full border-2 border-black bg-white px-4 py-1.5 text-xs font-bold uppercase tracking-[0.25em] text-black shadow-lg transition-[border-color,transform,box-shadow] duration-300 hover:scale-105 hover:border-neutral-500 active:scale-[1.02]"
             aria-label="トップに戻る"
           >
             <svg
-              className="h-3 w-3 transition-transform group-hover:-translate-x-1"
+              className="h-3 w-3 transition-transform duration-300 group-hover:-translate-x-1"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
