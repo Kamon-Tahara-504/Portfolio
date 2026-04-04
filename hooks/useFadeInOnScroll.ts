@@ -6,10 +6,16 @@ interface UseFadeInOnScrollOptions {
   threshold?: number;
   rootMargin?: string;
   delay?: number;
+  once?: boolean;
 }
 
 export function useFadeInOnScroll(options: UseFadeInOnScrollOptions = {}) {
-  const { threshold = 0.1, rootMargin = '0px 0px -50px 0px', delay = 0 } = options;
+  const {
+    threshold = 0.1,
+    rootMargin = '0px 0px -50px 0px',
+    delay = 0,
+    once = true,
+  } = options;
   const [isVisible, setIsVisible] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
   const elementRef = useRef<HTMLElement>(null);
@@ -39,6 +45,9 @@ export function useFadeInOnScroll(options: UseFadeInOnScrollOptions = {}) {
             delayTimeoutRef.current = setTimeout(() => {
               setIsVisible(true);
             }, delay);
+          } else if (!once) {
+            // スクロールアウト時に非表示へ戻し、再入場で再アニメーションさせる
+            setIsVisible(false);
           }
         });
       },
@@ -58,7 +67,7 @@ export function useFadeInOnScroll(options: UseFadeInOnScrollOptions = {}) {
         observer.unobserve(element);
       }
     };
-  }, [threshold, rootMargin, delay, isMounted]);
+  }, [threshold, rootMargin, delay, once, isMounted]);
 
   return { ref: elementRef, isVisible };
 }
