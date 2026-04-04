@@ -17,7 +17,7 @@ export default function DesktopNav({
 }) {
   return (
     <nav
-      className={`fixed right-10 top-1/2 z-50 -translate-y-1/2 hidden lg:block transition-opacity duration-500 ease-in-out ${className}`}
+      className={`fixed right-4 top-1/2 z-50 -translate-y-1/2 hidden lg:block transition-opacity duration-500 ease-in-out ${className}`}
     >
       <div className="flex flex-col items-center gap-3 rounded-full border border-white/15 bg-neutral-900/92 p-1.5 backdrop-blur-xl shadow-lg">
         {sections.map((section) => {
