@@ -10,6 +10,7 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-ink: var(--font-dancing-script);
   --max-width-7-5xl: 85rem;
   --max-width-3-5xl: 52rem;
 }
@@ -22,7 +23,8 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-* {
+/* 既定の枠色（特異度0）— border-red 等のユーティリティが上書きできるようにする */
+:where(*) {
   border-color: rgba(0, 0, 0, 0.1);
 }
 
@@ -128,6 +130,19 @@ body::-webkit-scrollbar-thumb:hover {
 }
 
 .fade-in-from-left.visible {
+  opacity: 1 !important;
+  transform: translateX(0) !important;
+}
+
+/* 右からフェードイン（セクション補助ラベル用） */
+.fade-in-from-right {
+  opacity: 0 !important;
+  transform: translateX(30px) !important;
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  will-change: opacity, transform;
+}
+
+.fade-in-from-right.visible {
   opacity: 1 !important;
   transform: translateX(0) !important;
 }
@@ -427,4 +442,46 @@ body::-webkit-scrollbar-thumb:hover {
   animation: tv-close 0.25s ease-in forwards;
   transform-origin: center;
   will-change: transform, filter;
+}
+
+/* Hero Error Animation */
+@keyframes errorPop {
+  0%   { opacity: 0; transform: scale(0.35) rotate(-10deg); }
+  60%  { transform: scale(1.12) rotate(2deg); }
+  80%  { transform: scale(0.96) rotate(-1deg); }
+  100% { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+
+.animate-error-pop {
+  animation: errorPop 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes resolvedFadeIn {
+  from { opacity: 0; transform: translateY(28px) scale(0.95); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.animate-resolved-fade-in {
+  animation: resolvedFadeIn 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Resolved後に上下映像をインさせる（フェードなし） */
+@keyframes video-strip-in-top {
+  from { transform: translateY(-100%); }
+  to { transform: translateY(0); }
+}
+
+@keyframes video-strip-in-bottom {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+.animate-video-strip-in-top {
+  animation: video-strip-in-top 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  will-change: transform;
+}
+
+.animate-video-strip-in-bottom {
+  animation: video-strip-in-bottom 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  will-change: transform;
 }
