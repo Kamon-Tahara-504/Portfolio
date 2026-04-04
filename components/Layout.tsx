@@ -10,7 +10,6 @@ import React, {
 } from "react";
 import Navigation from "./Navigation";
 import BubbleParticles from "./BubbleParticles";
-import FixedVideoBackground from "./FixedVideoBackground";
 
 export type ViewMode = "hero" | "main";
 
@@ -95,9 +94,8 @@ export default function Layout({ children, hero, mainContent }: LayoutProps) {
 
   return (
     <ViewContext.Provider value={viewContextValue}>
-      <FixedVideoBackground />
-      <div className="relative z-10 min-h-screen text-black">
-        <div className="absolute inset-0 z-10 pointer-events-none" aria-hidden="true">
+      <div className="relative z-10 min-h-screen bg-white text-black">
+        <div className="fixed inset-0 z-30 pointer-events-none" aria-hidden="true">
           <BubbleParticles />
         </div>
         <div className="relative z-20">
