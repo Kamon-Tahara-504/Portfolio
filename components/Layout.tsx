@@ -100,7 +100,13 @@ export default function Layout({ children, hero, mainContent }: LayoutProps) {
         </div>
         <div className="relative z-20">
           <Navigation />
-          <main>
+          <main
+            className={
+              useViewSwitch && view === "hero"
+                ? undefined
+                : "lg:pl-[var(--nav-desktop-gutter)] lg:pr-[var(--nav-desktop-gutter)]"
+            }
+          >
             {useViewSwitch
               ? view === "hero"
                 ? hero

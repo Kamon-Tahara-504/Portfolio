@@ -3,6 +3,8 @@
 :root {
   --background: #ffffff;
   --foreground: #000000;
+  /* デスクトップ（lg+）で main 左右に同値を付与。右は固定ナビ分、左は視覚的バランス用 */
+  --nav-desktop-gutter: 2.5rem;
 }
 
 @theme inline {
