@@ -71,7 +71,7 @@ export default function ExperienceSection({
         >
           Experience
         </h2>
-        <div className="mx-auto w-full max-w-2xl">
+        <div className="mx-auto w-full max-w-5xl md:ml-auto md:mr-0">
           <div className="relative">
             {/* タイムラインの縦線 */}
             <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-black/30 md:left-8" />
