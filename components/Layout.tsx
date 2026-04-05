@@ -10,6 +10,7 @@ import React, {
 } from "react";
 import Navigation from "./Navigation";
 import BubbleParticles from "./BubbleParticles";
+import AssetWarmup from "./AssetWarmup";
 
 export type ViewMode = "hero" | "main";
 
@@ -94,6 +95,7 @@ export default function Layout({ children, hero, mainContent }: LayoutProps) {
 
   return (
     <ViewContext.Provider value={viewContextValue}>
+      <AssetWarmup />
       <div className="relative z-10 min-h-screen bg-white text-black">
         <div className="fixed inset-0 z-30 pointer-events-none" aria-hidden="true">
           <BubbleParticles />
