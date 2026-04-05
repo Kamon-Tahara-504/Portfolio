@@ -181,7 +181,7 @@ export default function HeroSection({ nameEn }: HeroSectionProps) {
       {nameEn && (
         <div
           className={`relative z-10 flex flex-col items-center gap-1 px-6 text-center select-none pointer-events-none ${
-            phase === "resolved" ? "py-[27vh]" : ""
+            phase === "resolved" ? "py-[27vh] animate-center-tilt" : ""
           }`}
         >
           {/* Portfolio label */}

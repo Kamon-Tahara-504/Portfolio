@@ -487,3 +487,15 @@ body::-webkit-scrollbar-thumb:hover {
   animation: video-strip-in-bottom 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
   will-change: transform;
 }
+
+/* 映像ストリップの斜め角度に合わせて中央コンテンツを傾ける */
+@keyframes centerTilt {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(2.5deg); }
+}
+
+.animate-center-tilt {
+  /* 短時間 + わずかなオーバーシュートで「ポッ」と傾く */
+  animation: centerTilt 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.32s both;
+  will-change: transform;
+}
