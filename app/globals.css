@@ -152,13 +152,13 @@ body::-webkit-scrollbar-thumb:hover {
 /* スキルタイムラインのアニメーション */
 @keyframes wobble {
   0% {
-    transform: translateX(4px) translateY(0); /* 右（大きく） */
+    transform: translateX(2px) translateY(0); /* 右（控えめ） */
   }
   50% {
-    transform: translateX(-4px) translateY(0); /* 左　戻る */
+    transform: translateX(-2px) translateY(0); /* 左（控えめ） */
   }
   100% {
-    transform: translateX(4px) translateY(0); /* 右（大きく） */
+    transform: translateX(2px) translateY(0); /* 右（控えめ） */
   }
 }
 

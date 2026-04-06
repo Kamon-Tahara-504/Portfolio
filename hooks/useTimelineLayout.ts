@@ -98,12 +98,12 @@ export function useTimelineLayout(timelineSkills: TimelineSkill[]) {
 
   const skillPositions: SkillPosition[] = sortedSkills.map((skill) => {
     const start = parseDate(skill.startDate);
-    const end = skill.endDate ? parseDate(skill.endDate) : currentMonth;
+    const end = skill.endDate ? parseDate(skill.endDate) : currentMonth + 0.5;
 
     const leftPx = (start - minMonth) * PIXELS_PER_MONTH;
     const monthSpan = skill.endDate
       ? Math.max(1, end - start)
-      : end - start + 1;
+      : Math.max(1, end - start);
     const widthPx = monthSpan * PIXELS_PER_MONTH;
     const left = (leftPx / timelineWidthPx) * 100;
     const width = (widthPx / timelineWidthPx) * 100;
