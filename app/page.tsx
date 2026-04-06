@@ -1,10 +1,10 @@
 import Layout from "@/components/Layout";
-import HeroSection from "@/components/HeroSection";
-import AboutSection from "@/components/AboutSection";
-import ExperienceSection from "@/components/ExperienceSection";
-import SkillsSection from "@/components/SkillsSection";
-import ProjectsSection from "@/components/ProjectsSection";
-import DevelopmentSection from "@/components/DevelopmentSection";
+import HeroSection from "@/components/hero/HeroSection";
+import AboutSection from "@/components/about/AboutSection";
+import ExperienceSection from "@/components/experience/ExperienceSection";
+import SkillsSection from "@/components/skills/SkillsSection";
+import ProjectsSection from "@/components/projects/ProjectsSection";
+import DevelopmentSection from "@/components/development/DevelopmentSection";
 import { HeroData, AboutData, Experience, Skills } from "@/types/profile";
 import { Project } from "@/types/project";
 import { Development } from "@/types/development";

@@ -2,7 +2,7 @@
 
 import { useContext } from "react";
 import { Project } from "@/types/project";
-import { ViewContext } from "./Layout";
+import { ViewContext } from "@/components/Layout";
 import ProjectModalDate from "./ProjectModal/ProjectModalDate";
 import ProjectModalImage from "./ProjectModal/ProjectModalImage";
 import ProjectModalLinks from "./ProjectModal/ProjectModalLinks";

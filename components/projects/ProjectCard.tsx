@@ -2,7 +2,9 @@
 
 import React from "react";
 import ProtectedImage from "@/components/ProtectedImage";
+import ProjectCardDescription from "./ProjectCardDescription";
 import { Project } from "@/types/project";
+import { isComingSoonProject } from "@/lib/projectStatus";
 
 // basePathの定義（開発環境では空、本番環境では'/Portfolio'）
 const basePath = process.env.NODE_ENV === 'production' ? '/Portfolio' : '';
@@ -20,24 +22,39 @@ export default function ProjectCard({
   index,
   shouldAnimate,
 }: ProjectCardProps) {
+  const isComingSoon = isComingSoonProject(project);
   const categoryLabel = project.category === "web" ? "Web" : "Mobile";
   const productionLabel =
     project.productionType === "collaborative" ? "共同制作" : "自主制作";
   const descriptionText = project.catchphrase ?? project.description;
   const animationClass = `fade-in-on-scroll ${shouldAnimate ? "visible" : ""}`;
+  const cardImagePath = isComingSoon
+    ? "/images/projects/PlaceHolder.png"
+    : project.images[0];
+  const cardImageSrc = cardImagePath.startsWith("/")
+    ? `${basePath}${cardImagePath}`
+    : cardImagePath;
+  const interactiveClass = isComingSoon
+    ? "cursor-default"
+    : "hover:scale-[1.02] hover:border-neutral-500 hover:shadow-[0_14px_30px_rgba(0,0,0,0.22)] active:scale-[1.01] active:shadow-[0_8px_18px_rgba(0,0,0,0.14)]";
 
   return (
     <button
-      onClick={() => onClick?.(project)}
-      className={`group relative block w-full aspect-[3/4] overflow-hidden rounded-2xl md:rounded-3xl bg-black/5 text-left border-2 border-black shadow-[0_10px_24px_rgba(0,0,0,0.18)] transition-[transform,box-shadow,border-color,filter] duration-300 hover:scale-[1.02] hover:border-neutral-500 hover:shadow-[0_14px_30px_rgba(0,0,0,0.22)] active:scale-[1.01] active:shadow-[0_8px_18px_rgba(0,0,0,0.14)] ${animationClass}`}
+      type="button"
+      onClick={() => {
+        if (isComingSoon) return;
+        onClick?.(project);
+      }}
+      className={`group relative block w-full aspect-[3/4] overflow-hidden rounded-2xl md:rounded-3xl bg-black/5 text-left border-2 border-black shadow-[0_10px_24px_rgba(0,0,0,0.18)] transition-[transform,box-shadow,border-color,filter] duration-300 ${interactiveClass} ${animationClass}`}
+      aria-disabled={isComingSoon}
       // 表示時は上から順に100ms刻み、巻き戻し時も同じディレイで戻る
       style={{ transitionDelay: `${index * 100}ms` }}
     >
       {/* カード全体に画像を表示（フルブリード） */}
-      {project.images && project.images.length > 0 ? (
+      {cardImagePath ? (
         <ProtectedImage
           wrapperClassName="absolute inset-0"
-          src={project.images[0].startsWith('/') ? `${basePath}${project.images[0]}` : project.images[0]}
+          src={cardImageSrc}
           alt={project.title}
           fill
           className="object-cover"
@@ -62,12 +79,10 @@ export default function ProjectCard({
         <h3 className="mb-1 md:mb-2 text-sm md:text-xl font-bold tracking-tight text-white line-clamp-1">
           {project.title}
         </h3>
-        <div className="h-0 overflow-hidden opacity-0 transition-[height,opacity] duration-300 group-hover:h-4 group-hover:opacity-100 md:group-hover:h-5 group-focus-visible:h-4 group-focus-visible:opacity-100 md:group-focus-visible:h-5">
-          <div className="project-desc-marquee-track flex min-w-max items-center gap-8 text-[10px] font-normal text-white/80 md:text-sm">
-            <span className="whitespace-nowrap">{descriptionText}</span>
-            <span className="whitespace-nowrap">{descriptionText}</span>
-          </div>
-        </div>
+        <ProjectCardDescription
+          text={descriptionText}
+          isComingSoon={isComingSoon}
+        />
       </div>
     </button>
   );

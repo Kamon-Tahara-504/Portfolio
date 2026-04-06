@@ -2,7 +2,7 @@
 
 import { useContext, useState } from "react";
 import emailjs from "@emailjs/browser";
-import { ViewContext } from "./Layout";
+import { ViewContext } from "@/components/Layout";
 import ContactModalStatus from "./ContactModal/ContactModalStatus";
 import ContactFormFields from "./ContactModal/ContactFormFields";
 import { useModalLifecycle } from "@/hooks/useModalLifecycle";
