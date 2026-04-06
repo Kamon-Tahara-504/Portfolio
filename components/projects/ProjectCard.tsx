@@ -2,7 +2,7 @@
 
 import React from "react";
 import ProtectedImage from "@/components/ProtectedImage";
-import ProjectCardDescription from "@/components/ProjectCardDescription";
+import ProjectCardDescription from "./ProjectCardDescription";
 import { Project } from "@/types/project";
 import { isComingSoonProject } from "@/lib/projectStatus";
 

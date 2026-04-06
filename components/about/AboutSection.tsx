@@ -2,14 +2,13 @@
 
 import { useState, useContext } from "react";
 import ProtectedImage from "@/components/ProtectedImage";
-import { ViewContext } from "./Layout";
+import { ViewContext } from "@/components/Layout";
 import Link from "next/link";
 import { About, Contact } from "@/types/profile";
 import { useFadeInOnScroll } from "@/hooks/useFadeInOnScroll";
 import ContactModal from "./ContactModal";
 
-// basePathの定義（開発環境では空、本番環境では'/Portfolio'）
-const basePath = process.env.NODE_ENV === 'production' ? '/Portfolio' : '';
+const basePath = process.env.NODE_ENV === "production" ? "/Portfolio" : "";
 
 interface AboutSectionProps {
   name: string;
@@ -28,24 +27,15 @@ export default function AboutSection({
 }: AboutSectionProps) {
   const viewContext = useContext(ViewContext);
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
-
-  // 英語名を分割: "Tahara Kamon" -> ["Tahara", "kamon"]
-  const nameEnParts = nameEn?.split(' ').map((part, index) => 
-    index === 0 ? part : part.toLowerCase()
-  ) || [];
-
+  const nameEnParts = nameEn?.split(" ").map((part, index) => (index === 0 ? part : part.toLowerCase())) || [];
   const titleRef = useFadeInOnScroll({ delay: 0 });
   const imageRef = useFadeInOnScroll({ delay: 100 });
   const contentRef = useFadeInOnScroll({ delay: 200 });
   const backToTopRef = useFadeInOnScroll({ delay: 0 });
+  const defaultImageSrc = about.image.startsWith("/") ? `${basePath}${about.image}` : about.image;
 
-  const defaultImageSrc =
-    about.image.startsWith("/") ? `${basePath}${about.image}` : about.image;
   return (
-    <section
-      id="about"
-      className="relative border-b border-black pt-8 pb-24 md:pt-20 md:pb-56"
-    >
+    <section id="about" className="relative border-b border-black pt-8 pb-24 md:pt-20 md:pb-56">
       {viewContext?.enterHero && (
         <div
           ref={backToTopRef.ref as React.RefObject<HTMLDivElement>}
@@ -82,7 +72,6 @@ export default function AboutSection({
           About
         </h2>
         <div className="flex flex-col gap-6 md:flex-row md:items-center md:gap-16">
-          {/* 4:3比率の画像 - 大きく左寄せ */}
           <div
             ref={imageRef.ref as React.RefObject<HTMLDivElement>}
             className={`relative aspect-[4/3] w-full flex-shrink-0 overflow-hidden border border-black bg-black/5 shadow-[0_10px_24px_rgba(0,0,0,0.16)] md:w-1/2 fade-in-from-left ${
@@ -98,29 +87,19 @@ export default function AboutSection({
               sizes="(max-width: 768px) 100vw, 50vw"
             />
           </div>
-          {/* テキストコンテンツ */}
-            <div 
+          <div
             ref={contentRef.ref as React.RefObject<HTMLDivElement>}
-            className={`flex-1 space-y-6 fade-in-from-left ${contentRef.isVisible ? 'visible' : ''}`}
-            >
+            className={`flex-1 space-y-6 fade-in-from-left ${contentRef.isVisible ? "visible" : ""}`}
+          >
             <div className="space-y-1">
               <div className="flex items-center gap-4 flex-wrap">
-                <h3 className="text-3xl font-bold tracking-tight md:text-4xl">
-                  {name}
-                </h3>
-                {age && (
-                  <span className="text-lg font-semibold text-black/70 md:text-xl whitespace-nowrap">
-                    {age}歳
-                  </span>
-                )}
+                <h3 className="text-3xl font-bold tracking-tight md:text-4xl">{name}</h3>
+                {age && <span className="text-lg font-semibold text-black/70 md:text-xl whitespace-nowrap">{age}歳</span>}
               </div>
               {nameEnParts.length > 0 && (
                 <div className="flex items-baseline gap-2">
                   {nameEnParts.map((part, index) => (
-                    <span
-                      key={index}
-                      className="text-sm font-semibold tracking-tight text-black/60 md:text-base"
-                    >
+                    <span key={index} className="text-sm font-semibold tracking-tight text-black/60 md:text-base">
                       {part}
                     </span>
                   ))}
@@ -128,25 +107,19 @@ export default function AboutSection({
               )}
             </div>
             <div>
-              {/* 自己紹介文 */}
               <div className="max-w-prose">
                 <div className="space-y-4 text-xs font-semibold leading-[1.75] text-black/80 md:text-sm md:leading-[1.8]">
-                {about.description
-                  .split(/\n\n+/)
-                  .map((block) => block.trim())
-                  .filter(Boolean)
-                  .map((block, index) => (
-                    <p
-                      key={index}
-                      className="whitespace-pre-line break-keep break-words"
-                    >
-                      {block}
-                    </p>
-                  ))}
+                  {about.description
+                    .split(/\n\n+/)
+                    .map((block) => block.trim())
+                    .filter(Boolean)
+                    .map((block, index) => (
+                      <p key={index} className="whitespace-pre-line break-keep break-words">
+                        {block}
+                      </p>
+                    ))}
                 </div>
               </div>
-
-              {/* パーソナル情報タグ */}
               <div className="flex flex-wrap gap-2 border-b border-black/20 pb-5 pt-4 md:pb-6">
                 {about.birthDate && (
                   <span className="inline-flex items-center gap-1.5 rounded-full border border-black/20 bg-black/5 px-3 py-1 text-xs">
@@ -167,9 +140,7 @@ export default function AboutSection({
                   </span>
                 )}
               </div>
-
             </div>
-            {/* 連絡先情報のボタン（GitHub、お問い合わせ） */}
             {contact && (
               <div className="flex flex-wrap gap-4">
                 {contact?.github && (
@@ -179,12 +150,7 @@ export default function AboutSection({
                     rel="noopener noreferrer"
                     className="group inline-flex items-center gap-2 rounded-full border-2 border-black bg-black px-6 py-3 text-sm font-bold text-white shadow-lg transition-[transform,box-shadow,background-color] duration-300 hover:scale-105 hover:bg-black/90 hover:shadow-xl active:scale-[1.02] active:shadow-md md:text-base"
                   >
-                    <svg
-                      className="h-5 w-5 transition-transform duration-300 group-hover:scale-110"
-                      fill="currentColor"
-                      viewBox="0 0 24 24"
-                      aria-hidden="true"
-                    >
+                    <svg className="h-5 w-5 transition-transform duration-300 group-hover:scale-110" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                       <path
                         fillRule="evenodd"
                         d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
@@ -199,13 +165,7 @@ export default function AboutSection({
                     onClick={() => setIsContactModalOpen(true)}
                     className="group inline-flex items-center gap-2 rounded-full border-2 border-black bg-white px-6 py-3 text-sm font-bold text-black shadow-lg transition-[border-color,transform,box-shadow,background-color] duration-300 hover:scale-105 hover:border-neutral-500 hover:bg-neutral-50 hover:shadow-xl active:scale-[1.02] active:shadow-md md:text-base"
                   >
-                    <svg
-                      className="h-5 w-5 transition-transform duration-300 group-hover:scale-110"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      aria-hidden="true"
-                    >
+                    <svg className="h-5 w-5 transition-transform duration-300 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -221,10 +181,7 @@ export default function AboutSection({
           </div>
         </div>
       </div>
-      {isContactModalOpen && (
-        <ContactModal onClose={() => setIsContactModalOpen(false)} />
-      )}
+      {isContactModalOpen && <ContactModal onClose={() => setIsContactModalOpen(false)} />}
     </section>
   );
 }
-

@@ -20,12 +20,7 @@ function SkillsTypewriterCaption() {
     <div className="mb-4 flex justify-center px-4 md:px-0">
       <p className="inline-block text-center text-[10px] font-semibold text-black/70 whitespace-nowrap md:text-base" aria-live="polite">
         {displayText}
-        {showCursor && (
-          <span
-            className="typewriter-cursor ml-0.5 inline-block h-[1em] w-0.5 align-middle bg-black/70 animate-cursor-blink"
-            aria-hidden
-          />
-        )}
+        {showCursor && <span className="typewriter-cursor ml-0.5 inline-block h-[1em] w-0.5 align-middle bg-black/70 animate-cursor-blink" aria-hidden />}
       </p>
     </div>
   );
@@ -54,31 +49,23 @@ function SkillItem({ skill, isCategoryVisible, index }: SkillItemProps) {
     isVisible: isCategoryVisible,
   });
 
-  const skillNameRef = useFadeInOnScroll({ 
-    delay: 100 * (index + 1) 
-  });
+  const skillNameRef = useFadeInOnScroll({ delay: 100 * (index + 1) });
 
   return (
     <div>
       <div className="mb-3 flex items-center justify-between">
         <div className="flex items-center gap-3">
           {skill.name ? (
-            <span
-              className="h-2 w-2 flex-shrink-0 rounded-full md:h-2.5 md:w-2.5"
-              style={{ backgroundColor: getGitHubLanguageColor(skill.name) }}
-              aria-hidden
-            />
+            <span className="h-2 w-2 flex-shrink-0 rounded-full md:h-2.5 md:w-2.5" style={{ backgroundColor: getGitHubLanguageColor(skill.name) }} aria-hidden />
           ) : null}
-          <span 
+          <span
             ref={skillNameRef.ref as React.RefObject<HTMLSpanElement>}
-            className={`text-sm font-semibold text-black md:text-base fade-in-from-left ${skillNameRef.isVisible ? 'visible' : ''}`}
+            className={`text-sm font-semibold text-black md:text-base fade-in-from-left ${skillNameRef.isVisible ? "visible" : ""}`}
           >
             {skill.name}
           </span>
         </div>
-        <span className="text-xs font-semibold text-black/60 md:text-sm">
-          {animatedValue}%
-        </span>
+        <span className="text-xs font-semibold text-black/60 md:text-sm">{animatedValue}%</span>
       </div>
       <div className="h-1.5 w-full bg-black/10 shadow-[inset_0_1px_2px_rgba(0,0,0,0.2)]">
         <div
@@ -97,28 +84,17 @@ function SkillCategoryItem({ category, index }: SkillCategoryItemProps) {
   const categoryRef = useFadeInOnScroll({ delay: 100 * (index + 1) });
 
   return (
-    <div 
-      ref={categoryRef.ref as React.RefObject<HTMLDivElement>}
-      className={`fade-in-on-scroll ${categoryRef.isVisible ? 'visible' : ''}`}
-    >
-      <h3 className="mb-8 text-2xl font-bold tracking-tight md:text-3xl">
-        {category.name}
-      </h3>
+    <div ref={categoryRef.ref as React.RefObject<HTMLDivElement>} className={`fade-in-on-scroll ${categoryRef.isVisible ? "visible" : ""}`}>
+      <h3 className="mb-8 text-2xl font-bold tracking-tight md:text-3xl">{category.name}</h3>
       <div className="space-y-6">
         {category.skills.map((skill, skillIndex) => (
-          <SkillItem 
-            key={skill.name} 
-            skill={skill} 
-            isCategoryVisible={categoryRef.isVisible}
-            index={skillIndex}
-          />
+          <SkillItem key={skill.name} skill={skill} isCategoryVisible={categoryRef.isVisible} index={skillIndex} />
         ))}
       </div>
     </div>
   );
 }
 
-// Backend 表示用: Django と Python を「Django / Python」1行にまとめる（タイムラインは別々のまま）
 function getBackendSkillsForDisplay(backend: Skill[]): Skill[] {
   const hasDjango = backend.some((s) => s.name === "Django");
   const hasPython = backend.some((s) => s.name === "Python");
@@ -152,10 +128,7 @@ export default function SkillsSection({ skills }: SkillsSectionProps) {
   const timelineRef = useFadeInOnScroll({ delay: 500 });
 
   return (
-    <section
-      id="skills"
-      className="relative border-b border-black pt-24 pb-24 md:pt-28 md:pb-56"
-    >
+    <section id="skills" className="relative border-b border-black pt-24 pb-24 md:pt-28 md:pb-56">
       <div className="section-container-responsive mx-auto max-w-7-5xl px-6">
         <h2
           ref={titleRef.ref as React.RefObject<HTMLHeadingElement>}
@@ -169,9 +142,9 @@ export default function SkillsSection({ skills }: SkillsSectionProps) {
             <SkillCategoryItem key={category.name} category={category} index={categoryIndex} />
           ))}
         </div>
-        <div 
+        <div
           ref={timelineRef.ref as React.RefObject<HTMLDivElement>}
-          className={`mt-20 fade-in-on-scroll ${timelineRef.isVisible ? 'visible' : ''}`}
+          className={`mt-20 fade-in-on-scroll ${timelineRef.isVisible ? "visible" : ""}`}
         >
           <SkillsTimeline skills={skills} />
         </div>

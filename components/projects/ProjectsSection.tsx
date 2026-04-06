@@ -16,10 +16,7 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
   const gridRef = useFadeInOnScroll({ delay: 200 });
 
   return (
-    <section
-      id="projects"
-      className="relative border-b border-black pt-24 pb-24 md:pt-28 md:pb-56"
-    >
+    <section id="projects" className="relative border-b border-black pt-24 pb-24 md:pt-28 md:pb-56">
       <div className="section-container-responsive mx-auto max-w-7-5xl px-6">
         <h2
           ref={titleRef.ref as React.RefObject<HTMLHeadingElement>}
@@ -27,9 +24,9 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
         >
           Projects
         </h2>
-        <div 
+        <div
           ref={gridRef.ref as React.RefObject<HTMLDivElement>}
-          className={`fade-in-on-scroll ${gridRef.isVisible ? 'visible' : ''}`}
+          className={`fade-in-on-scroll ${gridRef.isVisible ? "visible" : ""}`}
         >
           <ProjectGrid
             projects={projects}
@@ -38,13 +35,7 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
           />
         </div>
       </div>
-      {selectedProject && (
-        <ProjectModal
-          project={selectedProject}
-          onClose={() => setSelectedProject(null)}
-        />
-      )}
+      {selectedProject && <ProjectModal project={selectedProject} onClose={() => setSelectedProject(null)} />}
     </section>
   );
 }
-
