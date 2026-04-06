@@ -55,7 +55,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
         {/* 閉じるボタン */}
         <button
           onClick={handleClose}
-          className="absolute right-4 top-4 z-10 flex h-10 w-10 items-center justify-center border border-black bg-white text-black transition-colors hover:bg-black/5"
+          className="absolute right-4 top-4 z-10 flex h-10 w-10 items-center justify-center rounded-full border-2 border-black bg-white text-black shadow-md transition-[transform,box-shadow] duration-200 active:translate-y-0.5 active:shadow-sm"
           aria-label="Close modal"
         >
           <span className="text-2xl">×</span>

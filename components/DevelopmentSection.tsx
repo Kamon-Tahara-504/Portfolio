@@ -65,10 +65,10 @@ export default function DevelopmentSection({
                   href={development.repository.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex shrink-0 items-center gap-2 rounded-md border border-black bg-black px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-black/90 md:text-base"
+                  className="group inline-flex shrink-0 items-center gap-2 rounded-full border-2 border-black bg-black px-6 py-3 text-sm font-bold text-white shadow-lg transition-[transform,box-shadow,background-color] duration-300 hover:-translate-y-0.5 hover:bg-black/90 hover:shadow-xl active:translate-y-0.5 active:shadow-md md:text-base"
                 >
                   <svg
-                    className="h-5 w-5"
+                    className="h-5 w-5 transition-transform duration-300 group-hover:-translate-y-0.5"
                     fill="currentColor"
                     viewBox="0 0 24 24"
                     aria-hidden="true"
