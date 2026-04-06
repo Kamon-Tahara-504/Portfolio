@@ -311,25 +311,6 @@ body::-webkit-scrollbar-thumb:hover {
   }
 }
 
-/* コードスニペット 行ずつリビール */
-.code-snippet-line {
-  opacity: 0;
-  transform: translateY(8px);
-  transition: opacity 0.4s ease-out, transform 0.4s ease-out;
-}
-
-.code-snippet-reveal.visible .code-snippet-line {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .code-snippet-line {
-    opacity: 1;
-    transform: none;
-  }
-}
-
 /* Custom Scrollbar Styles */
 .overflow-x-auto::-webkit-scrollbar {
   height: 10px;
