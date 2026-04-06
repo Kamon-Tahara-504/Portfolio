@@ -5,7 +5,6 @@ import ProtectedImage from "@/components/ProtectedImage";
 import { ViewContext } from "./Layout";
 import Link from "next/link";
 import { About, Contact } from "@/types/profile";
-import EngineerExperienceCard from "./EngineerExperienceCard";
 import { useFadeInOnScroll } from "@/hooks/useFadeInOnScroll";
 import ContactModal from "./ContactModal";
 
@@ -86,7 +85,7 @@ export default function AboutSection({
           {/* 4:3比率の画像 - 大きく左寄せ */}
           <div
             ref={imageRef.ref as React.RefObject<HTMLDivElement>}
-            className={`relative aspect-[4/3] w-full flex-shrink-0 overflow-hidden border border-black bg-black/5 md:w-1/2 fade-in-from-left ${
+            className={`relative aspect-[4/3] w-full flex-shrink-0 overflow-hidden border border-black bg-black/5 shadow-[0_10px_24px_rgba(0,0,0,0.16)] md:w-1/2 fade-in-from-left ${
               imageRef.isVisible ? "visible" : ""
             }`}
           >
@@ -114,9 +113,6 @@ export default function AboutSection({
                     {age}歳
                   </span>
                 )}
-                <div className="hidden md:block">
-                  <EngineerExperienceCard />
-                </div>
               </div>
               {nameEnParts.length > 0 && (
                 <div className="flex items-baseline gap-2">
@@ -133,7 +129,8 @@ export default function AboutSection({
             </div>
             <div>
               {/* 自己紹介文 */}
-              <div className="max-w-prose space-y-4 text-xs font-semibold leading-[1.75] text-black/80 md:text-sm md:leading-[1.8]">
+              <div className="max-w-prose">
+                <div className="space-y-4 text-xs font-semibold leading-[1.75] text-black/80 md:text-sm md:leading-[1.8]">
                 {about.description
                   .split(/\n\n+/)
                   .map((block) => block.trim())
@@ -146,10 +143,11 @@ export default function AboutSection({
                       {block}
                     </p>
                   ))}
+                </div>
               </div>
 
               {/* パーソナル情報タグ */}
-              <div className="flex flex-wrap gap-2 pt-4">
+              <div className="flex flex-wrap gap-2 border-b border-black/20 pb-5 pt-4 md:pb-6">
                 {about.birthDate && (
                   <span className="inline-flex items-center gap-1.5 rounded-full border border-black/20 bg-black/5 px-3 py-1 text-xs">
                     <span className="font-bold text-black/50 text-[10px] md:text-xs">生年月日</span>
@@ -179,10 +177,10 @@ export default function AboutSection({
                     href={contact.github}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 rounded-md border border-black bg-black px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-black/90 md:text-base"
+                    className="group inline-flex items-center gap-2 rounded-full border-2 border-black bg-black px-6 py-3 text-sm font-bold text-white shadow-lg transition-[transform,box-shadow,background-color] duration-300 hover:-translate-y-0.5 hover:bg-black/90 hover:shadow-xl active:translate-y-0.5 active:shadow-md md:text-base"
                   >
                     <svg
-                      className="h-5 w-5"
+                      className="h-5 w-5 transition-transform duration-300 group-hover:-translate-y-0.5"
                       fill="currentColor"
                       viewBox="0 0 24 24"
                       aria-hidden="true"
@@ -199,10 +197,10 @@ export default function AboutSection({
                 {contact && (
                   <button
                     onClick={() => setIsContactModalOpen(true)}
-                    className="inline-flex items-center gap-2 rounded-md border border-black bg-white px-6 py-3 text-sm font-semibold text-black transition-colors hover:bg-black/5 md:text-base"
+                    className="group inline-flex items-center gap-2 rounded-full border-2 border-black bg-white px-6 py-3 text-sm font-bold text-black shadow-lg transition-[border-color,transform,box-shadow,background-color] duration-300 hover:-translate-y-0.5 hover:border-neutral-500 hover:bg-neutral-50 hover:shadow-xl active:translate-y-0.5 active:shadow-md md:text-base"
                   >
                     <svg
-                      className="h-5 w-5"
+                      className="h-5 w-5 transition-transform duration-300 group-hover:-translate-y-0.5"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
