@@ -50,7 +50,7 @@ export default function TimelineSkillBar({
       <div
         className="absolute left-0 rounded-full"
         style={{
-          width: endDate === null ? "calc(100% + 4px)" : "100%",
+          width: endDate === null ? "calc(100% - 1px)" : "100%",
           height: "2.5px",
           top: `${lineHeight}px`,
           backgroundColor: color,
@@ -73,7 +73,7 @@ export default function TimelineSkillBar({
           width: "10px",
           height: "10px",
           top: `${lineHeight - 4}px`,
-          right: endDate === null ? "-3px" : "0",
+          right: endDate === null ? "-1px" : "0",
           backgroundColor: color,
           border: "2.5px solid white",
           boxShadow: "0 0 0 1px black",
