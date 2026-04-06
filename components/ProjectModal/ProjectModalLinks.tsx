@@ -31,10 +31,10 @@ export default function ProjectModalLinks({
             href={links.github}
             target="_blank"
             rel="noopener noreferrer"
-            className="group inline-flex items-center gap-1.5 rounded-full border-2 border-black bg-black px-4 py-2 text-sm font-bold text-white shadow-md transition-[transform,box-shadow,background-color] duration-300 hover:-translate-y-0.5 hover:bg-black/90 hover:shadow-lg active:translate-y-0.5 active:shadow-sm"
+            className="group inline-flex items-center gap-1.5 rounded-full border-2 border-black bg-black px-4 py-2 text-sm font-bold text-white shadow-md transition-[transform,box-shadow,background-color] duration-300 hover:scale-105 hover:bg-black/90 hover:shadow-lg active:scale-[1.02] active:shadow-sm"
           >
             <svg
-              className="h-4 w-4 shrink-0 transition-transform duration-300 group-hover:-translate-y-0.5"
+              className="h-4 w-4 shrink-0 transition-transform duration-300 group-hover:scale-110"
               fill="currentColor"
               viewBox="0 0 24 24"
               aria-hidden="true"
@@ -53,10 +53,10 @@ export default function ProjectModalLinks({
             href={links.githubBackend}
             target="_blank"
             rel="noopener noreferrer"
-            className="group inline-flex items-center gap-1.5 rounded-full border-2 border-black bg-black px-4 py-2 text-sm font-bold text-white shadow-md transition-[transform,box-shadow,background-color] duration-300 hover:-translate-y-0.5 hover:bg-black/90 hover:shadow-lg active:translate-y-0.5 active:shadow-sm"
+            className="group inline-flex items-center gap-1.5 rounded-full border-2 border-black bg-black px-4 py-2 text-sm font-bold text-white shadow-md transition-[transform,box-shadow,background-color] duration-300 hover:scale-105 hover:bg-black/90 hover:shadow-lg active:scale-[1.02] active:shadow-sm"
           >
             <svg
-              className="h-4 w-4 shrink-0 transition-transform duration-300 group-hover:-translate-y-0.5"
+              className="h-4 w-4 shrink-0 transition-transform duration-300 group-hover:scale-110"
               fill="currentColor"
               viewBox="0 0 24 24"
               aria-hidden="true"
@@ -75,10 +75,10 @@ export default function ProjectModalLinks({
             href={links.githubFrontend}
             target="_blank"
             rel="noopener noreferrer"
-            className="group inline-flex items-center gap-1.5 rounded-full border-2 border-black bg-black px-4 py-2 text-sm font-bold text-white shadow-md transition-[transform,box-shadow,background-color] duration-300 hover:-translate-y-0.5 hover:bg-black/90 hover:shadow-lg active:translate-y-0.5 active:shadow-sm"
+            className="group inline-flex items-center gap-1.5 rounded-full border-2 border-black bg-black px-4 py-2 text-sm font-bold text-white shadow-md transition-[transform,box-shadow,background-color] duration-300 hover:scale-105 hover:bg-black/90 hover:shadow-lg active:scale-[1.02] active:shadow-sm"
           >
             <svg
-              className="h-4 w-4 shrink-0 transition-transform duration-300 group-hover:-translate-y-0.5"
+              className="h-4 w-4 shrink-0 transition-transform duration-300 group-hover:scale-110"
               fill="currentColor"
               viewBox="0 0 24 24"
               aria-hidden="true"
@@ -97,10 +97,10 @@ export default function ProjectModalLinks({
             href={links.demo}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 border border-black bg-white px-4 py-2 text-sm font-semibold text-black transition-colors hover:bg-black/5"
+            className="group inline-flex items-center gap-1.5 rounded-full border-2 border-black bg-white px-4 py-2 text-sm font-bold text-black shadow-md transition-[transform,box-shadow,background-color,border-color] duration-300 hover:scale-105 hover:border-neutral-500 hover:bg-neutral-50 hover:shadow-lg active:scale-[1.02] active:shadow-sm"
           >
             <svg
-              className="h-4 w-4 shrink-0"
+              className="h-4 w-4 shrink-0 transition-transform duration-300 group-hover:scale-110"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -121,14 +121,14 @@ export default function ProjectModalLinks({
             href={links.appStore}
             target="_blank"
             rel="noopener noreferrer"
-            className="group inline-flex items-center gap-1.5 rounded-full border-2 border-black bg-white px-4 py-2 text-sm font-bold text-black shadow-md transition-[transform,box-shadow,background-color,border-color] duration-300 hover:-translate-y-0.5 hover:border-neutral-500 hover:bg-neutral-50 hover:shadow-lg active:translate-y-0.5 active:shadow-sm"
+            className="group inline-flex items-center gap-1.5 rounded-full border-2 border-black bg-white px-4 py-2 text-sm font-bold text-black shadow-md transition-[transform,box-shadow,background-color,border-color] duration-300 hover:scale-105 hover:border-neutral-500 hover:bg-neutral-50 hover:shadow-lg active:scale-[1.02] active:shadow-sm"
           >
             <Image
               src={`${basePath}/images/projects/appstore.png`}
               alt="App Store"
               width={16}
               height={16}
-              className="h-4 w-4 shrink-0 rounded-sm transition-transform duration-300 group-hover:-translate-y-0.5"
+              className="h-4 w-4 shrink-0 rounded-sm transition-transform duration-300 group-hover:scale-110"
             />
             Apple Store
           </a>
@@ -138,10 +138,10 @@ export default function ProjectModalLinks({
             href={links.docs}
             target="_blank"
             rel="noopener noreferrer"
-            className="group inline-flex items-center gap-1.5 rounded-full border-2 border-black bg-white px-4 py-2 text-sm font-bold text-black shadow-md transition-[transform,box-shadow,background-color,border-color] duration-300 hover:-translate-y-0.5 hover:border-neutral-500 hover:bg-neutral-50 hover:shadow-lg active:translate-y-0.5 active:shadow-sm"
+            className="group inline-flex items-center gap-1.5 rounded-full border-2 border-black bg-white px-4 py-2 text-sm font-bold text-black shadow-md transition-[transform,box-shadow,background-color,border-color] duration-300 hover:scale-105 hover:border-neutral-500 hover:bg-neutral-50 hover:shadow-lg active:scale-[1.02] active:shadow-sm"
           >
             <svg
-              className="h-4 w-4 shrink-0 text-black transition-transform duration-300 group-hover:-translate-y-0.5"
+              className="h-4 w-4 shrink-0 text-black transition-transform duration-300 group-hover:scale-110"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
