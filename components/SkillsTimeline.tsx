@@ -6,6 +6,7 @@ import { useTimelineAutoScroll } from "@/hooks/useTimelineAutoScroll";
 import TimelineHeader from "./TimelineHeader";
 import TimelineRuler from "./TimelineRuler";
 import TimelineSkillBar from "./TimelineSkillBar";
+import EngineerExperienceCard from "./EngineerExperienceCard";
 
 interface SkillsTimelineProps {
   skills: Skills;
@@ -43,7 +44,10 @@ export default function SkillsTimeline({ skills }: SkillsTimelineProps) {
 
   return (
     <div className="mt-10 w-full pb-5">
-      <div className="relative w-full border border-black p-4 md:p-6">
+      <div className="relative w-full rounded-none border-2 border-black bg-white p-4 shadow-[0_10px_24px_rgba(0,0,0,0.18)] md:p-6">
+        <div className="absolute right-4 top-4 z-10 md:right-6 md:top-6">
+          <EngineerExperienceCard />
+        </div>
         <TimelineHeader onPlay={handlePlay} isPlaying={isPlaying} />
         <div
           ref={scrollContainerRef}
