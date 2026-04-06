@@ -31,10 +31,10 @@ export default function ProjectModalLinks({
             href={links.github}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 border border-black bg-black px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-black/90"
+            className="group inline-flex items-center gap-1.5 rounded-full border-2 border-black bg-black px-4 py-2 text-sm font-bold text-white shadow-md transition-[transform,box-shadow,background-color] duration-300 hover:-translate-y-0.5 hover:bg-black/90 hover:shadow-lg active:translate-y-0.5 active:shadow-sm"
           >
             <svg
-              className="h-4 w-4 shrink-0"
+              className="h-4 w-4 shrink-0 transition-transform duration-300 group-hover:-translate-y-0.5"
               fill="currentColor"
               viewBox="0 0 24 24"
               aria-hidden="true"
@@ -53,10 +53,10 @@ export default function ProjectModalLinks({
             href={links.githubBackend}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 border border-black bg-black px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-black/90"
+            className="group inline-flex items-center gap-1.5 rounded-full border-2 border-black bg-black px-4 py-2 text-sm font-bold text-white shadow-md transition-[transform,box-shadow,background-color] duration-300 hover:-translate-y-0.5 hover:bg-black/90 hover:shadow-lg active:translate-y-0.5 active:shadow-sm"
           >
             <svg
-              className="h-4 w-4 shrink-0"
+              className="h-4 w-4 shrink-0 transition-transform duration-300 group-hover:-translate-y-0.5"
               fill="currentColor"
               viewBox="0 0 24 24"
               aria-hidden="true"
@@ -75,10 +75,10 @@ export default function ProjectModalLinks({
             href={links.githubFrontend}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 border border-black bg-black px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-black/90"
+            className="group inline-flex items-center gap-1.5 rounded-full border-2 border-black bg-black px-4 py-2 text-sm font-bold text-white shadow-md transition-[transform,box-shadow,background-color] duration-300 hover:-translate-y-0.5 hover:bg-black/90 hover:shadow-lg active:translate-y-0.5 active:shadow-sm"
           >
             <svg
-              className="h-4 w-4 shrink-0"
+              className="h-4 w-4 shrink-0 transition-transform duration-300 group-hover:-translate-y-0.5"
               fill="currentColor"
               viewBox="0 0 24 24"
               aria-hidden="true"
@@ -121,18 +121,16 @@ export default function ProjectModalLinks({
             href={links.appStore}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex bg-gradient-to-r from-blue-500 to-blue-600 p-px transition-all hover:from-blue-600 hover:to-blue-700"
+            className="group inline-flex items-center gap-1.5 rounded-full border-2 border-black bg-white px-4 py-2 text-sm font-bold text-black shadow-md transition-[transform,box-shadow,background-color,border-color] duration-300 hover:-translate-y-0.5 hover:border-neutral-500 hover:bg-neutral-50 hover:shadow-lg active:translate-y-0.5 active:shadow-sm"
           >
-            <span className="inline-flex items-center gap-1.5 bg-white px-4 py-2 text-sm font-semibold text-gray-900">
-              <Image
-                src={`${basePath}/images/projects/appstore.png`}
-                alt="App Store"
-                width={16}
-                height={16}
-                className="h-4 w-4 shrink-0 rounded-sm"
-              />
-              Apple Store
-            </span>
+            <Image
+              src={`${basePath}/images/projects/appstore.png`}
+              alt="App Store"
+              width={16}
+              height={16}
+              className="h-4 w-4 shrink-0 rounded-sm transition-transform duration-300 group-hover:-translate-y-0.5"
+            />
+            Apple Store
           </a>
         )}
         {links.docs && (
@@ -140,24 +138,22 @@ export default function ProjectModalLinks({
             href={links.docs}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 border border-black bg-white px-4 py-2 text-sm font-semibold text-black transition-colors hover:bg-black/5"
+            className="group inline-flex items-center gap-1.5 rounded-full border-2 border-black bg-white px-4 py-2 text-sm font-bold text-black shadow-md transition-[transform,box-shadow,background-color,border-color] duration-300 hover:-translate-y-0.5 hover:border-neutral-500 hover:bg-neutral-50 hover:shadow-lg active:translate-y-0.5 active:shadow-sm"
           >
-            <span className="flex shrink-0 items-center justify-center border border-black/20 bg-black/5 p-0.5">
-              <svg
-                className="h-3.5 w-3.5 text-black"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                aria-hidden="true"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                />
-              </svg>
-            </span>
+            <svg
+              className="h-4 w-4 shrink-0 text-black transition-transform duration-300 group-hover:-translate-y-0.5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+              />
+            </svg>
             企画書
           </a>
         )}

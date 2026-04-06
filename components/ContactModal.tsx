@@ -162,7 +162,7 @@ export default function ContactModal({ onClose }: ContactModalProps) {
         {/* 閉じるボタン */}
         <button
           onClick={handleClose}
-          className="absolute right-4 top-4 z-10 flex h-10 w-10 items-center justify-center border border-black bg-white text-black transition-colors hover:bg-black/5"
+          className="absolute right-4 top-4 z-10 flex h-10 w-10 items-center justify-center rounded-full border-2 border-black bg-white text-black shadow-md transition-[transform,box-shadow] duration-200 active:translate-y-0.5 active:shadow-sm"
           aria-label="モーダルを閉じる"
         >
           <span className="text-2xl">×</span>
@@ -188,7 +188,7 @@ export default function ContactModal({ onClose }: ContactModalProps) {
               <button
                 type="button"
                 onClick={handleClose}
-                className="flex-1 border border-black bg-white px-6 py-3 text-sm font-semibold text-black transition-colors hover:bg-black/5 md:text-base"
+                className="group flex-1 rounded-full border-2 border-black bg-white px-6 py-3 text-sm font-bold text-black shadow-md transition-[border-color,transform,box-shadow,background-color] duration-300 hover:-translate-y-0.5 hover:border-neutral-500 hover:bg-neutral-50 hover:shadow-lg active:translate-y-0.5 active:shadow-sm md:text-base"
                 disabled={isSubmitting}
               >
                 キャンセル
