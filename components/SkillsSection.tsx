@@ -80,9 +80,9 @@ function SkillItem({ skill, isCategoryVisible, index }: SkillItemProps) {
           {animatedValue}%
         </span>
       </div>
-      <div className="h-1.5 w-full bg-black/10">
+      <div className="h-1.5 w-full bg-black/10 shadow-[inset_0_1px_2px_rgba(0,0,0,0.2)]">
         <div
-          className="h-full transition-all"
+          className="h-full transition-all shadow-[0_2px_6px_rgba(0,0,0,0.28)]"
           style={{
             width: `${animatedValue}%`,
             backgroundColor: getGitHubLanguageColor(skill.name),
