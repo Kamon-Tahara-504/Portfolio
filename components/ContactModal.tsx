@@ -188,7 +188,7 @@ export default function ContactModal({ onClose }: ContactModalProps) {
               <button
                 type="button"
                 onClick={handleClose}
-                className="group flex-1 rounded-full border-2 border-black bg-white px-6 py-3 text-sm font-bold text-black shadow-md transition-[border-color,transform,box-shadow,background-color] duration-300 hover:-translate-y-0.5 hover:border-neutral-500 hover:bg-neutral-50 hover:shadow-lg active:translate-y-0.5 active:shadow-sm md:text-base"
+                className="group flex-1 rounded-full border-2 border-black bg-white px-6 py-3 text-sm font-bold text-black shadow-md transition-[border-color,transform,box-shadow,background-color] duration-300 hover:scale-105 hover:border-neutral-500 hover:bg-neutral-50 hover:shadow-lg active:scale-[1.02] active:shadow-sm md:text-base"
                 disabled={isSubmitting}
               >
                 キャンセル
