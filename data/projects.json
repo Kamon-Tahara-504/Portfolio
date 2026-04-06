@@ -190,6 +190,54 @@
       "startDate": "2026-01-27",
       "endDate": "2026-02-04"
     }
+  },
+  {
+    "id": "project-10",
+    "slug": "coming-soon-1",
+    "title": "準備中",
+    "catchphrase": "準備中",
+    "description": "準備中",
+    "category": "web",
+    "images": [
+      "/images/projects/PlaceHolder.png"
+    ],
+    "technologies": ["準備中"],
+    "links": {},
+    "date": {
+      "startDate": "2026-04-01"
+    }
+  },
+  {
+    "id": "project-11",
+    "slug": "coming-soon-2",
+    "title": "準備中",
+    "catchphrase": "準備中",
+    "description": "準備中",
+    "category": "web",
+    "images": [
+      "/images/projects/PlaceHolder.png"
+    ],
+    "technologies": ["準備中"],
+    "links": {},
+    "date": {
+      "startDate": "2026-04-03"
+    }
+  },
+  {
+    "id": "project-12",
+    "slug": "coming-soon-3",
+    "title": "準備中",
+    "catchphrase": "準備中",
+    "description": "準備中",
+    "category": "web",
+    "images": [
+      "/images/projects/PlaceHolder.png"
+    ],
+    "technologies": ["準備中"],
+    "links": {},
+    "date": {
+      "startDate": "2026-04-05"
+    }
   }
 ]
 
