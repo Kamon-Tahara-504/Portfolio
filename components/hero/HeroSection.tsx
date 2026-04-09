@@ -120,6 +120,8 @@ export default function HeroSection({ nameEn }: HeroSectionProps) {
   };
 
   const allErrorsVisible = visibleErrors.size >= ERROR_POSITIONS.length;
+  const canEnterMain = phase === "resolved";
+  const canRunFixFromBackdrop = phase === "error" && allErrorsVisible;
 
   const leadArrow = (
     <svg
@@ -140,7 +142,18 @@ export default function HeroSection({ nameEn }: HeroSectionProps) {
   return (
     <section
       id="hero"
-      className="relative flex min-h-screen items-center justify-center overflow-hidden bg-white"
+      className={`relative flex min-h-screen items-center justify-center overflow-hidden bg-white ${
+        canEnterMain || canRunFixFromBackdrop ? "cursor-pointer" : ""
+      }`}
+      onClick={() => {
+        if (canEnterMain) {
+          viewContext?.enterMain();
+          return;
+        }
+        if (canRunFixFromBackdrop) {
+          handleResolve();
+        }
+      }}
     >
       {phase === "resolved" && (
         <>
@@ -219,6 +232,7 @@ export default function HeroSection({ nameEn }: HeroSectionProps) {
             <div
               key={i}
               className="absolute z-20 pointer-events-auto select-none"
+              onClick={(e) => e.stopPropagation()}
               style={{
                 top: pos.top,
                 left: pos.left,
@@ -243,7 +257,30 @@ export default function HeroSection({ nameEn }: HeroSectionProps) {
 
       {(phase === "error" || phase === "resolving") && allErrorsVisible && (
         <div className="fixed left-1/2 top-1/2 z-50 w-[min(92vw,22rem)] -translate-x-1/2 -translate-y-1/2 select-none">
-          <div className="overflow-hidden rounded-lg border border-black/25 bg-[#1a1a1a] shadow-[0_12px_40px_rgba(0,0,0,0.35),0_0_0_1px_rgba(255,255,255,0.06)_inset]">
+          <div
+            className={`overflow-hidden rounded-lg border border-black/25 bg-[#1a1a1a] shadow-[0_12px_40px_rgba(0,0,0,0.35),0_0_0_1px_rgba(255,255,255,0.06)_inset] outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/80 focus-visible:ring-offset-2 focus-visible:ring-offset-[#1a1a1a] ${
+              phase === "error" ? "cursor-pointer" : ""
+            }`}
+            role={phase === "error" ? "button" : undefined}
+            tabIndex={phase === "error" ? 0 : undefined}
+            aria-label={
+              phase === "error"
+                ? "fix-lead コマンドを実行してエラーを解消"
+                : undefined
+            }
+            onClick={(e) => {
+              if (phase !== "error") return;
+              e.stopPropagation();
+              handleResolve();
+            }}
+            onKeyDown={(e) => {
+              if (phase !== "error") return;
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                handleResolve();
+              }
+            }}
+          >
             <div className="flex items-center gap-2 border-b border-white/[0.08] bg-[#2a2a2a] px-2.5 py-1.5">
               <span className="flex gap-1" aria-hidden>
                 <span className="h-2 w-2 rounded-full bg-[#ff5f57]" />
@@ -256,12 +293,7 @@ export default function HeroSection({ nameEn }: HeroSectionProps) {
             </div>
 
             {phase === "error" ? (
-              <button
-                type="button"
-                onClick={handleResolve}
-                aria-label="fix-lead コマンドを実行してエラーを解消"
-                className="group w-full px-3 py-2.5 text-left font-mono text-[11px] leading-snug text-emerald-300/90 transition-colors hover:bg-white/[0.06] active:bg-white/[0.08]"
-              >
+              <div className="group w-full px-3 py-2.5 text-left font-mono text-[11px] leading-snug text-emerald-300/90 transition-colors hover:bg-white/[0.06] active:bg-white/[0.08]">
                 <p className="mb-1 text-white/40">ERR: duplicate LEAD handlers ({ERROR_POSITIONS.length})</p>
                 <p className="mb-2 text-[10px] text-white/28">hint: run purge to consolidate</p>
                 <p>
@@ -280,7 +312,7 @@ export default function HeroSection({ nameEn }: HeroSectionProps) {
                   />
                 </p>
                 <p className="mt-2 text-[10px] text-white/30">クリックで実行</p>
-              </button>
+              </div>
             ) : (
               <div className="px-3 py-2.5 font-mono text-[11px] leading-snug text-emerald-300/90">
                 <p className="mb-1.5">
