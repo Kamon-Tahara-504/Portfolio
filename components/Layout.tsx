@@ -2,7 +2,6 @@
 
 import React, {
   createContext,
-  useContext,
   useState,
   useCallback,
   useEffect,
@@ -11,6 +10,7 @@ import React, {
 import Navigation from "./Navigation";
 import BubbleParticles from "./BubbleParticles";
 import AssetWarmup from "./AssetWarmup";
+import WaterPuddleBackdrop from "./WaterPuddleBackdrop";
 
 export type ViewMode = "hero" | "main";
 
@@ -93,28 +93,50 @@ export default function Layout({ children, hero, mainContent }: LayoutProps) {
   const overlayOpacity =
     transitionPhase === "out" ? (overlayVisible ? 1 : 0) : transitionPhase === "in" ? 0 : 0;
 
+  const mainGutterClass =
+    useViewSwitch && view === "hero"
+      ? ""
+      : "lg:pl-[var(--nav-desktop-gutter)] lg:pr-[var(--nav-desktop-gutter)]";
+
+  const showMainDecor = !useViewSwitch || view !== "hero";
+
+  /** 水たまり z-0・バブル z-[5] は本文 z-10 より下。セクション透過部で背景に見える */
+  const decorLayers = showMainDecor ? (
+    <>
+      <div className="pointer-events-none absolute inset-0 z-0" aria-hidden>
+        <WaterPuddleBackdrop />
+      </div>
+      <div className="pointer-events-none absolute inset-0 z-[5]" aria-hidden>
+        <BubbleParticles />
+      </div>
+    </>
+  ) : null;
+
+  const mainInner = useViewSwitch ? (
+    view === "hero" ? (
+      <div className="relative z-10 min-h-screen w-full">{hero}</div>
+    ) : (
+      <>
+        {decorLayers}
+        <div className="relative z-10 w-full">{mainContent}</div>
+      </>
+    )
+  ) : (
+    <>
+      {decorLayers}
+      <div className="relative z-10 w-full">{children}</div>
+    </>
+  );
+
   return (
     <ViewContext.Provider value={viewContextValue}>
       <AssetWarmup />
-      <div className="relative z-10 min-h-screen bg-white text-black">
-        <div className="fixed inset-0 z-30 pointer-events-none" aria-hidden="true">
-          <BubbleParticles />
+      <div className="relative isolate z-10 min-h-screen bg-white text-black">
+        <div className="relative z-10">
+          <main className={`relative w-full ${mainGutterClass}`}>{mainInner}</main>
         </div>
         <div className="relative z-20">
           <Navigation />
-          <main
-            className={
-              useViewSwitch && view === "hero"
-                ? undefined
-                : "lg:pl-[var(--nav-desktop-gutter)] lg:pr-[var(--nav-desktop-gutter)]"
-            }
-          >
-            {useViewSwitch
-              ? view === "hero"
-                ? hero
-                : mainContent
-              : children}
-          </main>
         </div>
       </div>
       {useViewSwitch && transitionPhase !== null && (

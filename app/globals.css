@@ -500,3 +500,10 @@ body::-webkit-scrollbar-thumb:hover {
 .group:focus-visible .project-desc-marquee-track {
   animation: project-desc-marquee 8s linear 0.7s infinite;
 }
+
+/* 水たまり背景: 動きを減らす設定では装飾を弱める */
+@media (prefers-reduced-motion: reduce) {
+  .water-puddle-backdrop {
+    opacity: 0.14 !important;
+  }
+}

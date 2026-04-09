@@ -89,7 +89,7 @@ export default function BubbleParticles({
 
   return (
     <div
-      className={`absolute inset-0 z-0 overflow-visible pointer-events-none ${className}`}
+      className={`absolute inset-0 z-[1] overflow-visible pointer-events-none ${className}`}
       aria-hidden="true"
     >
       {particles.map((p) => (
