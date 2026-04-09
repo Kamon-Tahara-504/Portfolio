@@ -48,6 +48,9 @@ export function useFadeInOnScroll(options: UseFadeInOnScrollOptions = {}) {
           } else if (!once) {
             // スクロールアウト時に非表示へ戻し、再入場で再アニメーションさせる
             setIsVisible(false);
+          } else if (entry.boundingClientRect.bottom < 0) {
+            // 要素がビューポートより上にある（スクロール済みで通り過ぎた）場合は即表示
+            setIsVisible(true);
           }
         });
       },
