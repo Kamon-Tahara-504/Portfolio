@@ -55,7 +55,7 @@ export default function EngineerExperienceCard() {
   const duration = formatDuration(seconds);
 
   return (
-    <div className="flex items-center rounded-md border border-black bg-white px-3 py-2 shadow-sm w-[300px] md:w-[340px] flex-shrink-0">
+    <div className="flex w-[300px] flex-shrink-0 items-center rounded-md border border-black bg-white px-3 py-2 shadow-sm md:w-[340px]">
       <span className="text-xs font-semibold text-black/70 md:text-sm whitespace-nowrap flex-shrink-0">
         エンジニア歴
       </span>

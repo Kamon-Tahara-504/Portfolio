@@ -35,7 +35,7 @@ export default function AboutSection({
   const defaultImageSrc = about.image.startsWith("/") ? `${basePath}${about.image}` : about.image;
 
   return (
-    <section id="about" className="relative border-b border-black pt-8 pb-24 md:pt-20 md:pb-56">
+    <section id="about" className="relative border-b border-black bg-transparent pt-8 pb-24 md:pt-20 md:pb-56">
       {viewContext?.enterHero && (
         <div
           ref={backToTopRef.ref as React.RefObject<HTMLDivElement>}

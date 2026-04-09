@@ -15,11 +15,11 @@ export default function GridPattern({
 }: GridPatternProps) {
   return (
     <div
-      className={`absolute inset-0 overflow-hidden ${className}`}
+      className={`pointer-events-none absolute inset-0 z-0 overflow-hidden ${className}`}
       aria-hidden="true"
     >
       <svg
-        className="absolute inset-0 h-full w-full"
+        className="absolute inset-0 h-full w-full text-black/10"
         xmlns="http://www.w3.org/2000/svg"
       >
         <defs>
@@ -34,7 +34,6 @@ export default function GridPattern({
               fill="none"
               stroke="currentColor"
               strokeWidth={strokeWidth}
-              className="text-black/10"
             />
           </pattern>
         </defs>

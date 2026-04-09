@@ -115,7 +115,7 @@ export default function SkillsSection({ skills }: SkillsSectionProps) {
   const timelineRef = useFadeInOnScroll({ delay: 500 });
 
   return (
-    <section id="skills" className="relative border-b border-black pt-18 pb-18 md:pt-22 md:pb-28">
+    <section id="skills" className="relative border-b border-black bg-transparent pt-18 pb-18 md:pt-22 md:pb-28">
       <div className="section-container-responsive mx-auto max-w-7-5xl px-6">
         <h2
           ref={titleRef.ref as React.RefObject<HTMLHeadingElement>}

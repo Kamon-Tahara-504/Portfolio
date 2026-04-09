@@ -50,9 +50,9 @@ export default function ExperienceSection({ experience }: ExperienceSectionProps
   const titleRef = useFadeInOnScroll({ delay: 0 });
 
   return (
-    <section id="experience" className="relative border-b border-black pt-24 pb-24 md:pt-28 md:pb-56">
-      <GridPattern className="opacity-20" size={60} strokeWidth={0.5} />
-      <div className="section-container-responsive relative mx-auto max-w-7-5xl px-6">
+    <section id="experience" className="relative border-b border-black bg-transparent pt-24 pb-24 md:pt-28 md:pb-56">
+      <GridPattern className="opacity-[0.07]" size={60} strokeWidth={0.5} />
+      <div className="section-container-responsive relative z-10 mx-auto max-w-7-5xl px-6">
         <h2
           ref={titleRef.ref as React.RefObject<HTMLHeadingElement>}
           className={`mb-10 text-center text-3xl font-bold tracking-tight md:mb-12 md:text-5xl fade-in-from-left section-title-blink section-title-responsive ${titleRef.isVisible ? "visible" : ""}`}

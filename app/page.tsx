@@ -24,7 +24,7 @@ export default function Home() {
   const development = developmentData as Development;
 
   const mainContent = (
-    <div className="min-h-screen w-full bg-white select-none">
+    <div className="min-h-screen w-full bg-transparent select-none">
       <AboutSection
         name={about.name}
         nameEn={about.nameEn}
@@ -36,7 +36,7 @@ export default function Home() {
       <SkillsSection skills={skills} />
       <ProjectsSection projects={projects} />
       <DevelopmentSection development={development} />
-      <footer className="border-t border-black mt-auto">
+      <footer className="border-t border-black bg-white mt-auto">
         <div className="mx-auto max-w-7-5xl px-6 py-8 text-center text-sm font-semibold text-black/60">
           <p>©︎ 2025 Kamon-Tahara-504</p>
           <p className="mt-2">Licensed under MIT License</p>
