@@ -22,7 +22,7 @@ export default function DevelopmentSection({ development }: DevelopmentSectionPr
   };
 
   return (
-    <section id="development" className="relative border-b border-black pt-24 pb-12 md:pt-28 md:pb-28">
+    <section id="development" className="relative border-b border-black bg-transparent pt-24 pb-12 md:pt-28 md:pb-28">
       <div className="section-container-responsive mx-auto max-w-7xl px-6">
         <h2
           ref={titleRef.ref as React.RefObject<HTMLHeadingElement>}
@@ -36,13 +36,19 @@ export default function DevelopmentSection({ development }: DevelopmentSectionPr
               <TerminalBlock />
               <div>
                 <h3 className="mb-6 text-2xl font-bold tracking-tight md:text-3xl">技術スタック</h3>
-                <ul className="space-y-3">
+                <div className="grid grid-cols-2 gap-3">
                   {development.techStack.map((tech, index) => (
-                    <li key={index} className="flex items-center rounded-lg border border-black px-4 py-3 text-base font-semibold md:text-lg">
-                      {tech}
-                    </li>
+                    <div
+                      key={index}
+                      className={`flex flex-col gap-1.5 rounded-lg border border-black bg-white px-4 py-3 shadow-sm${development.techStack.length % 2 !== 0 && index === development.techStack.length - 1 ? " col-span-2" : ""}`}
+                    >
+                      <span className="text-xs font-bold tabular-nums text-black/30">
+                        {String(index + 1).padStart(2, "0")}
+                      </span>
+                      <span className="text-base font-semibold leading-tight md:text-lg">{tech}</span>
+                    </div>
                   ))}
-                </ul>
+                </div>
               </div>
 
               <div className="flex flex-col gap-4 pt-4 border-t border-black/20 sm:flex-row sm:items-start sm:gap-6">
