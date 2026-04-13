@@ -1,10 +1,9 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #000000;
-  /* デスクトップ（lg+）で main 左右に同値を付与。右は固定ナビ分、左は視覚的バランス用 */
-  --nav-desktop-gutter: 2.5rem;
+  /* アプリ全体で参照する基準色変数。 */
+  --background: #030712;
+  --foreground: #f4f4f5;
 }
 
 @theme inline {
@@ -12,163 +11,54 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-  --font-ink: var(--font-dancing-script);
-  --max-width-7-5xl: 85rem;
-  --max-width-3-5xl: 52rem;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-geist-sans), system-ui, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
 }
 
-/* 既定の枠色（特異度0）— border-red 等のユーティリティが上書きできるようにする */
-:where(*) {
-  border-color: rgba(0, 0, 0, 0.1);
-}
-
-/* スクロールを html に一本化（環境差・MacBook Pro 等での不具合軽減） */
-html {
-  scroll-behavior: smooth;
-  overflow-x: hidden;
-  overflow-y: auto;
-  touch-action: pan-y;
-  scrollbar-width: thin;
-  scrollbar-color: black transparent;
-}
-
+html,
 body {
-  overflow-x: hidden;
-  /* overflow-y は指定しない → スクロールは html で行う */
-  scrollbar-width: thin;
-  scrollbar-color: black transparent;
+  height: 100%;
 }
 
-/* サイト本体のスクロールバー */
-html::-webkit-scrollbar,
-body::-webkit-scrollbar {
-  width: 8px !important;
-  height: 8px !important;
-}
-
-html::-webkit-scrollbar-track,
-body::-webkit-scrollbar-track {
-  background: transparent !important;
-  border-radius: 4px !important;
-}
-
-html::-webkit-scrollbar-thumb,
-body::-webkit-scrollbar-thumb {
-  background: black !important;
-  border-radius: 4px !important;
-}
-
-html::-webkit-scrollbar-thumb:hover,
-body::-webkit-scrollbar-thumb:hover {
-  background: black !important;
-}
-
-
-/* Hero Section Animations */
-@keyframes fade-in-left {
-  from {
-    opacity: 0;
-    transform: translateX(-30px);
+@media (prefers-reduced-motion: reduce) {
+  html:focus-within {
+    scroll-behavior: auto;
   }
-  to {
-    opacity: 1;
-    transform: translateX(0);
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
 
-.animate-fade-in-left {
-  opacity: 0;
-  animation: fade-in-left 0.8s ease-out forwards;
-}
-
-.delay-100 {
-  animation-delay: 0.1s;
-  opacity: 0;
-}
-
-.delay-200 {
-  animation-delay: 0.2s;
-  opacity: 0;
-}
-
-/* スクロールベースのフェードインアニメーション */
-@keyframes fade-in {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.fade-in-on-scroll {
-  opacity: 0 !important;
-  transform: translateY(-30px) !important;
-  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-  will-change: opacity, transform;
-}
-
-.fade-in-on-scroll.visible {
-  opacity: 1 !important;
-  transform: translateY(0) !important;
-}
-
-/* 左からフェードインするアニメーション（自画像用） */
-.fade-in-from-left {
-  opacity: 0 !important;
-  transform: translateX(-30px) !important;
-  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-  will-change: opacity, transform;
-}
-
-.fade-in-from-left.visible {
-  opacity: 1 !important;
-  transform: translateX(0) !important;
-}
-
-/* 右からフェードイン（セクション補助ラベル用） */
-.fade-in-from-right {
-  opacity: 0 !important;
-  transform: translateX(30px) !important;
-  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-  will-change: opacity, transform;
-}
-
-.fade-in-from-right.visible {
-  opacity: 1 !important;
-  transform: translateX(0) !important;
-}
-
-/* スキルタイムラインのアニメーション */
 @keyframes wobble {
   0% {
-    transform: translateX(2px) translateY(0); /* 右（控えめ） */
+    transform: translateX(2px) translateY(0);
   }
   50% {
-    transform: translateX(-2px) translateY(0); /* 左（控えめ） */
+    transform: translateX(-2px) translateY(0);
   }
   100% {
-    transform: translateX(2px) translateY(0); /* 右（控えめ） */
+    transform: translateX(2px) translateY(0);
   }
 }
 
 .animate-wobble {
+  /* タイムライン演出で使う横揺れアニメーション。 */
   animation: wobble 3s ease-in-out infinite;
 }
 
-/* 再生ボタンのパルスアニメーション */
 @keyframes pulse-scale {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1);
   }
   50% {
@@ -177,333 +67,42 @@ body::-webkit-scrollbar-thumb:hover {
 }
 
 .animate-pulse-scale {
+  /* ヘッダー強調に使うスケール脈動アニメーション。 */
   animation: pulse-scale 1.5s ease-in-out infinite;
 }
 
-/* グリッチメソッド：見出し用（黒字＋赤/シアンずれ） */
-@keyframes glitch {
-  0%, 90%, 100% {
-    text-shadow: 0 0 0 transparent, 0 0 0 transparent;
-    transform: translate(0);
-  }
-  92% {
-    text-shadow: -2px 1px 0 rgba(255, 0, 128, 0.6), 2px -1px 0 rgba(0, 255, 255, 0.6);
-    transform: translate(-1px, 1px);
-  }
-  94% {
-    text-shadow: 2px -1px 0 rgba(255, 0, 128, 0.6), -2px 1px 0 rgba(0, 255, 255, 0.6);
-    transform: translate(1px, -1px);
-  }
-  96% {
-    text-shadow: -1px -1px 0 rgba(255, 0, 128, 0.5), 1px 1px 0 rgba(0, 255, 255, 0.5);
-    transform: translate(-1px, -1px);
-  }
-  98% {
-    text-shadow: 1px 1px 0 rgba(255, 0, 128, 0.5), -1px -1px 0 rgba(0, 255, 255, 0.5);
-    transform: translate(1px, 1px);
-  }
-}
-
-.text-glitch {
-  color: #000;
-  font-weight: 600;
-  animation: glitch 4s ease-in-out infinite;
-}
-
-/* もっと知るカード用：枠のグリッチ（outline で shadow を維持） */
-@keyframes card-glitch {
-  0%, 88%, 100% {
-    outline: 2px solid transparent;
-    outline-offset: 2px;
-  }
-  89% {
-    outline: 2px solid rgba(255, 0, 128, 0.5);
-    outline-offset: -1px;
-  }
-  91% {
-    outline: 2px solid rgba(0, 255, 255, 0.5);
-    outline-offset: 1px;
-  }
-  93% {
-    outline: 1px solid rgba(255, 0, 128, 0.4);
-    outline-offset: -2px;
-  }
-  95% {
-    outline: 1px solid rgba(0, 255, 255, 0.4);
-    outline-offset: 2px;
-  }
-}
-
-.card-glitch {
-  animation: card-glitch 5s ease-in-out infinite;
-}
-
-/* 炭酸風パーティクル用：下から上へ一番上まで続けて浮かび、軽く左右に揺れる */
-@keyframes bubble-float {
-  0% {
-    transform: translate(0, 0);
-    opacity: 0.28;
-  }
-  50% {
-    transform: translate(var(--bubble-drift-x, 8px), -90vh);
-    opacity: 0.4;
-  }
-  100% {
-    transform: translate(calc(var(--bubble-drift-x, 8px) * -1), var(--bubble-drift-y, -180vh));
-    opacity: 0.22;
-  }
-}
-
-.animate-bubble-float {
-  animation: bubble-float ease-in-out infinite;
-}
-
-/* タイピングカーソル点滅 */
-@keyframes cursor-blink {
-  0%, 50% { opacity: 1; }
-  51%, 100% { opacity: 0; }
-}
-
-.animate-cursor-blink {
-  animation: cursor-blink 1s step-end infinite;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .animate-cursor-blink {
-    animation: none;
-    opacity: 1;
-  }
-}
-
-/* セクションタイトル たまにグリッチ（6秒に1回・左右オフセットなしで中央固定） */
-/* 横オフセット(4px 0 0)だと文字のコピーが左右に描画され二重写しになるため、縦方向の影のみ使用 */
-@keyframes section-title-glitch-sometimes {
-  0%, 82%, 100% {
-    text-shadow: none;
-  }
-  83% {
-    text-shadow: 0 2px 0 rgba(255,0,0,0.5), 0 -2px 0 rgba(0,255,255,0.5);
-  }
-  84% {
-    text-shadow: 0 -2px 0 rgba(255,0,0,0.45), 0 2px 0 rgba(0,255,255,0.45);
-  }
-  85% {
-    text-shadow: 0 1px 0 rgba(255,0,0,0.4), 0 -1px 0 rgba(0,255,255,0.4);
-  }
-  86% {
-    text-shadow: 0 -1px 0 rgba(255,0,0,0.35), 0 1px 0 rgba(0,255,255,0.35);
-  }
-  87%, 88% {
-    text-shadow: none;
-  }
-}
-
-/* ブロックのまま幅100%にして text-center で中央に。inline-block だと親の text-align が無いと左寄せになり下の要素に引っ張られる */
-.section-title-blink {
-  display: block;
-  width: 100%;
-  animation: section-title-glitch-sometimes 6s ease-in-out infinite;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .section-title-blink {
-    animation: none;
-  }
-}
-
-/* Custom Scrollbar Styles */
-.overflow-x-auto::-webkit-scrollbar {
-  height: 10px;
-}
-
-.overflow-x-auto::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.05);
-  border-radius: 5px;
-}
-
-.overflow-x-auto::-webkit-scrollbar-thumb {
-  background: black;
-  border-radius: 5px;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  min-width: 50px; /* つまみの最小幅を設定して短く見せる */
-}
-
-.overflow-x-auto::-webkit-scrollbar-thumb:hover {
-  background: black;
-}
-
-/* Firefox scrollbar */
-.overflow-x-auto {
-  scrollbar-width: thin;
-  scrollbar-color: black rgba(0, 0, 0, 0.05);
-}
-
-/* タイムラインコンテナ専用のスクロールバースタイル */
 .timeline-scrollbar::-webkit-scrollbar {
-  height: 10px;
+  width: 0;
+  height: 0;
+  display: none;
 }
 
 .timeline-scrollbar::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.05);
-  border-radius: 5px;
+  background: transparent;
 }
 
 .timeline-scrollbar::-webkit-scrollbar-thumb {
-  background: black;
-  border-radius: 5px;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  min-width: 50px;
+  background: transparent;
 }
 
 .timeline-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: black;
+  background: transparent;
 }
 
 .timeline-scrollbar {
-  scrollbar-width: thin;
-  scrollbar-color: black rgba(0, 0, 0, 0.05);
+  /* タイムライン領域のスクロールバー非表示設定。 */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
-/* モバイルナビ: リキッドグラス風の浮遊感シャドウ */
-.mobile-nav-liquid-glass {
-  box-shadow:
-    0 8px 32px -8px rgba(0, 0, 0, 0.18),
-    0 4px 12px -4px rgba(0, 0, 0, 0.1),
-    0 0 0 1px rgba(255, 255, 255, 0.08) inset;
+.works-scrollbar::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
 }
 
-/* 大画面(2K/4K)での控えめ拡大 */
-@media (min-width: 1600px) {
-  .section-container-responsive {
-    max-width: min(92vw, 96rem) !important;
-    padding-left: 2.5rem;
-    padding-right: 2.5rem;
-  }
-
-  .section-title-responsive {
-    font-size: 3.5rem !important;
-    line-height: 1.05;
-  }
-}
-
-/* モーダル: TV電源ON/OFF風（中央線から上下へ展開） */
-@keyframes tv-open {
-  0% {
-    transform: scaleY(0.01);
-    filter: brightness(3);
-  }
-  60% {
-    filter: brightness(1.2);
-  }
-  100% {
-    transform: scaleY(1);
-    filter: brightness(1);
-  }
-}
-
-@keyframes tv-close {
-  0% {
-    transform: scaleY(1);
-    filter: brightness(1);
-  }
-  40% {
-    filter: brightness(2);
-  }
-  100% {
-    transform: scaleY(0.01);
-    filter: brightness(3);
-  }
-}
-
-.animate-tv-open {
-  animation: tv-open 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  transform-origin: center;
-  will-change: transform, filter;
-}
-
-.animate-tv-close {
-  animation: tv-close 0.25s ease-in forwards;
-  transform-origin: center;
-  will-change: transform, filter;
-}
-
-/* Hero Error Animation */
-@keyframes errorPop {
-  0%   { opacity: 0; transform: scale(0.35) rotate(-10deg); }
-  60%  { transform: scale(1.12) rotate(2deg); }
-  80%  { transform: scale(0.96) rotate(-1deg); }
-  100% { opacity: 1; transform: scale(1) rotate(0deg); }
-}
-
-.animate-error-pop {
-  animation: errorPop 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-}
-
-@keyframes resolvedFadeIn {
-  from { opacity: 0; transform: translateY(28px) scale(0.95); }
-  to   { opacity: 1; transform: translateY(0) scale(1); }
-}
-
-.animate-resolved-fade-in {
-  animation: resolvedFadeIn 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-/* Resolved後に上下映像をインさせる（フェードなし） */
-@keyframes video-strip-in-top {
-  from { transform: translateY(-100%); }
-  to { transform: translateY(0); }
-}
-
-@keyframes video-strip-in-bottom {
-  from { transform: translateY(100%); }
-  to { transform: translateY(0); }
-}
-
-.animate-video-strip-in-top {
-  animation: video-strip-in-top 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-  will-change: transform;
-}
-
-.animate-video-strip-in-bottom {
-  animation: video-strip-in-bottom 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-  will-change: transform;
-}
-
-/* 映像ストリップの斜め角度に合わせて中央コンテンツを傾ける */
-@keyframes centerTilt {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(2.5deg); }
-}
-
-.animate-center-tilt {
-  /* 短時間 + わずかなオーバーシュートで「ポッ」と傾く */
-  animation: centerTilt 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.32s both;
-  will-change: transform;
-}
-
-/* ProjectCard: hover時に説明文を横流れ表示 */
-@keyframes project-desc-marquee {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(calc(-50% - 1rem));
-  }
-}
-
-.project-desc-marquee-track {
-  transform: translateX(0);
-  will-change: transform;
-}
-
-.group:hover .project-desc-marquee-track,
-.group:focus-visible .project-desc-marquee-track {
-  animation: project-desc-marquee 8s linear 0.7s infinite;
-}
-
-/* 水たまり背景: 動きを減らす設定では装飾を弱める */
-@media (prefers-reduced-motion: reduce) {
-  .water-puddle-backdrop {
-    opacity: 0.14 !important;
-  }
+.works-scrollbar {
+  /* Works横スクロール領域のスクロールバー非表示設定。 */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
