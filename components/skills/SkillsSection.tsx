@@ -106,9 +106,9 @@ export default function SkillsSection({ skillGroups, skills }: SkillsSectionProp
   const isTimelineMode = phase === "timeline" || phase === "toSkillsPrep" || phase === "toSkills";
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <p className="max-w-2xl text-sm leading-relaxed text-zinc-300 md:text-base">
+    <div className="space-y-5 sm:space-y-6">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-5">
+        <p className="max-w-3xl text-sm leading-relaxed text-zinc-300 sm:text-base">
           {isTimelineMode
             ? "スキルの習得期間をタイムラインで表示しています。"
             : "習熟度と使用経験をカテゴリ別に掲載しています。"}

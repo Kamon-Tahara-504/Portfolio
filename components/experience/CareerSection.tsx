@@ -65,8 +65,8 @@ export default function CareerSection({ experiences }: CareerSectionProps) {
   }, [experiences]);
 
   return (
-    <div className="space-y-6">
-      <p className="max-w-3xl text-sm leading-relaxed text-zinc-300 md:text-base">
+    <div className="space-y-5 sm:space-y-6">
+      <p className="max-w-4xl text-sm leading-relaxed text-zinc-300 sm:text-base">
         学習と制作の履歴を時系列でカード化し、星座のように経歴順のつながりを可視化しています。
       </p>
       <div className="mx-auto w-full">
@@ -98,7 +98,7 @@ export default function CareerSection({ experiences }: CareerSectionProps) {
           </div>
 
           {experiences.map((item, index) => (
-            <article key={item.id} className="relative min-h-[118px]">
+            <article key={item.id} className="relative min-h-[120px] sm:min-h-[118px]">
               <span
                 className={`pointer-events-none absolute top-1/2 z-10 block -translate-x-1/2 -translate-y-1/2 ${
                   index % 2 === 0
@@ -118,7 +118,7 @@ export default function CareerSection({ experiences }: CareerSectionProps) {
 
               <div className={`flex ${index % 2 === 0 ? "justify-start" : "justify-end"}`}>
                 <div
-                  className={`w-full rounded-2xl border border-zinc-300/20 bg-black/30 px-3.5 py-3 backdrop-blur-[2px] md:w-[calc(50%-5.5rem)] md:px-4 ${
+                    className={`w-full rounded-2xl border border-zinc-300/20 bg-black/30 px-3.5 py-3 backdrop-blur-[2px] md:w-[calc(50%-5.5rem)] md:px-4 ${
                     index % 2 === 0
                       ? index % 4 === 0
                         ? "md:translate-x-2"
@@ -129,13 +129,13 @@ export default function CareerSection({ experiences }: CareerSectionProps) {
                   }`}
                 >
                   <div className="flex flex-wrap items-end gap-x-4 gap-y-1 text-left">
-                    <h3 className="text-lg leading-none font-semibold text-white md:text-xl">{item.title}</h3>
-                    <p className="text-sm font-medium text-zinc-300 md:text-base">{item.period}</p>
+                    <h3 className="text-base leading-none font-semibold text-white sm:text-lg md:text-xl">{item.title}</h3>
+                    <p className="text-xs font-medium text-zinc-300 sm:text-sm md:text-base">{item.period}</p>
                   </div>
-                  <p className="mt-2 text-xs leading-relaxed font-medium whitespace-pre-line text-zinc-200 md:text-sm">
+                  <p className="mt-2 text-xs leading-relaxed font-medium whitespace-pre-line text-zinc-200 sm:text-sm">
                     {item.company}
                   </p>
-                  <p className="mt-3 text-sm leading-relaxed text-zinc-300 md:text-base">
+                  <p className="mt-3 text-sm leading-relaxed text-zinc-300 sm:text-base">
                     {item.description}
                   </p>
                 </div>

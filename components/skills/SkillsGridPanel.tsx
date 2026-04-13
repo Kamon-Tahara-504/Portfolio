@@ -50,7 +50,7 @@ function SkillItem({ item }: { item: Skill }) {
 // スキルカードグリッド本体。フェーズに応じて収束/展開を描画する。
 export default function SkillsGridPanel({ phase, skillGroups }: SkillsGridPanelProps) {
   return (
-    <div className="grid gap-4 md:grid-cols-2">
+    <div className="grid gap-3 sm:gap-4 lg:grid-cols-2">
       {skillGroups.map((group, i) => {
         const converge = CARD_CONVERGE[i];
         const isGoingOut = phase === "toTimeline";
@@ -60,7 +60,7 @@ export default function SkillsGridPanel({ phase, skillGroups }: SkillsGridPanelP
         return (
           <motion.article
             key={group.title}
-            className="rounded-lg border border-zinc-300/20 bg-black/30 p-4"
+            className="rounded-lg border border-zinc-300/20 bg-black/30 p-4 sm:p-5"
             initial={isComingBack ? { x: converge.x, y: converge.y, scale: 0.6, opacity: 1 } : false}
             animate={{
               x: isGoingOut ? converge.x : "0%",
@@ -79,7 +79,7 @@ export default function SkillsGridPanel({ phase, skillGroups }: SkillsGridPanelP
                 ease: CONTENT_FADE_EASE,
               }}
             >
-              <h2 className="text-sm font-medium text-white">{group.title}</h2>
+              <h2 className="text-sm font-medium text-white sm:text-base">{group.title}</h2>
               <ul className="mt-3 space-y-3">
                 {group.items
                   .filter((item) => item.name && item.level > 0 && item.name !== "Django")
