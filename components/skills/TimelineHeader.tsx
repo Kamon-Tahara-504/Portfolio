@@ -1,20 +1,22 @@
 "use client";
 
+// タイムライン見出しの入力。
 interface TimelineHeaderProps {
   onPlay: () => void;
   isPlaying: boolean;
 }
 
+// 見出しと再生ボタンを表示するヘッダー。
 export default function TimelineHeader({ onPlay, isPlaying }: TimelineHeaderProps) {
   return (
     <div className="absolute top-[18px] left-0 right-0 flex items-center justify-center gap-3 z-30">
-      <h3 className="text-2xl font-bold tracking-tight md:text-3xl">
+      <h3 className="text-2xl font-bold tracking-tight text-zinc-100 md:text-3xl">
         Learning Timeline
       </h3>
       <button
         onClick={onPlay}
         disabled={isPlaying}
-        className={`relative rounded-full bg-black p-2 text-white transition-all duration-200 hover:opacity-80 active:scale-95 ${
+        className={`relative rounded-full border border-zinc-300/30 bg-zinc-900/70 p-2 text-zinc-100 transition-all duration-200 hover:opacity-90 active:scale-95 ${
           isPlaying ? "animate-pulse-scale" : ""
         }`}
         style={isPlaying ? { opacity: 1 } : {}}
