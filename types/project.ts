@@ -1,8 +1,10 @@
+/** プロジェクトのカテゴリ区分。 */
 export type ProjectCategory = "web" | "mobile";
 
 /** 自主制作 or 共同制作 */
 export type ProjectProductionType = "solo" | "collaborative";
 
+/** プロジェクトリンク群の型定義。 */
 export interface ProjectLinks {
   docs?: string;
   github?: string;
@@ -14,6 +16,7 @@ export interface ProjectLinks {
   appStore?: string;
 }
 
+/** 期間型の日付情報。 */
 export interface ProjectDateRange {
   startDate?: string;
   endDate?: string;
@@ -21,8 +24,10 @@ export interface ProjectDateRange {
   deployDate?: string;
 }
 
+/** プロジェクト1件分のドメインモデル。 */
 export interface Project {
   id: string;
+  number?: string;
   slug: string;
   title: string;
   /** カード用の短いキャッチコピー。未指定時は description を表示 */

@@ -2,6 +2,7 @@
 
 import { ProjectDateRange } from "@/types/project";
 
+// 日付文字列をUI表示用フォーマットに変換する。
 function formatDate(dateString: string): string {
   const date = new Date(dateString);
   const year = date.getFullYear();
@@ -10,6 +11,7 @@ function formatDate(dateString: string): string {
   return `${year} / ${month} / ${day}`;
 }
 
+// プロジェクト日付（単日/期間）を表示するセクション。
 export default function ProjectModalDate({
   date,
 }: {
@@ -17,11 +19,11 @@ export default function ProjectModalDate({
 }) {
   return (
     <div>
-      <h3 className="mb-2 text-xl font-bold tracking-tight md:text-2xl">
+      <h3 className="mb-2 text-xl font-bold tracking-tight text-zinc-100 md:text-2xl">
         Date
       </h3>
       {typeof date === "string" ? (
-        <p className="font-semibold text-black/70">
+        <p className="font-semibold text-zinc-300">
           {new Date(date).toLocaleDateString("ja-JP", {
             year: "numeric",
             month: "long",
@@ -29,7 +31,7 @@ export default function ProjectModalDate({
           })}
         </p>
       ) : (
-        <div className="space-y-2 font-semibold text-black/70">
+        <div className="space-y-2 font-semibold text-zinc-300">
           {date.startDate && <p>開発開始日: {formatDate(date.startDate)}</p>}
           {date.endDate && <p>開発終了日: {formatDate(date.endDate)}</p>}
           {date.releaseDate && (
