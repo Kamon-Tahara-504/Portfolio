@@ -12,53 +12,117 @@ interface ProfileSectionProps {
   profileChips: string[];
 }
 
+function getAgeFromBirthDate(birthDate?: string): number | null {
+  if (!birthDate) return null;
+  const match = birthDate.match(/^(\d{4})\s+(\d{1,2})\/(\d{1,2})$/);
+  if (!match) return null;
+
+  const birthYear = Number(match[1]);
+  const birthMonth = Number(match[2]);
+  const birthDay = Number(match[3]);
+  if (!birthYear || !birthMonth || !birthDay) return null;
+
+  const today = new Date();
+  let age = today.getFullYear() - birthYear;
+  const hasHadBirthdayThisYear =
+    today.getMonth() + 1 > birthMonth ||
+    (today.getMonth() + 1 === birthMonth && today.getDate() >= birthDay);
+
+  if (!hasHadBirthdayThisYear) {
+    age -= 1;
+  }
+
+  return age >= 0 ? age : null;
+}
+
 // プロフィール画像・基本情報・チップを表示する。
 export default function ProfileSection({ about, hero, profileChips }: ProfileSectionProps) {
   // Contactモーダル表示状態。
   const [isContactOpen, setIsContactOpen] = useState(false);
   // GitHubリンク（未設定時は空文字）。
   const githubUrl = about.contact?.github ?? "";
+  const currentAffiliation =
+    about.affiliations?.find((affiliation) => affiliation.isCurrent) ?? about.affiliations?.[0];
+  const currentAge = getAgeFromBirthDate(about.about.birthDate);
 
   return (
     <>
-      <div className="grid items-start gap-6 md:grid-cols-[1.25fr_1fr]">
+      <div className="grid items-start gap-6 lg:grid-cols-2 lg:gap-14 xl:gap-16">
         <div className="space-y-4 self-start">
-          <div className="relative my-3 h-72 w-full max-w-xl overflow-hidden rounded-2xl border border-zinc-300/20 bg-black/30 md:h-96">
+          <div className="relative my-2 h-64 w-full max-w-2xl overflow-hidden rounded-2xl border border-zinc-300/20 bg-black/30 sm:h-72 lg:my-3 lg:h-[30rem]">
             <Image
               src={about.about.image}
               alt={`${about.name} portrait`}
               fill
-              sizes="(max-width: 768px) 100vw, 420px"
+              sizes="(max-width: 1024px) 100vw, 54vw"
               className="object-cover"
             />
           </div>
         </div>
-        <div className="mt-6 flex flex-col gap-4 md:mt-10">
+        <div className="flex flex-col gap-4 lg:gap-5">
           <div className="space-y-1">
-            <p className="text-4xl leading-none font-bold tracking-tight text-white md:text-5xl">
-              {about.name}
+            {currentAffiliation ? (
+              <p className="mb-2 text-xs font-medium tracking-wide text-zinc-300 lg:text-sm">
+                {currentAffiliation.name}
+                {currentAffiliation.stage ? ` / ${currentAffiliation.stage}` : ""}
+              </p>
+            ) : null}
+            <div className="flex items-end gap-3">
+              <p className="text-[clamp(2rem,4.6vw,3.3rem)] leading-none font-bold tracking-tight text-white">
+                {about.name}
+              </p>
+              {currentAge !== null ? (
+                <p className="pb-1 text-sm font-semibold text-zinc-300 sm:text-base">{currentAge}歳</p>
+              ) : null}
+            </div>
+            <p className="mb-2 text-base font-semibold text-zinc-200/90 sm:text-lg lg:mb-3 lg:text-2xl">
+              {about.nameEn}
             </p>
-            <p className="text-lg font-semibold text-zinc-200/90 md:text-2xl">{about.nameEn}</p>
-            <p className="text-sm font-medium text-zinc-300/90 md:text-base">{hero.developerTitle}</p>
           </div>
 
-          <p className="text-sm leading-relaxed text-zinc-200">
-            {profileChips.filter(Boolean).join(" / ")}
-          </p>
+          {profileChips.filter(Boolean).length > 0 ? (
+            <p className="text-sm leading-relaxed text-zinc-200 lg:text-base">
+              {profileChips.filter(Boolean).join(" / ")}
+            </p>
+          ) : null}
 
-          <div className="space-y-1 text-sm leading-relaxed text-zinc-200">
-            <p>Birth: {about.about.birthDate}</p>
-            <p>Hobby: {about.about.hobby}</p>
-            <p>Contact: {about.contact?.email}</p>
+          {about.about.introduction ? (
+            <p className="text-sm font-semibold leading-relaxed whitespace-pre-line text-zinc-200 lg:text-base">
+              {about.about.introduction}
+            </p>
+          ) : null}
+
+          <div className="space-y-4">
+            <div className="flex flex-wrap gap-1.5 text-[10px] font-semibold text-zinc-100 sm:text-[11px] lg:flex-nowrap">
+              {about.about.birthDate ? (
+                <span className="inline-flex items-center gap-1 rounded-full border border-zinc-300/25 bg-zinc-900/55 px-2.5 py-1 backdrop-blur-sm">
+                  <span className="text-zinc-400 whitespace-nowrap">生年月日</span>
+                  <span>{about.about.birthDate}</span>
+                </span>
+              ) : null}
+              {about.about.birthplace ? (
+                <span className="inline-flex items-center gap-1 rounded-full border border-zinc-300/25 bg-zinc-900/55 px-2.5 py-1 backdrop-blur-sm">
+                  <span className="text-zinc-400 whitespace-nowrap">出身</span>
+                  <span>{about.about.birthplace}</span>
+                </span>
+              ) : null}
+              {about.about.hobby ? (
+                <span className="inline-flex max-w-full items-center gap-1 rounded-full border border-zinc-300/25 bg-zinc-900/55 px-2.5 py-1 backdrop-blur-sm lg:max-w-[22rem]">
+                  <span className="text-zinc-400 whitespace-nowrap">好きなこと</span>
+                  <span className="truncate">{about.about.hobby}</span>
+                </span>
+              ) : null}
+            </div>
+            <div className="h-px w-full bg-white/40" aria-hidden />
           </div>
 
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <div className="flex flex-wrap gap-3 sm:gap-4">
             <a
               href={githubUrl || "#"}
               target="_blank"
               rel="noopener noreferrer"
               aria-disabled={!githubUrl}
-              className={`group col-span-1 inline-flex h-12 w-full items-center justify-center gap-2 rounded-full border px-4 text-sm font-bold tracking-wide transition-[transform,box-shadow,background-color,border-color] duration-300 ${
+              className={`group inline-flex h-11 items-center justify-center gap-2 rounded-full border px-5 text-sm font-bold tracking-wide transition-[transform,box-shadow,background-color,border-color] duration-300 sm:h-12 ${
                 githubUrl
                   ? "border-zinc-300/25 bg-zinc-900/70 text-zinc-100 shadow-md hover:scale-105 hover:border-zinc-300/45 hover:bg-zinc-800/85 hover:shadow-lg active:scale-[1.02] active:shadow-sm"
                   : "pointer-events-none border-zinc-300/20 bg-zinc-900/30 text-zinc-500"
@@ -81,7 +145,7 @@ export default function ProfileSection({ about, hero, profileChips }: ProfileSec
             <button
               type="button"
               onClick={() => setIsContactOpen(true)}
-              className="group col-span-1 inline-flex h-12 w-full items-center justify-center gap-2 rounded-full border border-zinc-300/25 bg-zinc-900/70 px-4 text-sm font-bold tracking-wide text-zinc-100 shadow-md transition-[transform,box-shadow,background-color,border-color] duration-300 hover:scale-105 hover:border-zinc-300/45 hover:bg-zinc-800/85 hover:shadow-lg active:scale-[1.02] active:shadow-sm"
+              className="group inline-flex h-11 items-center justify-center gap-2 rounded-full border border-zinc-300/25 bg-zinc-900/70 px-5 text-sm font-bold tracking-wide text-zinc-100 shadow-md transition-[transform,box-shadow,background-color,border-color] duration-300 hover:scale-105 hover:border-zinc-300/45 hover:bg-zinc-800/85 hover:shadow-lg active:scale-[1.02] active:shadow-sm sm:h-12"
             >
               <svg
                 className="h-4 w-4 shrink-0"

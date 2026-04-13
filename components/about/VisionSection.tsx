@@ -7,7 +7,7 @@ interface VisionSectionProps {
 export default function VisionSection({ description }: VisionSectionProps) {
   return (
     <div className="space-y-4">
-      <p className="text-sm leading-relaxed text-zinc-200 md:text-base whitespace-pre-line">
+      <p className="text-sm font-semibold leading-relaxed text-zinc-200 whitespace-pre-line md:text-base">
         {description}
       </p>
     </div>

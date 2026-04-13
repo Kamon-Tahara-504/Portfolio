@@ -13,7 +13,7 @@ import WorksSection from "@/components/projects/WorksSection";
 import SkillsSection from "@/components/skills/SkillsSection";
 import { SectionId } from "@/components/page/SectionMeta";
 import { Development } from "@/types/development";
-import { Skill } from "@/types/profile";
+import { AboutData, Skill } from "@/types/profile";
 import { Project } from "@/types/project";
 
 // スキルカードをカテゴリ別で扱うための中間型。
@@ -37,21 +37,18 @@ const workItems: Project[] = (projectsData as Project[]).filter(
 
 // 開発データを表示用型へ明示キャストして扱う。
 const development = developmentData as Development;
+const about = aboutData as AboutData;
 
 // セクションIDに応じた本文コンポーネントを返すファクトリ。
 export function getSectionContent(
   sectionId: SectionId,
   onSelectProject: (project: Project) => void
 ) {
-  const profileChips = [
-    heroData.developerTitle ?? "",
-    `Age ${aboutData.age}`,
-    `From ${aboutData.about.birthplace}`,
-  ];
+  const profileChips: string[] = [];
 
   const sectionContentMap: Record<SectionId, ReactNode> = {
-    profile: <ProfileSection about={aboutData} hero={heroData} profileChips={profileChips} />,
-    vision: <VisionSection description={aboutData.about.description} />,
+    profile: <ProfileSection about={about} hero={heroData} profileChips={profileChips} />,
+    vision: <VisionSection description={about.about.description} />,
     career: <CareerSection experiences={experienceData} />,
     skills: <SkillsSection skillGroups={skillGroups} skills={skillsData} />,
     works: <WorksSection workItems={workItems} onSelectProject={onSelectProject} />,
