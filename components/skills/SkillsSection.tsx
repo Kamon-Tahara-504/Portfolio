@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import SkillsGridPanel from "@/components/skills/SkillsGridPanel";
 import SkillsModeToggle from "@/components/skills/SkillsModeToggle";
 import SkillsTimelinePanel from "@/components/skills/SkillsTimelinePanel";
@@ -9,12 +9,17 @@ import { Skill, Skills } from "@/types/profile";
 import {
   CARD_MOTION_DURATION,
   SkillsPhase,
-  TIMELINE_CONTENT_REVEAL_RATIO,
+  TIMELINE_CONTENT_HIDE_DELAY_MS,
+  TIMELINE_CONTENT_SHOW_DELAY_MS,
   TIMELINE_ENTER_DURATION,
+  TIMELINE_ENTER_EASE,
   TIMELINE_EXIT_DURATION,
-  TIMELINE_HIDE_TO_EXIT_FRAME_MS,
+  TIMELINE_EXIT_EASE,
+  TIMELINE_TO_SKILLS_START_DELAY_MS,
   TIMELINE_SWITCH_RATIO,
 } from "@/components/skills/skillsTransition";
+
+const TO_SKILLS_PREP_ADVANCE_MS = 80;
 
 // SkillsSectionへ渡すカテゴリグループ構造。
 interface SkillGroup {
@@ -34,16 +39,12 @@ export default function SkillsSection({ skillGroups, skills }: SkillsSectionProp
   const [phase, setPhase] = useState<SkillsPhase>("skills");
   const [timelineContentVisible, setTimelineContentVisible] = useState(false);
   const phaseTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const phaseEndTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const timelineContentTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     return () => {
       if (phaseTimeoutRef.current) {
         clearTimeout(phaseTimeoutRef.current);
-      }
-      if (phaseEndTimeoutRef.current) {
-        clearTimeout(phaseEndTimeoutRef.current);
       }
       if (timelineContentTimeoutRef.current) {
         clearTimeout(timelineContentTimeoutRef.current);
@@ -56,9 +57,6 @@ export default function SkillsSection({ skillGroups, skills }: SkillsSectionProp
     if (phaseTimeoutRef.current) {
       clearTimeout(phaseTimeoutRef.current);
     }
-    if (phaseEndTimeoutRef.current) {
-      clearTimeout(phaseEndTimeoutRef.current);
-    }
     if (timelineContentTimeoutRef.current) {
       clearTimeout(timelineContentTimeoutRef.current);
     }
@@ -69,7 +67,7 @@ export default function SkillsSection({ skillGroups, skills }: SkillsSectionProp
         setPhase("timeline");
         timelineContentTimeoutRef.current = setTimeout(
           () => setTimelineContentVisible(true),
-          TIMELINE_ENTER_DURATION * TIMELINE_CONTENT_REVEAL_RATIO * 1000
+          TIMELINE_CONTENT_SHOW_DELAY_MS
         );
       },
       CARD_MOTION_DURATION * TIMELINE_SWITCH_RATIO * 1000
@@ -81,30 +79,31 @@ export default function SkillsSection({ skillGroups, skills }: SkillsSectionProp
     if (phaseTimeoutRef.current) {
       clearTimeout(phaseTimeoutRef.current);
     }
-    if (phaseEndTimeoutRef.current) {
-      clearTimeout(phaseEndTimeoutRef.current);
-    }
     if (timelineContentTimeoutRef.current) {
       clearTimeout(timelineContentTimeoutRef.current);
     }
-    const timelineContentHideDelayMs = TIMELINE_EXIT_DURATION * (1 - TIMELINE_CONTENT_REVEAL_RATIO) * 1000;
-
     timelineContentTimeoutRef.current = setTimeout(
       () => setTimelineContentVisible(false),
-      timelineContentHideDelayMs
+      TIMELINE_CONTENT_HIDE_DELAY_MS
     );
 
     phaseTimeoutRef.current = setTimeout(
-      () => {
-        setPhase("toSkills");
-        phaseEndTimeoutRef.current = setTimeout(() => setPhase("skills"), CARD_MOTION_DURATION * 1000);
-      },
-      timelineContentHideDelayMs + TIMELINE_HIDE_TO_EXIT_FRAME_MS
+      () => setPhase("toSkillsPrep"),
+      Math.max(0, TIMELINE_TO_SKILLS_START_DELAY_MS - TO_SKILLS_PREP_ADVANCE_MS)
     );
   };
 
-  const showGrid = phase !== "timeline";
-  const isTimelineMode = phase === "timeline" || phase === "toSkills";
+  const handleTimelineExitComplete = () => {
+    if (phase !== "toSkillsPrep") {
+      return;
+    }
+    setPhase("toSkills");
+    phaseTimeoutRef.current = setTimeout(() => setPhase("skills"), CARD_MOTION_DURATION * 1000);
+  };
+
+  const showGrid = phase !== "timeline" && phase !== "toSkillsPrep";
+  const showTimeline = phase === "timeline";
+  const isTimelineMode = phase === "timeline" || phase === "toSkillsPrep" || phase === "toSkills";
 
   return (
     <div className="space-y-6">
@@ -122,13 +121,42 @@ export default function SkillsSection({ skillGroups, skills }: SkillsSectionProp
         />
       </div>
 
-      <AnimatePresence mode="wait" initial={false}>
-        {showGrid ? (
-          <SkillsGridPanel phase={phase} skillGroups={skillGroups} />
-        ) : (
-          <SkillsTimelinePanel skills={skills} contentVisible={timelineContentVisible} />
-        )}
-      </AnimatePresence>
+      <div className="relative">
+        <AnimatePresence initial={false}>
+          {showGrid ? (
+            <motion.div
+              key="skills-grid"
+              exit={{ opacity: 0, transition: { duration: 0 } }}
+            >
+              <SkillsGridPanel phase={phase} skillGroups={skillGroups} />
+            </motion.div>
+          ) : null}
+        </AnimatePresence>
+
+        <AnimatePresence initial={false} onExitComplete={handleTimelineExitComplete}>
+          {showTimeline ? (
+            <motion.div
+              key="timeline"
+              initial={{ scale: 0.55, opacity: 1 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{
+                scale: 0.55,
+                opacity: 1,
+                transition: {
+                  duration: TIMELINE_EXIT_DURATION,
+                  ease: TIMELINE_EXIT_EASE,
+                },
+              }}
+              transition={{
+                duration: TIMELINE_ENTER_DURATION,
+                ease: TIMELINE_ENTER_EASE,
+              }}
+            >
+              <SkillsTimelinePanel skills={skills} contentVisible={timelineContentVisible} />
+            </motion.div>
+          ) : null}
+        </AnimatePresence>
+      </div>
     </div>
   );
 }
