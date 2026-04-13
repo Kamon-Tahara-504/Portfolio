@@ -150,7 +150,7 @@ export default function ContactModal({ onClose }: ContactModalProps) {
       onWheel={handleWheel}
     >
       <div
-        className={`relative max-h-[92vh] w-full max-w-2xl overflow-y-auto bg-white border border-black ${
+        className={`relative h-[92vh] max-h-[92vh] w-full max-w-[95vw] select-none rounded-2xl border border-zinc-300/20 bg-zinc-950/95 text-zinc-100 shadow-2xl md:h-[85vh] md:max-h-[85vh] md:max-w-[82vw] ${
           isClosing
             ? "animate-tv-close"
             : isOpen
@@ -162,15 +162,15 @@ export default function ContactModal({ onClose }: ContactModalProps) {
         {/* 閉じるボタン */}
         <button
           onClick={handleClose}
-          className="absolute right-4 top-4 z-10 flex h-10 w-10 items-center justify-center rounded-full border-2 border-black bg-white text-black shadow-md transition-[transform,box-shadow] duration-200 active:translate-y-0.5 active:shadow-sm"
+          className="absolute right-4 top-4 z-10 flex h-10 w-10 items-center justify-center rounded-full border border-zinc-300/30 bg-zinc-900/90 text-zinc-100 shadow-md transition-[transform,box-shadow] duration-200 hover:bg-zinc-800 active:translate-y-0.5 active:shadow-sm"
           aria-label="モーダルを閉じる"
         >
           <span className="text-2xl">×</span>
         </button>
 
         {/* コンテンツ */}
-        <div className="p-8 md:p-12">
-          <h2 className="mb-8 text-4xl font-bold tracking-tight md:text-5xl">
+        <div className="h-full overflow-y-auto p-4 md:p-10">
+          <h2 className="mb-8 text-3xl font-bold tracking-tight md:text-4xl">
             お問い合わせ
           </h2>
 
@@ -188,7 +188,7 @@ export default function ContactModal({ onClose }: ContactModalProps) {
               <button
                 type="button"
                 onClick={handleClose}
-                className="group flex-1 rounded-full border-2 border-black bg-white px-6 py-3 text-sm font-bold text-black shadow-md transition-[border-color,transform,box-shadow,background-color] duration-300 hover:scale-105 hover:border-neutral-500 hover:bg-neutral-50 hover:shadow-lg active:scale-[1.02] active:shadow-sm md:text-base"
+                className="group flex-1 rounded-full border border-zinc-300/30 bg-zinc-900/70 px-6 py-3 text-sm font-bold text-zinc-100 shadow-md transition-[border-color,transform,box-shadow,background-color] duration-300 hover:scale-105 hover:border-zinc-300/50 hover:bg-zinc-800/85 hover:shadow-lg active:scale-[1.02] active:shadow-sm md:text-base"
                 disabled={isSubmitting}
               >
                 キャンセル
@@ -196,7 +196,7 @@ export default function ContactModal({ onClose }: ContactModalProps) {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="flex-1 border border-black bg-black px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-black/90 disabled:cursor-not-allowed disabled:opacity-50 md:text-base"
+                className="flex-1 rounded-full border border-zinc-200/40 bg-zinc-100 px-6 py-3 text-sm font-semibold text-zinc-900 transition-colors hover:bg-white disabled:cursor-not-allowed disabled:opacity-50 md:text-base"
               >
                 {isSubmitting ? "送信中..." : "送信"}
               </button>

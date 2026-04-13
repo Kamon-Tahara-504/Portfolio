@@ -32,7 +32,7 @@ export default function ContactFormFields({
       <div>
         <label
           htmlFor="name"
-          className="mb-2 block text-sm font-semibold text-black"
+          className="mb-2 block text-sm font-semibold text-zinc-200"
         >
           名前 <span className="text-red-500">*</span>
         </label>
@@ -42,8 +42,8 @@ export default function ContactFormFields({
           name="name"
           value={formData.name}
           onChange={onChange}
-          className={`w-full border px-4 py-2 font-semibold text-black focus:outline-none focus:ring-2 focus:ring-black ${
-            errors.name ? "border-red-500" : "border-black"
+          className={`w-full rounded-md border bg-zinc-900/80 px-4 py-2 font-semibold text-zinc-100 placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-zinc-300/50 ${
+            errors.name ? "border-red-500" : "border-zinc-300/30"
           }`}
           placeholder="お名前を入力してください"
         />
@@ -57,7 +57,7 @@ export default function ContactFormFields({
       <div>
         <label
           htmlFor="email"
-          className="mb-2 block text-sm font-semibold text-black"
+          className="mb-2 block text-sm font-semibold text-zinc-200"
         >
           メールアドレス <span className="text-red-500">*</span>
         </label>
@@ -67,8 +67,8 @@ export default function ContactFormFields({
           name="email"
           value={formData.email}
           onChange={onChange}
-          className={`w-full border px-4 py-2 font-semibold text-black focus:outline-none focus:ring-2 focus:ring-black ${
-            errors.email ? "border-red-500" : "border-black"
+          className={`w-full rounded-md border bg-zinc-900/80 px-4 py-2 font-semibold text-zinc-100 placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-zinc-300/50 ${
+            errors.email ? "border-red-500" : "border-zinc-300/30"
           }`}
           placeholder="your.email@example.com"
         />
@@ -82,7 +82,7 @@ export default function ContactFormFields({
       <div>
         <label
           htmlFor="subject"
-          className="mb-2 block text-sm font-semibold text-black"
+          className="mb-2 block text-sm font-semibold text-zinc-200"
         >
           件名 <span className="text-red-500">*</span>
         </label>
@@ -92,8 +92,8 @@ export default function ContactFormFields({
           name="subject"
           value={formData.subject}
           onChange={onChange}
-          className={`w-full border px-4 py-2 font-semibold text-black focus:outline-none focus:ring-2 focus:ring-black ${
-            errors.subject ? "border-red-500" : "border-black"
+          className={`w-full rounded-md border bg-zinc-900/80 px-4 py-2 font-semibold text-zinc-100 placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-zinc-300/50 ${
+            errors.subject ? "border-red-500" : "border-zinc-300/30"
           }`}
           placeholder="お問い合わせの件名を入力してください"
         />
@@ -107,7 +107,7 @@ export default function ContactFormFields({
       <div>
         <label
           htmlFor="message"
-          className="mb-2 block text-sm font-semibold text-black"
+          className="mb-2 block text-sm font-semibold text-zinc-200"
         >
           メッセージ <span className="text-red-500">*</span>
         </label>
@@ -117,8 +117,8 @@ export default function ContactFormFields({
           value={formData.message}
           onChange={onChange}
           rows={6}
-          className={`w-full border px-4 py-2 font-semibold text-black focus:outline-none focus:ring-2 focus:ring-black resize-none ${
-            errors.message ? "border-red-500" : "border-black"
+          className={`w-full resize-none rounded-md border bg-zinc-900/80 px-4 py-2 font-semibold text-zinc-100 placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-zinc-300/50 ${
+            errors.message ? "border-red-500" : "border-zinc-300/30"
           }`}
           placeholder="お問い合わせ内容を入力してください（10文字以上）"
         />
