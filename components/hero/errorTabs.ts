@@ -7,7 +7,7 @@ export interface ErrorTabSurface {
   widthClass: string;
 }
 
-export type ErrorTabPhase = "active" | "green" | "closing" | "removed";
+export type ErrorTabPhase = "spawning" | "active" | "green" | "closing" | "removed";
 
 // 画面周辺に散らすタブの配置定義。
 export const ERROR_TAB_SURFACES: ErrorTabSurface[] = [

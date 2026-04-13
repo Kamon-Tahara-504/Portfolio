@@ -17,6 +17,7 @@ export default function HeroErrorTabs({ phases }: HeroErrorTabsProps) {
       {ERROR_TAB_SURFACES.map((surf, index) => {
         const tabPhase = phases[index];
         if (tabPhase === "removed") return null;
+        const isSpawning = tabPhase === "spawning";
         const isActive = tabPhase === "active";
         const isClosing = tabPhase === "closing";
         const rounded = surf.variant === "mac" ? "rounded-xl" : "rounded-sm";
@@ -24,14 +25,20 @@ export default function HeroErrorTabs({ phases }: HeroErrorTabsProps) {
           <div
             key={`error-tab-${index}`}
             className={`pointer-events-none fixed z-[38] overflow-hidden bg-zinc-900/95 shadow-2xl ${surf.positionClass} ${surf.widthClass} ${rounded} transition-[border-color,opacity,transform,filter] ease-[cubic-bezier(0.22,1,0.36,1)] ${
-              isActive
+              isSpawning
+                ? "border-2 border-red-500/85 opacity-0 scale-[0.74]"
+                : isActive
                 ? "border-2 border-red-500/85 opacity-100 scale-100"
                 : isClosing
                   ? "border-2 border-emerald-400/95 opacity-0 scale-[0.96]"
                   : "border-2 border-emerald-400/95 opacity-100 scale-100"
             }`}
             style={{
-              transitionDuration: isClosing ? `${TAB_CLOSE_ANIM_MS}ms` : `${BORDER_RED_TO_GREEN_MS}ms`,
+              transitionDuration: isSpawning
+                ? "260ms"
+                : isClosing
+                  ? `${TAB_CLOSE_ANIM_MS}ms`
+                  : `${BORDER_RED_TO_GREEN_MS}ms`,
             }}
           >
             {surf.variant === "mac" ? (

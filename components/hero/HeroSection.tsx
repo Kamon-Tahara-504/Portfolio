@@ -22,6 +22,10 @@ type Phase = "error" | "resolving" | "blinking" | "resolved";
 // 点滅演出の周期と回数。
 const BLINK_INTERVAL_MS = 120;
 const BLINK_TOGGLE_COUNT = 8;
+const INTRO_FIRST_TAB_DELAY_MS = 360;
+const INTRO_REVEAL_START_INTERVAL_MS = 230;
+const INTRO_REVEAL_ACCELERATION = 0.82;
+const INTRO_REVEAL_MIN_INTERVAL_MS = 44;
 
 
 // ヒーロー表示の外部入力。
@@ -43,15 +47,45 @@ export default function HeroSection({ nameEn, onLead }: HeroSectionProps) {
   const viewContext = useContext(ViewContext);
   const [phase, setPhase] = useState<Phase>("error");
   const [isBlinkVisible, setIsBlinkVisible] = useState(false);
+  const [isCliVisible, setIsCliVisible] = useState(false);
   const [errorTabPhases, setErrorTabPhases] = useState<ErrorTabPhase[]>(() =>
-    Array.from({ length: ERROR_TAB_COUNT }, (): ErrorTabPhase => "active")
+    Array.from({ length: ERROR_TAB_COUNT }, (): ErrorTabPhase => "removed")
   );
-  const resolveTimersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
+  const timersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
 
   useEffect(() => {
+    let totalDelay = INTRO_FIRST_TAB_DELAY_MS;
+    let intervalMs = INTRO_REVEAL_START_INTERVAL_MS;
+
+    Array.from({ length: ERROR_TAB_COUNT }).forEach((_, tabIndex) => {
+      const tSpawn = setTimeout(() => {
+        setErrorTabPhases((prev) => {
+          const next = [...prev];
+          next[tabIndex] = "spawning";
+          return next;
+        });
+
+        const tActivate = setTimeout(() => {
+          setErrorTabPhases((prev) => {
+            const next = [...prev];
+            next[tabIndex] = "active";
+            return next;
+          });
+          if (tabIndex === ERROR_TAB_COUNT - 1) {
+            setIsCliVisible(true);
+          }
+        }, 34);
+        timersRef.current.push(tActivate);
+      }, totalDelay);
+
+      timersRef.current.push(tSpawn);
+      totalDelay += intervalMs;
+      intervalMs = Math.max(INTRO_REVEAL_MIN_INTERVAL_MS, Math.floor(intervalMs * INTRO_REVEAL_ACCELERATION));
+    });
+
     return () => {
-      resolveTimersRef.current.forEach(clearTimeout);
-      resolveTimersRef.current = [];
+      timersRef.current.forEach(clearTimeout);
+      timersRef.current = [];
     };
   }, []);
 
@@ -74,9 +108,9 @@ export default function HeroSection({ nameEn, onLead }: HeroSectionProps) {
 
   // 中央CLIトリガーからエラー解消シーケンスを開始する。
   const handleResolve = () => {
-    if (phase !== "error") return;
-    resolveTimersRef.current.forEach(clearTimeout);
-    resolveTimersRef.current = [];
+    if (phase !== "error" || !isCliVisible) return;
+    timersRef.current.forEach(clearTimeout);
+    timersRef.current = [];
 
     setPhase("resolving");
     setErrorTabPhases(Array.from({ length: ERROR_TAB_COUNT }, (): ErrorTabPhase => "active"));
@@ -91,7 +125,7 @@ export default function HeroSection({ nameEn, onLead }: HeroSectionProps) {
           return next;
         });
       }, startGreenAt);
-      resolveTimersRef.current.push(tGreen);
+      timersRef.current.push(tGreen);
 
       const startCloseAt = startGreenAt + GREEN_TO_CLOSE_DELAY_MS + i * TAB_CLOSE_STAGGER_MS;
       const tClose = setTimeout(() => {
@@ -107,9 +141,9 @@ export default function HeroSection({ nameEn, onLead }: HeroSectionProps) {
             return next;
           });
         }, TAB_CLOSE_ANIM_MS);
-        resolveTimersRef.current.push(tRemoved);
+        timersRef.current.push(tRemoved);
       }, startCloseAt);
-      resolveTimersRef.current.push(tClose);
+      timersRef.current.push(tClose);
     });
 
     const resolveDoneMs =
@@ -120,10 +154,8 @@ export default function HeroSection({ nameEn, onLead }: HeroSectionProps) {
       TAB_CLOSE_ANIM_MS +
       AFTER_LAST_TAB_PAD_MS;
     const tBlink = setTimeout(() => setPhase("blinking"), resolveDoneMs);
-    resolveTimersRef.current.push(tBlink);
+    timersRef.current.push(tBlink);
   };
-
-  const allErrorsVisible = true;
   const canEnterMain = phase === "resolved";
 
   // 解消後に本編へ遷移するハンドラ。
@@ -171,9 +203,9 @@ export default function HeroSection({ nameEn, onLead }: HeroSectionProps) {
 
       <HeroLeadPanel nameEn={nameEn} isResolved={phase === "resolved"} onEnterMain={handleEnterMain} />
 
-      {(phase === "error" || phase === "resolving") && allErrorsVisible && (
+      {(phase === "error" || phase === "resolving") && (
         <>
-          <HeroResolveTerminal phase={phase} errorTabCount={ERROR_TAB_COUNT} onResolve={handleResolve} />
+          {isCliVisible && <HeroResolveTerminal phase={phase} errorTabCount={ERROR_TAB_COUNT} onResolve={handleResolve} />}
           <HeroErrorTabs phases={errorTabPhases} />
         </>
       )}
