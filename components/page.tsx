@@ -42,20 +42,35 @@ export default function PortfolioPage() {
     );
     if (sectionElements.length === 0) return;
 
+    const MIN_SWITCH_RATIO = 0.08;
+    const SWITCH_HYSTERESIS = 0.01;
+    const visibilityBySection = new Map<SectionId, number>(
+      sectionElements.map((section) => [section.id as SectionId, 0])
+    );
+
     const observer = new IntersectionObserver(
       (entries) => {
-        const visibleEntry = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        entries.forEach((entry) => {
+          const sectionId = entry.target.id as SectionId;
+          visibilityBySection.set(sectionId, entry.isIntersecting ? entry.intersectionRatio : 0);
+        });
 
-        if (!visibleEntry) return;
+        const [nextSection, nextRatio] = Array.from(visibilityBySection.entries()).sort(
+          (a, b) => b[1] - a[1]
+        )[0] ?? [null, 0];
 
-        const nextSection = visibleEntry.target.id as SectionId;
-        setActiveSectionId((prev) => (prev === nextSection ? prev : nextSection));
+        if (!nextSection || nextRatio < MIN_SWITCH_RATIO) return;
+
+        setActiveSectionId((prev) => {
+          if (prev === nextSection) return prev;
+          const prevRatio = visibilityBySection.get(prev) ?? 0;
+          const hasEnoughLead = nextRatio >= prevRatio + SWITCH_HYSTERESIS;
+          return hasEnoughLead ? nextSection : prev;
+        });
       },
       {
         root: null,
-        threshold: [0.35, 0.5, 0.65],
+        threshold: [0.05, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7],
       }
     );
 
