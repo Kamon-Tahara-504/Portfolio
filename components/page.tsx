@@ -83,7 +83,7 @@ export default function PortfolioPage() {
   return (
     <div className="relative h-screen overflow-y-auto snap-y snap-mandatory">
       <PageBackground isTop1Active={isTop1Active} shouldReduceMotion={shouldReduceMotion} />
-      <PageHeaderNav title={heroData.title} sections={SECTION_META} />
+      <PageHeaderNav title={heroData.title} sections={SECTION_META} activeSectionId={activeSectionId} />
 
       <main>
         {SECTION_META.map((section) => (

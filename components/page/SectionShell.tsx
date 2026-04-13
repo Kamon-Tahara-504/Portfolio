@@ -13,11 +13,7 @@ interface SectionShellProps {
 export default function SectionShell({ section, shouldReduceMotion, children }: SectionShellProps) {
   return (
     <section id={section.id} className="snap-start min-h-screen px-6 py-28 md:px-10">
-      <div
-        className={`mx-auto flex min-h-[calc(100vh-10rem)] w-full items-center ${
-          section.id === "career" ? "max-w-7xl" : "max-w-6xl"
-        }`}
-      >
+      <div className="mx-auto flex min-h-[calc(100vh-10rem)] w-full max-w-7xl items-center">
         <motion.article
           initial={shouldReduceMotion ? false : { opacity: 0, y: 28 }}
           whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}

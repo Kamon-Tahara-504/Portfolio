@@ -69,7 +69,7 @@ export default function CareerSection({ experiences }: CareerSectionProps) {
       <p className="max-w-3xl text-sm leading-relaxed text-zinc-300 md:text-base">
         学習と制作の履歴を時系列でカード化し、星座のように経歴順のつながりを可視化しています。
       </p>
-      <div className="mx-auto w-full max-w-6xl">
+      <div className="mx-auto w-full">
         <div ref={listRef} className="relative space-y-1.5 md:space-y-2">
           <div className="pointer-events-none absolute inset-0" aria-hidden>
             {segments.map((segment, index) => {
