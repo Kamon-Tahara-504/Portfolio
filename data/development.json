@@ -3,7 +3,6 @@
     "Next.js 16.0.3",
     "React 19.2.0",
     "TypeScript",
-    "Tailwind CSS",
     "EmailJS"
   ],
   "developmentProcess": {
@@ -15,7 +14,7 @@
   "dates": {
     "startDate": "2025-11-24",
     "endDate": "2026-01-13",
-    "lastUpdated": "2026-03-25"
+    "lastUpdated": "2026-04-15"
   },
   "repository": {
     "url": "https://github.com/Kamon-Tahara-504/Portfolio",
