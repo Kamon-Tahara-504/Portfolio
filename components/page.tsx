@@ -22,14 +22,14 @@ export default function PortfolioPage() {
   const shouldReduceMotion = useReducedMotion();
   // セクションごとの背景画像割り当てマップ。
   const sectionImageMap = useMemo<Record<SectionId, string>>(
-    () =>
-      SECTION_META.reduce(
-        (acc, section, index) => {
-          acc[section.id] = index % 2 === 0 ? "/images/profile/Top1.jpg" : "/images/profile/Top2.jpg";
-          return acc;
-        },
-        {} as Record<SectionId, string>
-      ),
+    () => ({
+      profile: "/images/profile/Top1.jpg",
+      vision: "/images/profile/Top2.jpg",
+      career: "/images/profile/Top3.jpg",
+      skills: "/images/profile/Top4.jpg",
+      works: "/images/profile/Top5.jpg",
+      stack: "/images/profile/Top6.jpg",
+    }),
     []
   );
 
@@ -79,9 +79,8 @@ export default function PortfolioPage() {
     return () => observer.disconnect();
   }, [hasEntered]);
 
-  // セクションIDから背景を決定することで、表示ロジックをこの2値判定に集約する。
+  // セクションIDごとの背景画像を切り替える。
   const activeBackground = sectionImageMap[activeSectionId];
-  const isTop1Active = activeBackground === "/images/profile/Top1.jpg";
 
   // Hero は導入画面として独立させ、onLead のみで本編へ遷移する。
   if (!hasEntered) {
@@ -97,7 +96,7 @@ export default function PortfolioPage() {
 
   return (
     <div className="relative h-screen overflow-y-auto snap-y snap-mandatory">
-      <PageBackground isTop1Active={isTop1Active} shouldReduceMotion={shouldReduceMotion} />
+      <PageBackground activeImage={activeBackground} shouldReduceMotion={shouldReduceMotion} />
       <PageHeaderNav title={heroData.title} sections={SECTION_META} activeSectionId={activeSectionId} />
 
       <main>
