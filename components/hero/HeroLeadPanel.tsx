@@ -28,15 +28,18 @@ export default function HeroLeadPanel({ nameEn, isResolved, onEnterMain }: HeroL
 
   return (
     <div className="relative z-10 flex flex-col items-center gap-1 px-6 text-center select-none pointer-events-none">
+      <p className="w-full max-w-[min(920px,88vw)] self-start text-left -translate-x-2 md:-translate-x-2 font-semibold tracking-[0.14em] text-[10px] text-zinc-100/85 uppercase sm:text-xs lg:text-sm">
+        Web Developer ＆ Mobile Developer
+      </p>
       <p className="font-ink font-bold leading-none text-white" style={{ fontSize: "clamp(100px, 16vw, 260px)" }}>
         Portfolio
       </p>
-      <h1 className="w-full max-w-[min(640px,80vw)] text-right pr-3 md:pr-6 mb-1">
+      <h1 className="w-full max-w-[min(640px,80vw)] text-right pr-0 mb-1 translate-x-11 md:translate-x-22">
         <span className="font-ink font-bold leading-tight text-white text-2xl md:text-3xl lg:text-4xl">
           - Kamon Tahara
         </span>
       </h1>
-      <div className="mt-1 flex h-[72px] items-center justify-center">
+      <div className="-mt-14 flex h-[72px] items-start justify-center">
         {isResolved ? (
           <button
             type="button"

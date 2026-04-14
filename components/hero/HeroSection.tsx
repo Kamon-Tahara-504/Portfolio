@@ -185,24 +185,26 @@ export default function HeroSection({ nameEn, onLead }: HeroSectionProps) {
       }}
     >
       <div className="pointer-events-none absolute inset-0 bg-black" aria-hidden />
-      {(phase === "resolved" || (phase === "blinking" && isBlinkVisible)) ? (
+      {(phase === "resolved" || phase === "blinking") ? (
         <div
           className={`pointer-events-none absolute inset-0 z-[4] ${
-            phase === "blinking" ? "animate-pulse" : ""
+            phase === "blinking"
+              ? `transition-opacity duration-450 ease-in-out ${isBlinkVisible ? "opacity-100" : "opacity-0"}`
+              : "opacity-100"
           }`}
           aria-hidden
         >
           <img
-            src={`${basePath}/images/profile/Top1.jpg`}
+            src={`${basePath}/images/profile/hero.jpg`}
             alt=""
-            className="h-full w-full object-cover"
+            className="h-full w-full scale-101 object-cover blur-[3px]"
             loading="eager"
             decoding="async"
           />
         </div>
       ) : null}
       <div
-        className="pointer-events-none absolute inset-0 z-[5] bg-black/30 backdrop-blur-[2px]"
+        className="pointer-events-none absolute inset-0 z-[5] bg-black/36 backdrop-blur-[4px]"
         aria-hidden
       />
 
