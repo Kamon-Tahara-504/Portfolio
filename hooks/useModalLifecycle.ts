@@ -7,6 +7,13 @@ interface UseModalLifecycleOptions {
   setIsModalOpen?: (open: boolean) => void;
 }
 
+// TV電源風の開閉演出クラスをモーダル間で共通化する。
+export function getTvPowerAnimationClass(isOpen: boolean, isClosing: boolean): string {
+  if (isClosing) return "animate-tv-close";
+  if (isOpen) return "animate-tv-open";
+  return "scale-y-0 opacity-0";
+}
+
 export function useModalLifecycle({
   onClose,
   setIsModalOpen,

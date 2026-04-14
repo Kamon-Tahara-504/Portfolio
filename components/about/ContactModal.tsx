@@ -5,7 +5,7 @@ import emailjs from "@emailjs/browser";
 import { ViewContext } from "@/components/Layout";
 import ContactModalStatus from "./ContactModal/ContactModalStatus";
 import ContactFormFields from "./ContactModal/ContactFormFields";
-import { useModalLifecycle } from "@/hooks/useModalLifecycle";
+import { getTvPowerAnimationClass, useModalLifecycle } from "@/hooks/useModalLifecycle";
 
 interface ContactModalProps {
   onClose: () => void;
@@ -150,13 +150,7 @@ export default function ContactModal({ onClose }: ContactModalProps) {
       onWheel={handleWheel}
     >
       <div
-        className={`relative h-[94vh] max-h-[94vh] w-full max-w-[min(1200px,96vw)] select-none rounded-2xl border border-zinc-300/20 bg-zinc-950/95 text-zinc-100 shadow-2xl md:h-[88vh] md:max-h-[88vh] lg:h-[84vh] lg:max-h-[84vh] ${
-          isClosing
-            ? "animate-tv-close"
-            : isOpen
-            ? "animate-tv-open"
-            : "scale-y-0 opacity-0"
-        }`}
+        className={`relative h-[94vh] max-h-[94vh] w-full max-w-[min(980px,94vw)] select-none rounded-2xl border border-zinc-300/20 bg-zinc-950/95 text-zinc-100 shadow-2xl md:h-[88vh] md:max-h-[88vh] lg:h-[84vh] lg:max-h-[84vh] ${getTvPowerAnimationClass(isOpen, isClosing)}`}
         onClick={(e) => e.stopPropagation()}
       >
         {/* 閉じるボタン */}

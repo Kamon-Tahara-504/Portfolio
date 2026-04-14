@@ -7,7 +7,7 @@ import ProjectModalDate from "./ProjectModal/ProjectModalDate";
 import ProjectModalImage from "./ProjectModal/ProjectModalImage";
 import ProjectModalLinks from "./ProjectModal/ProjectModalLinks";
 import ProjectModalTechnologies from "./ProjectModal/ProjectModalTechnologies";
-import { useModalLifecycle } from "@/hooks/useModalLifecycle";
+import { getTvPowerAnimationClass, useModalLifecycle } from "@/hooks/useModalLifecycle";
 
 // 画像URLのbasePath（開発は空、本番は /Portfolio）。
 const basePath = process.env.NODE_ENV === "production" ? "/Portfolio" : "";
@@ -45,13 +45,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
       onWheel={handleWheel}
     >
       <div
-        className={`relative h-[94vh] max-h-[94vh] w-full max-w-[min(1240px,96vw)] select-none rounded-2xl border border-zinc-300/20 bg-zinc-950/95 text-zinc-100 shadow-2xl md:h-[88vh] md:max-h-[88vh] lg:h-[84vh] lg:max-h-[84vh] ${
-          isClosing
-            ? "animate-tv-close"
-            : isOpen
-            ? "animate-tv-open"
-            : "scale-y-0 opacity-0"
-        }`}
+        className={`relative h-[94vh] max-h-[94vh] w-full max-w-[min(1240px,96vw)] select-none rounded-2xl border border-zinc-300/20 bg-zinc-950/95 text-zinc-100 shadow-2xl md:h-[88vh] md:max-h-[88vh] lg:h-[84vh] lg:max-h-[84vh] ${getTvPowerAnimationClass(isOpen, isClosing)}`}
         onClick={(e) => e.stopPropagation()}
       >
         {/* 閉じるボタン */}
