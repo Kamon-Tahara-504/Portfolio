@@ -101,6 +101,47 @@ body {
   }
 }
 
+/* モーダル: TV電源ON/OFF風（中央線から上下へ展開） */
+@keyframes tv-open {
+  0% {
+    transform: scaleY(0.01);
+    filter: brightness(3);
+  }
+  60% {
+    filter: brightness(1.2);
+  }
+  100% {
+    transform: scaleY(1);
+    filter: brightness(1);
+  }
+}
+
+@keyframes tv-close {
+  0% {
+    transform: scaleY(1);
+    filter: brightness(1);
+  }
+  40% {
+    filter: brightness(2);
+  }
+  100% {
+    transform: scaleY(0.01);
+    filter: brightness(3);
+  }
+}
+
+.animate-tv-open {
+  transform-origin: center center;
+  animation: tv-open 200ms ease-out forwards;
+  will-change: transform, filter;
+}
+
+.animate-tv-close {
+  transform-origin: center center;
+  animation: tv-close 200ms ease-in forwards;
+  will-change: transform, filter;
+}
+
 .timeline-scrollbar::-webkit-scrollbar {
   width: 0;
   height: 0;
