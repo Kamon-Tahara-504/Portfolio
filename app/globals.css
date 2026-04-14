@@ -72,18 +72,21 @@ body {
 }
 
 @keyframes circle-fill {
+  /* Vision の高速ローダーで円弧ゲージを一気に充填する。 */
   to {
     stroke-dashoffset: 0;
   }
 }
 
 @keyframes check-draw {
+  /* Vision の高速ローダーでチェックマークを描画する。 */
   to {
     stroke-dashoffset: 0;
   }
 }
 
 @keyframes pop-glow {
+  /* Vision のチェック完了時にポップする発光リング。 */
   0% {
     opacity: 0;
     transform: scale(0.6);

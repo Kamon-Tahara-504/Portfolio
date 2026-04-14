@@ -20,6 +20,7 @@ export default function HeroErrorTabs({ phases }: HeroErrorTabsProps) {
         const isSpawning = tabPhase === "spawning";
         const isActive = tabPhase === "active";
         const isClosing = tabPhase === "closing";
+        // mac/Windows で窓の形状だけ変え、演出タイムラインは共通化する。
         const rounded = surf.variant === "mac" ? "rounded-xl" : "rounded-sm";
         return (
           <div
@@ -34,6 +35,7 @@ export default function HeroErrorTabs({ phases }: HeroErrorTabsProps) {
                   : "border-2 border-emerald-400/95 opacity-100 scale-100"
             }`}
             style={{
+              // 出現は短く、赤→緑はゆっくり、closeは専用時間でフェードアウト。
               transitionDuration: isSpawning
                 ? "260ms"
                 : isClosing
@@ -43,6 +45,7 @@ export default function HeroErrorTabs({ phases }: HeroErrorTabsProps) {
           >
             {surf.variant === "mac" ? (
               <>
+                {/* mac タイトルバー */}
                 <div className="flex items-center gap-2 border-b border-zinc-300/15 bg-zinc-800/90 px-3 py-2">
                   <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
                   <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
@@ -56,6 +59,7 @@ export default function HeroErrorTabs({ phases }: HeroErrorTabsProps) {
               </>
             ) : (
               <>
+                {/* Windows タイトルバー */}
                 <div className="flex items-center justify-between border-b border-zinc-300/15 bg-zinc-800/95 px-3 py-2">
                   <span className="text-xs font-medium text-zinc-200">Windows Error</span>
                   <span className="text-xs text-zinc-400">X</span>

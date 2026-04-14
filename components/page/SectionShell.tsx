@@ -20,6 +20,7 @@ export default function SectionShell({ section, shouldReduceMotion, children }: 
         <motion.article
           initial={shouldReduceMotion ? false : { opacity: 0, y: 28 }}
           whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
+          // Works はカード密度が高いため、他セクションより早めに発火させる。
           viewport={{ amount: section.id === "works" ? 0.15 : 0.6, once: false }}
           transition={{ duration: 0.7, ease: "easeOut" }}
           className="w-full space-y-5 text-zinc-100 sm:space-y-6"

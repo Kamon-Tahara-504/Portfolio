@@ -93,6 +93,7 @@ function CodeEditorPanel({ active }: { active: boolean }) {
       ? CODE_AFTER
       : line;
 
+  // 編集中〜完了フェーズのみ改善後カラーを使って「最適化後」を強調する。
   const isAfterCode = phase === "typing" || phase === "done";
   const lineColor = isAfterCode ? "text-emerald-300" : "text-red-300/90";
 
@@ -157,6 +158,7 @@ function FastSpinner({ active }: { active: boolean }) {
 
     const loop = async () => {
       while (!cancelled) {
+        // 充填→チェック→ポップの1サイクルが見える間隔で再スタートする。
         await new Promise((r) => setTimeout(r, 4000));
         if (cancelled) return;
         setCycle((c) => c + 1);
@@ -220,6 +222,7 @@ function FastSpinner({ active }: { active: boolean }) {
 // × 記号を白い線で描画する。
 function CrossOperator() {
   return (
+    // ラベル行(3.2s/0.1s)の分だけ上に補正し、視覚中心を揃える。
     <div className="relative flex shrink-0 items-center justify-center self-center h-14 w-14 -translate-y-3 sm:h-20 sm:w-20 sm:-translate-y-4 md:h-24 md:w-24">
       <span className="absolute h-[6px] w-full rotate-45 rounded-full bg-white" />
       <span className="absolute h-[6px] w-full -rotate-45 rounded-full bg-white" />
@@ -230,6 +233,7 @@ function CrossOperator() {
 // = 記号を白い線で描画する。
 function EqualOperator() {
   return (
+    // × と同じ基準で上方向に補正し、両オペレータの見た目を揃える。
     <div className="relative flex shrink-0 flex-col items-center justify-center gap-3 self-center w-14 -translate-y-3 sm:w-20 sm:-translate-y-4 sm:gap-4 md:w-24 md:gap-5">
       <span className="block h-[6px] w-full rounded-full bg-white" />
       <span className="block h-[6px] w-full rounded-full bg-white" />

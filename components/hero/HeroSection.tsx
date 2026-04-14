@@ -22,6 +22,7 @@ type Phase = "error" | "resolving" | "blinking" | "resolved";
 // 点滅演出の周期と回数。
 const BLINK_INTERVAL_MS = 120;
 const BLINK_TOGGLE_COUNT = 8;
+// エラータブは最初だけゆっくり、後半は加速して出現させる。
 const INTRO_FIRST_TAB_DELAY_MS = 360;
 const INTRO_REVEAL_START_INTERVAL_MS = 230;
 const INTRO_REVEAL_ACCELERATION = 0.82;
@@ -80,6 +81,7 @@ export default function HeroSection({ nameEn, onLead }: HeroSectionProps) {
 
       timersRef.current.push(tSpawn);
       totalDelay += intervalMs;
+      // 体感的に「増殖していく」印象を作るため、出現間隔を段階的に短縮する。
       intervalMs = Math.max(INTRO_REVEAL_MIN_INTERVAL_MS, Math.floor(intervalMs * INTRO_REVEAL_ACCELERATION));
     });
 
@@ -117,6 +119,7 @@ export default function HeroSection({ nameEn, onLead }: HeroSectionProps) {
 
     const closeOrder = ERROR_TAB_RESOLVE_ORDER;
     closeOrder.forEach((tabIndex, i) => {
+      // 各タブは green -> closing -> removed の順で段階的に解消する。
       const startGreenAt = CLI_RESOLVE_WARMUP_MS + i * TAB_GREEN_STAGGER_MS;
       const tGreen = setTimeout(() => {
         setErrorTabPhases((prev) => {
@@ -153,9 +156,11 @@ export default function HeroSection({ nameEn, onLead }: HeroSectionProps) {
       (ERROR_TAB_COUNT - 1) * TAB_CLOSE_STAGGER_MS +
       TAB_CLOSE_ANIM_MS +
       AFTER_LAST_TAB_PAD_MS;
+    // すべてのタブ削除が終わってから点滅フェーズへ移行する。
     const tBlink = setTimeout(() => setPhase("blinking"), resolveDoneMs);
     timersRef.current.push(tBlink);
   };
+  // 本編遷移は演出完了後のみ有効化し、途中クリック誤作動を防ぐ。
   const canEnterMain = phase === "resolved";
 
   // 解消後に本編へ遷移するハンドラ。

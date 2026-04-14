@@ -23,6 +23,7 @@ export default function PortfolioPage() {
   // セクションごとの背景画像割り当てマップ。
   const sectionImageMap = useMemo<Record<SectionId, string>>(
     () => ({
+      // ナビゲーション順に合わせて Top1〜Top6 を1:1で対応付ける。
       profile: "/images/profile/Top1.jpg",
       vision: "/images/profile/Top2.jpg",
       career: "/images/profile/Top3.jpg",
@@ -42,7 +43,9 @@ export default function PortfolioPage() {
     );
     if (sectionElements.length === 0) return;
 
+    // ごく僅かな露出で切り替わるチラつきを抑えるための閾値。
     const MIN_SWITCH_RATIO = 0.08;
+    // 直前セクションより一定差が出るまで切り替えないヒステリシス。
     const SWITCH_HYSTERESIS = 0.01;
     const visibilityBySection = new Map<SectionId, number>(
       sectionElements.map((section) => [section.id as SectionId, 0])
