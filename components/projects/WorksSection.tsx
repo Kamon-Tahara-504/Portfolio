@@ -12,7 +12,7 @@ export default function WorksSection({ workItems, onSelectProject }: WorksSectio
   return (
     <div className="space-y-3 sm:space-y-4">
       <p className="max-w-3xl text-sm leading-relaxed text-zinc-300 sm:text-base">
-        実案件や制作課題をカード形式で閲覧できます。
+        これまで取り組んだ制作実績をカード形式で整理して掲載しています。
       </p>
       <p className="text-xs text-zinc-300 sm:text-sm">
         横スクロールで閲覧できます。トラックパッドまたはShift + マウスホイールでも操作可能です。

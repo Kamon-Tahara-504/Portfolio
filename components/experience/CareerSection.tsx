@@ -67,7 +67,7 @@ export default function CareerSection({ experiences }: CareerSectionProps) {
   return (
     <div className="space-y-5 sm:space-y-6">
       <p className="max-w-4xl text-sm leading-relaxed text-zinc-300 sm:text-base">
-        学習と制作の履歴を時系列でカード化し、星座のように経歴順のつながりを可視化しています。
+        学習歴と所属歴を時系列で整理し、星座をたどるように成長の流れを可視化しています。
       </p>
       <div className="mx-auto w-full">
         <div ref={listRef} className="relative space-y-1.5 md:space-y-2">

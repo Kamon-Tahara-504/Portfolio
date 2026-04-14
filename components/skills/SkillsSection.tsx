@@ -110,8 +110,8 @@ export default function SkillsSection({ skillGroups, skills }: SkillsSectionProp
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-5">
         <p className="max-w-3xl text-sm leading-relaxed text-zinc-300 sm:text-base">
           {isTimelineMode
-            ? "スキルの習得期間をタイムラインで表示しています。"
-            : "習熟度と使用経験をカテゴリ別に掲載しています。"}
+            ? "スキルの習得時期と成長の流れを、タイムライン形式で可視化しています。"
+            : "使用言語・フレームワークの理解度を、カテゴリ別に数値で可視化しています。"}
         </p>
         <SkillsModeToggle
           phase={phase}
