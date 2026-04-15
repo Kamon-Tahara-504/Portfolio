@@ -50,7 +50,7 @@ function SkillItem({ item }: { item: Skill }) {
 // スキルカードグリッド本体。フェーズに応じて収束/展開を描画する。
 export default function SkillsGridPanel({ phase, skillGroups }: SkillsGridPanelProps) {
   return (
-    <div className="grid gap-3 sm:gap-4 lg:grid-cols-2">
+    <div className="grid grid-cols-1 gap-3 sm:gap-4 md:grid-cols-2">
       {skillGroups.map((group, i) => {
         const converge = CARD_CONVERGE[i];
         const isGoingOut = phase === "toTimeline";
