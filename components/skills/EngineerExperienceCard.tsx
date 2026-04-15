@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 
 export default function EngineerExperienceCard() {
+  // 基準日からの経過秒数を1秒単位で保持する。
   const [seconds, setSeconds] = useState(0);
 
   useEffect(() => {
@@ -25,6 +26,7 @@ export default function EngineerExperienceCard() {
   }, []);
 
   // 秒数を年、日、時間、分、秒に変換
+  // 総秒数を表示単位（年/日/時/分/秒）へ分解する。
   const formatDuration = (totalSeconds: number) => {
     const startDate = new Date('2022-05-01T00:00:00');
     const now = new Date();
@@ -55,11 +57,11 @@ export default function EngineerExperienceCard() {
   const duration = formatDuration(seconds);
 
   return (
-    <div className="flex items-center rounded-md border border-black bg-white px-3 py-2 shadow-sm w-[300px] md:w-[340px] flex-shrink-0">
-      <span className="text-xs font-semibold text-black/70 md:text-sm whitespace-nowrap flex-shrink-0">
+    <div className="flex w-[300px] flex-shrink-0 items-center rounded-md border border-zinc-300/20 bg-black/40 px-3 py-2 shadow-sm md:w-[340px] max-[1129px]:hidden">
+      <span className="text-xs font-semibold text-zinc-300 md:text-sm whitespace-nowrap flex-shrink-0">
         エンジニア歴
       </span>
-      <span className="text-sm font-bold text-black md:text-base tabular-nums whitespace-nowrap -ml-3">
+      <span className="text-sm font-bold text-zinc-100 md:text-base tabular-nums whitespace-nowrap -ml-3">
         <span className="inline-block w-[3ch] text-right">{duration.years}</span>年
         <span className="inline-block w-[4ch] text-right">{duration.days}</span>日
         <span className="inline-block w-[2ch] text-right">{duration.hours}</span>時間

@@ -1,6 +1,7 @@
 [
   {
     "id": "project-1",
+    "number": "01",
     "slug": "todo-it-now",
     "title": "Todo it Now",
     "catchphrase": "ノート帳のcuteなUIでタスクを楽しく管理 !",
@@ -22,6 +23,7 @@
   },
   {
     "id": "project-2",
+    "number": "02",
     "slug": "thisone",
     "title": "ThisOne",
     "catchphrase": "全ての管理を、これ一つで。",
@@ -44,6 +46,7 @@
   },
   {
     "id": "project-3",
+    "number": "03",
     "slug": "nexst-task",
     "title": "Nexst Task",
     "catchphrase": "開発環境をネクストステージに。",
@@ -67,6 +70,7 @@
   },
   {
     "id": "project-4",
+    "number": "04",
     "slug": "kanban",
     "title": "Kanban",
     "catchphrase": "あなたのワークスペース、あなたの色に。",
@@ -88,8 +92,9 @@
   },
   {
     "id": "project-5",
+    "number": "05",
     "slug": "nexst-task-mobile",
-    "title": "Nexst Task",
+    "title": "Nexst Task Mobile",
     "catchphrase": "開発環境をネクストステージに。",
     "description": "Web版の開発を通じて、外出先でもタスクを快適に扱える環境の必要性を感じました。\nその実現と、React(Web版)およびFlutterの理解を深めることを目的として開発しました !",
     "category": "mobile",
@@ -106,6 +111,7 @@
   },
   {
     "id": "project-6",
+    "number": "06",
     "slug": "ojiichan-game",
     "title": "おじいちゃんゲーム",
     "catchphrase": "子供を合体させて おじいちゃんを作ろう！",
@@ -127,6 +133,7 @@
   },
   {
     "id": "project-7",
+    "number": "07",
     "slug": "fitness-customer-app",
     "title": "フィットネス顧客管理アプリ",
     "catchphrase": "KDG 2年次共同開発プロジェクト",
@@ -149,6 +156,7 @@
   },
   {
     "id": "project-8",
+    "number": "08",
     "slug": "myshop",
     "title": "MyShop",
     "catchphrase": "男性層のシェア奪取を目指す！",
@@ -171,6 +179,7 @@
   },
   {
     "id": "project-9",
+    "number": "09",
     "slug": "koko",
     "title": "koko",
     "catchphrase": "メンタル連動型フィットネスアプリ !",
@@ -193,6 +202,7 @@
   },
   {
     "id": "project-10",
+    "number": "10",
     "slug": "coming-soon-1",
     "title": "準備中",
     "catchphrase": "準備中",
@@ -209,6 +219,7 @@
   },
   {
     "id": "project-11",
+    "number": "11",
     "slug": "coming-soon-2",
     "title": "準備中",
     "catchphrase": "準備中",
@@ -225,6 +236,7 @@
   },
   {
     "id": "project-12",
+    "number": "12",
     "slug": "coming-soon-3",
     "title": "準備中",
     "catchphrase": "準備中",

@@ -1,140 +1,162 @@
 "use client";
 
-import { Skills, Skill } from "@/types/profile";
-import SkillsTimeline from "./SkillsTimeline";
-import { useFadeInOnScroll } from "@/hooks/useFadeInOnScroll";
-import { useCountUpAnimation } from "@/hooks/useCountUpAnimation";
-import { getGitHubLanguageColor } from "@/utils/githubLanguageColors";
+import { useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import SkillsGridPanel from "@/components/skills/SkillsGridPanel";
+import SkillsModeToggle from "@/components/skills/SkillsModeToggle";
+import SkillsTimelinePanel from "@/components/skills/SkillsTimelinePanel";
+import { Skill, Skills } from "@/types/profile";
+import {
+  CARD_MOTION_DURATION,
+  SkillsPhase,
+  TIMELINE_CONTENT_HIDE_DELAY_MS,
+  TIMELINE_CONTENT_SHOW_DELAY_MS,
+  TIMELINE_ENTER_DURATION,
+  TIMELINE_ENTER_EASE,
+  TIMELINE_EXIT_DURATION,
+  TIMELINE_EXIT_EASE,
+  TIMELINE_TO_SKILLS_START_DELAY_MS,
+  TIMELINE_SWITCH_RATIO,
+} from "@/components/skills/skillsTransition";
 
+const TO_SKILLS_PREP_ADVANCE_MS = 80;
+
+// SkillsSectionへ渡すカテゴリグループ構造。
+interface SkillGroup {
+  title: string;
+  items: Skill[];
+}
+
+// SkillsSectionの入力。
 interface SkillsSectionProps {
+  skillGroups: SkillGroup[];
   skills: Skills;
 }
 
-interface SkillCategoryItemProps {
-  category: { name: string; skills: Skill[] };
-  index: number;
-}
+// スキルカードとタイムラインの遷移を制御するコンテナ。
+export default function SkillsSection({ skillGroups, skills }: SkillsSectionProps) {
+  // 現在フェーズとタイムライン本文表示タイミングを管理するstate。
+  const [phase, setPhase] = useState<SkillsPhase>("skills");
+  const [timelineContentVisible, setTimelineContentVisible] = useState(false);
+  const phaseTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const timelineContentTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-interface SkillItemProps {
-  skill: Skill;
-  isCategoryVisible: boolean;
-  index: number;
-}
+  useEffect(() => {
+    return () => {
+      if (phaseTimeoutRef.current) {
+        clearTimeout(phaseTimeoutRef.current);
+      }
+      if (timelineContentTimeoutRef.current) {
+        clearTimeout(timelineContentTimeoutRef.current);
+      }
+    };
+  }, []);
 
-function SkillItem({ skill, isCategoryVisible, index }: SkillItemProps) {
-  const animatedValue = useCountUpAnimation({
-    targetValue: skill.level,
-    duration: 1500,
-    delay: 100 * (index + 1),
-    isVisible: isCategoryVisible,
-  });
+  // スキルグリッドからタイムラインへ遷移する。
+  const goToTimeline = () => {
+    if (phaseTimeoutRef.current) {
+      clearTimeout(phaseTimeoutRef.current);
+    }
+    if (timelineContentTimeoutRef.current) {
+      clearTimeout(timelineContentTimeoutRef.current);
+    }
+    setTimelineContentVisible(false);
+    setPhase("toTimeline");
+    phaseTimeoutRef.current = setTimeout(
+      () => {
+        setPhase("timeline");
+        timelineContentTimeoutRef.current = setTimeout(
+          () => setTimelineContentVisible(true),
+          TIMELINE_CONTENT_SHOW_DELAY_MS
+        );
+      },
+      CARD_MOTION_DURATION * TIMELINE_SWITCH_RATIO * 1000
+    );
+  };
 
-  const skillNameRef = useFadeInOnScroll({ delay: 100 * (index + 1) });
+  // タイムラインからスキルグリッドへ戻る。
+  const goToSkills = () => {
+    if (phaseTimeoutRef.current) {
+      clearTimeout(phaseTimeoutRef.current);
+    }
+    if (timelineContentTimeoutRef.current) {
+      clearTimeout(timelineContentTimeoutRef.current);
+    }
+    timelineContentTimeoutRef.current = setTimeout(
+      () => setTimelineContentVisible(false),
+      TIMELINE_CONTENT_HIDE_DELAY_MS
+    );
+
+    phaseTimeoutRef.current = setTimeout(
+      () => setPhase("toSkillsPrep"),
+      Math.max(0, TIMELINE_TO_SKILLS_START_DELAY_MS - TO_SKILLS_PREP_ADVANCE_MS)
+    );
+  };
+
+  const handleTimelineExitComplete = () => {
+    if (phase !== "toSkillsPrep") {
+      return;
+    }
+    setPhase("toSkills");
+    phaseTimeoutRef.current = setTimeout(() => setPhase("skills"), CARD_MOTION_DURATION * 1000);
+  };
+
+  const showGrid = phase !== "timeline" && phase !== "toSkillsPrep";
+  const showTimeline = phase === "timeline";
+  const isTimelineMode = phase === "timeline" || phase === "toSkillsPrep" || phase === "toSkills";
 
   return (
-    <div>
-      <div className="mb-2 flex items-center justify-between">
-        <div className="flex items-center gap-2.5">
-          {skill.name ? (
-            <span className="h-1.5 w-1.5 flex-shrink-0 rounded-full md:h-2 md:w-2" style={{ backgroundColor: getGitHubLanguageColor(skill.name) }} aria-hidden />
-          ) : null}
-          <span
-            ref={skillNameRef.ref as React.RefObject<HTMLSpanElement>}
-            className={`text-xs font-semibold text-black md:text-sm fade-in-from-left ${skillNameRef.isVisible ? "visible" : ""}`}
-          >
-            {skill.name}
-          </span>
-        </div>
-        <span className="text-[10px] font-semibold text-black/60 md:text-xs">{animatedValue}%</span>
-      </div>
-      <div className="h-1.25 w-full bg-black/10 shadow-[inset_0_1px_2px_rgba(0,0,0,0.2)]">
-        <div
-          className="h-full transition-all shadow-[0_2px_6px_rgba(0,0,0,0.28)]"
-          style={{
-            width: `${animatedValue}%`,
-            backgroundColor: getGitHubLanguageColor(skill.name),
-          }}
+    <div className="space-y-5 sm:space-y-6">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-5">
+        <p className="max-w-3xl text-sm leading-relaxed text-zinc-300 sm:text-base">
+          {isTimelineMode
+            ? "スキルの習得時期と成長の流れを、タイムライン形式で可視化しています。"
+            : "使用言語・フレームワークの理解度を、カテゴリ別に数値で可視化しています。"}
+        </p>
+        <SkillsModeToggle
+          phase={phase}
+          isTimelineMode={isTimelineMode}
+          onGoToTimeline={goToTimeline}
+          onGoToSkills={goToSkills}
         />
       </div>
-    </div>
-  );
-}
 
-function SkillCategoryItem({ category, index }: SkillCategoryItemProps) {
-  const categoryRef = useFadeInOnScroll({ delay: 100 * (index + 1) });
-  const isMobileCategory = category.name === "Mobile";
+      <div className="relative">
+        <AnimatePresence initial={false}>
+          {showGrid ? (
+            <motion.div
+              key="skills-grid"
+              exit={{ opacity: 0, transition: { duration: 0 } }}
+            >
+              <SkillsGridPanel phase={phase} skillGroups={skillGroups} />
+            </motion.div>
+          ) : null}
+        </AnimatePresence>
 
-  return (
-    <div ref={categoryRef.ref as React.RefObject<HTMLDivElement>} className={`fade-in-on-scroll ${categoryRef.isVisible ? "visible" : ""}`}>
-      <h3 className="mb-6 text-xl font-bold tracking-tight md:text-2xl">{category.name}</h3>
-      <div className="space-y-5">
-        {category.skills.map((skill, skillIndex) => (
-          <SkillItem key={skill.name} skill={skill} isCategoryVisible={categoryRef.isVisible} index={skillIndex} />
-        ))}
+        <AnimatePresence initial={false} onExitComplete={handleTimelineExitComplete}>
+          {showTimeline ? (
+            <motion.div
+              key="timeline"
+              initial={{ scale: 0.55, opacity: 1 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{
+                scale: 0.55,
+                opacity: 1,
+                transition: {
+                  duration: TIMELINE_EXIT_DURATION,
+                  ease: TIMELINE_EXIT_EASE,
+                },
+              }}
+              transition={{
+                duration: TIMELINE_ENTER_DURATION,
+                ease: TIMELINE_ENTER_EASE,
+              }}
+            >
+              <SkillsTimelinePanel skills={skills} contentVisible={timelineContentVisible} />
+            </motion.div>
+          ) : null}
+        </AnimatePresence>
       </div>
-      {isMobileCategory && (
-        <p className="mt-6 text-xs font-semibold text-black/70 md:mt-8 md:text-sm">
-          ※ この数値は理解自信度です！
-        </p>
-      )}
     </div>
-  );
-}
-
-function getBackendSkillsForDisplay(backend: Skill[]): Skill[] {
-  const hasDjango = backend.some((s) => s.name === "Django");
-  const hasPython = backend.some((s) => s.name === "Python");
-  if (!hasDjango || !hasPython) return backend;
-  const django = backend.find((s) => s.name === "Django");
-  const merged: Skill[] = [];
-  let inserted = false;
-  for (const s of backend) {
-    if (s.name === "Django" || s.name === "Python") {
-      if (!inserted) {
-        merged.push({ name: "Django / Python", level: django?.level ?? 50 });
-        inserted = true;
-      }
-    } else {
-      merged.push(s);
-    }
-  }
-  return merged;
-}
-
-export default function SkillsSection({ skills }: SkillsSectionProps) {
-  const backendForDisplay = getBackendSkillsForDisplay(skills.backend);
-  const mobileForDisplay = skills.mobile.filter((skill) => skill.level > 0);
-  const skillCategories = [
-    { name: "Tools", skills: skills.tools },
-    { name: "Frontend", skills: skills.frontend },
-    { name: "Backend", skills: backendForDisplay },
-    { name: "Mobile", skills: mobileForDisplay },
-  ];
-
-  const titleRef = useFadeInOnScroll({ delay: 0 });
-  const timelineRef = useFadeInOnScroll({ delay: 500 });
-
-  return (
-    <section id="skills" className="relative border-b border-black pt-18 pb-18 md:pt-22 md:pb-28">
-      <div className="section-container-responsive mx-auto max-w-7-5xl px-6">
-        <h2
-          ref={titleRef.ref as React.RefObject<HTMLHeadingElement>}
-          className={`mb-8 text-center text-3xl font-bold tracking-tight md:mb-9 md:text-4xl fade-in-from-left section-title-blink section-title-responsive ${titleRef.isVisible ? "visible" : ""}`}
-        >
-          Skills
-        </h2>
-        <div className="mt-6 grid gap-8 md:grid-cols-4 md:gap-8">
-          {skillCategories.map((category, categoryIndex) => (
-            <SkillCategoryItem key={category.name} category={category} index={categoryIndex} />
-          ))}
-        </div>
-        <div
-          ref={timelineRef.ref as React.RefObject<HTMLDivElement>}
-          className={`mt-12 fade-in-on-scroll ${timelineRef.isVisible ? "visible" : ""}`}
-        >
-          <SkillsTimeline skills={skills} />
-        </div>
-      </div>
-    </section>
   );
 }

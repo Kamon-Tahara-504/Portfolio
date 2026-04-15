@@ -2,6 +2,7 @@ export interface About {
   image: string;
   furigana?: string;
   description: string;
+  introduction?: string;
   birthDate?: string;
   birthplace?: string;
   hobby?: string;
@@ -35,6 +36,13 @@ export interface Contact {
   github?: string;
 }
 
+export interface Affiliation {
+  type: "school" | "company" | "other";
+  name: string;
+  stage?: string;
+  isCurrent?: boolean;
+}
+
 export interface HeroData {
   name: string;
   nameEn?: string;
@@ -48,5 +56,6 @@ export interface AboutData {
   age?: number | string;
   about: About;
   contact?: Contact;
+  affiliations?: Affiliation[];
 }
 

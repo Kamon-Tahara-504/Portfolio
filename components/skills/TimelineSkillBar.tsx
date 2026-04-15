@@ -3,6 +3,7 @@
 import { Skill } from "@/types/profile";
 import { formatDate } from "@/utils/timelineUtils";
 
+// タイムライン上の1スキルバー描画に必要な入力。
 interface TimelineSkillBarProps {
   skill: Skill;
   left: number;
@@ -16,6 +17,7 @@ interface TimelineSkillBarProps {
   index: number;
 }
 
+// スキル期間バーとラベルを描画する要素。
 export default function TimelineSkillBar({
   skill,
   left,
@@ -33,10 +35,12 @@ export default function TimelineSkillBar({
     ? "translate(-50%, -100%)"
     : "translate(-50%, 0)";
 
+  // 進行中スキルの揺れ開始タイミングを分散させるための疑似乱数種。
   const randomSeed = skill.name
     .split("")
     .reduce((acc, char) => acc + char.charCodeAt(0), index);
   const randomDelay = (randomSeed % 100) / 100 * 3;
+  const timelineColor = color.toLowerCase() === "#000000" ? "#a1a1aa" : color;
 
   return (
     <div
@@ -53,7 +57,7 @@ export default function TimelineSkillBar({
           width: endDate === null ? "calc(100% - 1px)" : "100%",
           height: "2.5px",
           top: `${lineHeight}px`,
-          backgroundColor: color,
+          backgroundColor: timelineColor,
         }}
       />
       <div
@@ -62,9 +66,9 @@ export default function TimelineSkillBar({
           width: "10px",
           height: "10px",
           top: `${lineHeight - 4}px`,
-          backgroundColor: color,
-          border: "2.5px solid white",
-          boxShadow: "0 0 0 1px black",
+          backgroundColor: timelineColor,
+          border: "2.5px solid #18181b",
+          boxShadow: "0 0 0 1px rgba(161,161,170,0.5)",
         }}
       />
       <div
@@ -74,9 +78,9 @@ export default function TimelineSkillBar({
           height: "10px",
           top: `${lineHeight - 4}px`,
           right: endDate === null ? "-1px" : "0",
-          backgroundColor: color,
-          border: "2.5px solid white",
-          boxShadow: "0 0 0 1px black",
+          backgroundColor: timelineColor,
+          border: "2.5px solid #18181b",
+          boxShadow: "0 0 0 1px rgba(161,161,170,0.5)",
           animationDelay: endDate === null ? `${randomDelay}s` : undefined,
         }}
       />
@@ -89,11 +93,10 @@ export default function TimelineSkillBar({
         }}
       >
         <div
-          className="flex flex-col whitespace-nowrap"
-          style={{ color }}
+          className="flex flex-col whitespace-nowrap text-zinc-100"
         >
           <span className="text-xs font-semibold md:text-sm">{skill.name}</span>
-          <span className="text-[10px] font-semibold text-black/60 md:text-xs">
+          <span className="text-[10px] font-semibold text-zinc-400 md:text-xs">
             {formatDate(startDate)} ～ {endDate ? formatDate(endDate) : "現在"}
           </span>
         </div>

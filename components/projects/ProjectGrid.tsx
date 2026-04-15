@@ -4,9 +4,11 @@ import { useEffect, useMemo, useState } from "react";
 import { Project } from "@/types/project";
 import ProjectCard from "./ProjectCard";
 
+// プロジェクト一覧表示の構成オプション。
 export interface ProjectGridProps {
   projects: Project[];
   category?: "all" | "web" | "mobile";
+  layout?: "grid" | "horizontalSnap";
   onProjectClick?: (project: Project) => void;
   isGridVisible?: boolean;
 }
@@ -14,9 +16,11 @@ export interface ProjectGridProps {
 export default function ProjectGrid({
   projects,
   category = "all",
+  layout = "grid",
   onProjectClick,
   isGridVisible = false,
 }: ProjectGridProps) {
+  // カテゴリ条件を反映した表示対象プロジェクト。
   const filteredProjects = useMemo(
     () =>
       category === "all"
@@ -25,6 +29,7 @@ export default function ProjectGrid({
     [category, projects]
   );
 
+  // 各カードのアニメ開始フラグ配列。
   const [shouldAnimate, setShouldAnimate] = useState<boolean[]>(
     filteredProjects.map(() => false)
   );
@@ -89,6 +94,29 @@ export default function ProjectGrid({
     return (
       <div className="py-16 text-center">
         <p className="text-black/60">No projects found.</p>
+      </div>
+    );
+  }
+
+  if (layout === "horizontalSnap") {
+    return (
+      <div
+        className="project-horizontal-scroll flex snap-x snap-mandatory gap-4 overflow-x-auto pb-4 pr-6 md:gap-8 md:pb-6"
+        aria-label="Projects horizontal carousel"
+      >
+        {filteredProjects.map((project, index) => (
+          <div
+            key={project.id}
+            className="snap-start shrink-0 basis-[78%] sm:basis-[52%] md:basis-[36%] lg:basis-[28%]"
+          >
+            <ProjectCard
+              project={project}
+              onClick={onProjectClick}
+              index={index}
+              shouldAnimate={shouldAnimate[index] ?? false}
+            />
+          </div>
+        ))}
       </div>
     );
   }

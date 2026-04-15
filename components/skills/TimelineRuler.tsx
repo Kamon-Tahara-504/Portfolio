@@ -1,11 +1,13 @@
 "use client";
 
+// 目盛り描画に必要な入力。
 interface TimelineRulerProps {
   yearMarks: Array<{ year: number; position: number }>;
   monthlyTickPositions: number[];
   baseLineTop: number;
 }
 
+// 月/年目盛りと基準線を描画するルーラー。
 export default function TimelineRuler({
   yearMarks,
   monthlyTickPositions,
@@ -16,7 +18,7 @@ export default function TimelineRuler({
       {monthlyTickPositions.map((position, index) => (
         <div
           key={`month-tick-${index}`}
-          className="absolute w-px bg-black/20"
+          className="absolute w-px bg-zinc-300/25"
           style={{
             left: `${position}%`,
             top: `${baseLineTop + 1}px`,
@@ -40,14 +42,14 @@ export default function TimelineRuler({
           }}
         >
           <div
-            className="mx-auto w-px bg-black/30"
+            className="mx-auto w-px bg-zinc-300/35"
             style={{
               height: "10px",
               marginBottom: "4px",
             }}
           />
           <div
-            className="text-xs font-semibold text-white md:text-sm bg-black px-2 rounded"
+            className="rounded border border-zinc-300/30 bg-zinc-900/85 px-2 text-xs font-semibold text-zinc-100 md:text-sm"
             style={{
               lineHeight: "1.2",
               zIndex: 10,
@@ -56,7 +58,7 @@ export default function TimelineRuler({
             {mark.year}
           </div>
           <div
-            className="mx-auto w-px bg-black/30"
+            className="mx-auto w-px bg-zinc-300/35"
             style={{
               height: "10px",
               marginTop: "4px",
@@ -66,7 +68,7 @@ export default function TimelineRuler({
       ))}
 
       <div
-        className="absolute w-full bg-black"
+        className="absolute w-full bg-zinc-300/35"
         style={{
           top: `${baseLineTop}px`,
           left: 0,

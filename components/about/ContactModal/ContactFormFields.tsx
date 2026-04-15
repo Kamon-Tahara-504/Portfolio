@@ -32,7 +32,7 @@ export default function ContactFormFields({
       <div>
         <label
           htmlFor="name"
-          className="mb-2 block text-sm font-semibold text-black"
+          className="mb-2 block text-sm font-semibold text-zinc-200 sm:text-base"
         >
           名前 <span className="text-red-500">*</span>
         </label>
@@ -42,13 +42,13 @@ export default function ContactFormFields({
           name="name"
           value={formData.name}
           onChange={onChange}
-          className={`w-full border px-4 py-2 font-semibold text-black focus:outline-none focus:ring-2 focus:ring-black ${
-            errors.name ? "border-red-500" : "border-black"
+          className={`w-full rounded-md border bg-zinc-900/80 px-4 py-2.5 text-sm font-semibold text-zinc-100 placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-zinc-300/50 sm:text-base ${
+            errors.name ? "border-red-500" : "border-zinc-300/30"
           }`}
           placeholder="お名前を入力してください"
         />
         {errors.name && (
-          <p className="mt-1 text-sm font-semibold text-red-500">
+          <p className="mt-1 text-xs font-semibold text-red-500 sm:text-sm">
             {errors.name}
           </p>
         )}
@@ -57,7 +57,7 @@ export default function ContactFormFields({
       <div>
         <label
           htmlFor="email"
-          className="mb-2 block text-sm font-semibold text-black"
+          className="mb-2 block text-sm font-semibold text-zinc-200 sm:text-base"
         >
           メールアドレス <span className="text-red-500">*</span>
         </label>
@@ -67,13 +67,13 @@ export default function ContactFormFields({
           name="email"
           value={formData.email}
           onChange={onChange}
-          className={`w-full border px-4 py-2 font-semibold text-black focus:outline-none focus:ring-2 focus:ring-black ${
-            errors.email ? "border-red-500" : "border-black"
+          className={`w-full rounded-md border bg-zinc-900/80 px-4 py-2.5 text-sm font-semibold text-zinc-100 placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-zinc-300/50 sm:text-base ${
+            errors.email ? "border-red-500" : "border-zinc-300/30"
           }`}
           placeholder="your.email@example.com"
         />
         {errors.email && (
-          <p className="mt-1 text-sm font-semibold text-red-500">
+          <p className="mt-1 text-xs font-semibold text-red-500 sm:text-sm">
             {errors.email}
           </p>
         )}
@@ -82,7 +82,7 @@ export default function ContactFormFields({
       <div>
         <label
           htmlFor="subject"
-          className="mb-2 block text-sm font-semibold text-black"
+          className="mb-2 block text-sm font-semibold text-zinc-200 sm:text-base"
         >
           件名 <span className="text-red-500">*</span>
         </label>
@@ -92,13 +92,13 @@ export default function ContactFormFields({
           name="subject"
           value={formData.subject}
           onChange={onChange}
-          className={`w-full border px-4 py-2 font-semibold text-black focus:outline-none focus:ring-2 focus:ring-black ${
-            errors.subject ? "border-red-500" : "border-black"
+          className={`w-full rounded-md border bg-zinc-900/80 px-4 py-2.5 text-sm font-semibold text-zinc-100 placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-zinc-300/50 sm:text-base ${
+            errors.subject ? "border-red-500" : "border-zinc-300/30"
           }`}
           placeholder="お問い合わせの件名を入力してください"
         />
         {errors.subject && (
-          <p className="mt-1 text-sm font-semibold text-red-500">
+          <p className="mt-1 text-xs font-semibold text-red-500 sm:text-sm">
             {errors.subject}
           </p>
         )}
@@ -107,7 +107,7 @@ export default function ContactFormFields({
       <div>
         <label
           htmlFor="message"
-          className="mb-2 block text-sm font-semibold text-black"
+          className="mb-2 block text-sm font-semibold text-zinc-200 sm:text-base"
         >
           メッセージ <span className="text-red-500">*</span>
         </label>
@@ -117,13 +117,13 @@ export default function ContactFormFields({
           value={formData.message}
           onChange={onChange}
           rows={6}
-          className={`w-full border px-4 py-2 font-semibold text-black focus:outline-none focus:ring-2 focus:ring-black resize-none ${
-            errors.message ? "border-red-500" : "border-black"
+          className={`w-full resize-none rounded-md border bg-zinc-900/80 px-4 py-2.5 text-sm font-semibold text-zinc-100 placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-zinc-300/50 sm:text-base ${
+            errors.message ? "border-red-500" : "border-zinc-300/30"
           }`}
           placeholder="お問い合わせ内容を入力してください（10文字以上）"
         />
         {errors.message && (
-          <p className="mt-1 text-sm font-semibold text-red-500">
+          <p className="mt-1 text-xs font-semibold text-red-500 sm:text-sm">
             {errors.message}
           </p>
         )}
