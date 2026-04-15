@@ -51,7 +51,7 @@ export default function ProfileSection({ about, hero, profileChips }: ProfileSec
 
   return (
     <>
-      <div className="grid items-start gap-6 lg:grid-cols-2 lg:items-center lg:gap-14 xl:gap-16">
+      <div className="grid items-start gap-6 min-[780px]:grid-cols-2 min-[780px]:items-center min-[780px]:gap-10 lg:gap-14 xl:gap-16">
         <div className="flex flex-col gap-3 lg:gap-4">
           <div className="my-2 w-full max-w-lg sm:max-w-xl md:max-w-2xl lg:my-0 lg:max-w-none">
             <Image
