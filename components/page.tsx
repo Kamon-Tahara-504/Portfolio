@@ -3,7 +3,9 @@
 import { useEffect, useMemo, useState } from "react";
 import { useReducedMotion } from "framer-motion";
 import aboutData from "@/data/about.json";
+import developmentData from "@/data/development.json";
 import heroData from "@/data/hero.json";
+import { StackGitHubHeaderButton } from "@/components/development/StackSection";
 import HeroSection from "@/components/hero/HeroSection";
 import ProjectModal from "@/components/projects/ProjectModal";
 import PageBackground from "@/components/page/PageBackground";
@@ -11,7 +13,10 @@ import PageHeaderNav from "@/components/page/PageHeaderNav";
 import SectionShell from "@/components/page/SectionShell";
 import { SECTION_META, SectionId } from "@/components/page/SectionMeta";
 import { getSectionContent } from "@/components/page/SectionContent";
+import { Development } from "@/types/development";
 import { Project } from "@/types/project";
+
+const development = developmentData as Development;
 
 // ポートフォリオのルート画面。導入->本編遷移とセクション描画を統括する。
 export default function PortfolioPage() {
@@ -98,13 +103,22 @@ export default function PortfolioPage() {
   }
 
   return (
-    <div className="relative h-screen overflow-y-auto snap-y snap-mandatory">
+    <div className="relative h-screen max-w-full min-w-0 overflow-x-hidden overflow-y-auto snap-y snap-mandatory">
       <PageBackground activeImage={activeBackground} shouldReduceMotion={shouldReduceMotion} />
       <PageHeaderNav title={heroData.title} sections={SECTION_META} activeSectionId={activeSectionId} />
 
-      <main>
+      <main className="min-w-0 overflow-x-hidden">
         {SECTION_META.map((section) => (
-          <SectionShell key={section.id} section={section} shouldReduceMotion={shouldReduceMotion}>
+          <SectionShell
+            key={section.id}
+            section={section}
+            shouldReduceMotion={shouldReduceMotion}
+            titleAside={
+              section.id === "stack" ? (
+                <StackGitHubHeaderButton repository={development.repository} />
+              ) : undefined
+            }
+          >
             {getSectionContent(section.id, (project) => setSelectedProject(project))}
           </SectionShell>
         ))}
@@ -114,9 +128,9 @@ export default function PortfolioPage() {
         <ProjectModal project={selectedProject} onClose={() => setSelectedProject(null)} />
       ) : null}
 
-      <footer className="fixed right-6 bottom-5 z-20 hidden text-[11px] tracking-[0.22em] text-zinc-300 uppercase md:block">
-        <p className="text-zinc-300/85">Copyright</p>
-        <p className="mt-1 max-w-sm leading-relaxed text-zinc-400 normal-case tracking-[0.14em]">
+      <footer className="fixed right-4 bottom-4 z-20 text-[10px] tracking-[0.22em] text-zinc-300 uppercase md:bottom-5 md:right-6 md:text-[11px]">
+        <p className="text-right text-zinc-300/85">Copyright</p>
+        <p className="mt-1 max-w-sm text-right leading-relaxed text-zinc-400 normal-case tracking-[0.14em]">
           &copy; 2026 Kamon-Tahara-504
         </p>
       </footer>
