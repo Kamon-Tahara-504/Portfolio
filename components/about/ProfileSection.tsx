@@ -5,6 +5,10 @@ import Image from "next/image";
 import ContactModal from "@/components/about/ContactModal";
 import { AboutData, HeroData } from "@/types/profile";
 
+// public/images/about/TAHARA.jpg の実ピクセル比（Next/Image の width/height に使用し縦横比を維持する）
+const PROFILE_IMAGE_WIDTH = 2560;
+const PROFILE_IMAGE_HEIGHT = 1706;
+
 // Profileセクションの入力データ。
 interface ProfileSectionProps {
   about: AboutData;
@@ -47,16 +51,37 @@ export default function ProfileSection({ about, hero, profileChips }: ProfileSec
 
   return (
     <>
-      <div className="grid items-start gap-6 lg:grid-cols-2 lg:gap-14 xl:gap-16">
-        <div className="space-y-4 self-start">
-          <div className="relative my-2 h-64 w-full max-w-2xl overflow-hidden rounded-2xl border border-zinc-300/20 bg-black/30 sm:h-72 lg:my-3 lg:h-[30rem]">
+      <div className="grid items-start gap-6 lg:grid-cols-2 lg:items-center lg:gap-14 xl:gap-16">
+        <div className="flex flex-col gap-3 lg:gap-4">
+          <div className="my-2 w-full max-w-lg sm:max-w-xl md:max-w-2xl lg:my-0 lg:max-w-none">
             <Image
               src={about.about.image}
               alt={`${about.name} portrait`}
-              fill
-              sizes="(max-width: 1024px) 100vw, 54vw"
-              className="object-cover"
+              width={PROFILE_IMAGE_WIDTH}
+              height={PROFILE_IMAGE_HEIGHT}
+              sizes="(max-width: 640px) min(100vw, 32rem) (max-width: 1024px) min(100vw, 42rem) (max-width: 1536px) 48vw 42vw"
+              className="h-auto w-full rounded-2xl border border-zinc-300/20 bg-black/30"
             />
+          </div>
+          <div className="flex flex-wrap gap-1.5 text-[9px] font-semibold text-zinc-100 sm:text-[10px] md:text-[11px]">
+            {about.about.birthDate ? (
+              <span className="inline-flex items-center gap-1 rounded-full border border-zinc-300/25 bg-zinc-900/55 px-2.5 py-1 backdrop-blur-sm">
+                <span className="text-zinc-400 whitespace-nowrap">生年月日</span>
+                <span>{about.about.birthDate}</span>
+              </span>
+            ) : null}
+            {about.about.birthplace ? (
+              <span className="inline-flex items-center gap-1 rounded-full border border-zinc-300/25 bg-zinc-900/55 px-2.5 py-1 backdrop-blur-sm">
+                <span className="text-zinc-400 whitespace-nowrap">出身</span>
+                <span>{about.about.birthplace}</span>
+              </span>
+            ) : null}
+            {about.about.hobby ? (
+              <span className="inline-flex max-w-full items-center gap-1 rounded-full border border-zinc-300/25 bg-zinc-900/55 px-2.5 py-1 backdrop-blur-sm lg:max-w-full">
+                <span className="text-zinc-400 whitespace-nowrap">好きなこと</span>
+                <span className="truncate">{about.about.hobby}</span>
+              </span>
+            ) : null}
           </div>
         </div>
         <div className="flex flex-col gap-4 lg:gap-5">
@@ -94,29 +119,7 @@ export default function ProfileSection({ about, hero, profileChips }: ProfileSec
             </p>
           ) : null}
 
-          <div className="space-y-4">
-            <div className="flex flex-wrap gap-1.5 text-[9px] font-semibold text-zinc-100 sm:text-[10px] md:text-[11px] lg:flex-nowrap">
-              {about.about.birthDate ? (
-                <span className="inline-flex items-center gap-1 rounded-full border border-zinc-300/25 bg-zinc-900/55 px-2.5 py-1 backdrop-blur-sm">
-                  <span className="text-zinc-400 whitespace-nowrap">生年月日</span>
-                  <span>{about.about.birthDate}</span>
-                </span>
-              ) : null}
-              {about.about.birthplace ? (
-                <span className="inline-flex items-center gap-1 rounded-full border border-zinc-300/25 bg-zinc-900/55 px-2.5 py-1 backdrop-blur-sm">
-                  <span className="text-zinc-400 whitespace-nowrap">出身</span>
-                  <span>{about.about.birthplace}</span>
-                </span>
-              ) : null}
-              {about.about.hobby ? (
-                <span className="inline-flex max-w-full items-center gap-1 rounded-full border border-zinc-300/25 bg-zinc-900/55 px-2.5 py-1 backdrop-blur-sm lg:max-w-[22rem]">
-                  <span className="text-zinc-400 whitespace-nowrap">好きなこと</span>
-                  <span className="truncate">{about.about.hobby}</span>
-                </span>
-              ) : null}
-            </div>
-            <div className="h-px w-full bg-white/40" aria-hidden />
-          </div>
+          <div className="h-px w-full bg-white/40" aria-hidden />
 
           <div className="flex flex-wrap gap-3 sm:gap-4">
             <a
