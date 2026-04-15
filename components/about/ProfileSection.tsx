@@ -62,20 +62,22 @@ export default function ProfileSection({ about, hero, profileChips }: ProfileSec
         <div className="flex flex-col gap-4 lg:gap-5">
           <div className="space-y-1">
             {currentAffiliation ? (
-              <p className="mb-2 text-xs font-medium tracking-wide text-zinc-300 lg:text-sm">
+              <p className="mb-2 max-w-full text-[clamp(0.5625rem,2.15vw,0.875rem)] font-medium leading-tight tracking-wide text-zinc-300 max-md:overflow-x-auto max-md:whitespace-nowrap sm:text-xs md:overflow-visible md:whitespace-normal lg:text-sm">
                 {currentAffiliation.name}
                 {currentAffiliation.stage ? ` / ${currentAffiliation.stage}` : ""}
               </p>
             ) : null}
-            <div className="flex items-end gap-3">
-              <p className="text-[clamp(2rem,4.6vw,3.3rem)] leading-none font-bold tracking-tight text-white">
+            <div className="flex flex-wrap items-end gap-x-2 gap-y-1 sm:gap-3">
+              <p className="min-w-0 text-[clamp(1.55rem,5.8vw,3.3rem)] leading-none font-bold tracking-tight text-white">
                 {about.name}
               </p>
               {currentAge !== null ? (
-                <p className="pb-1 text-sm font-semibold text-zinc-300 sm:text-base">{currentAge}歳</p>
+                <p className="shrink-0 pb-0.5 text-xs font-semibold text-zinc-300 sm:pb-1 sm:text-sm md:text-base">
+                  {currentAge}歳
+                </p>
               ) : null}
             </div>
-            <p className="mb-2 text-base font-semibold text-zinc-200/90 sm:text-lg lg:mb-3 lg:text-2xl">
+            <p className="mb-2 text-sm font-semibold text-zinc-200/90 sm:text-base lg:mb-3 lg:text-lg xl:text-2xl">
               {about.nameEn}
             </p>
           </div>
@@ -87,13 +89,13 @@ export default function ProfileSection({ about, hero, profileChips }: ProfileSec
           ) : null}
 
           {about.about.introduction ? (
-            <p className="text-sm font-semibold leading-relaxed whitespace-pre-line text-zinc-200 lg:text-base">
+            <p className="text-xs font-semibold leading-[1.75] text-pretty whitespace-pre-line text-zinc-200 sm:text-sm lg:leading-relaxed lg:text-base">
               {about.about.introduction}
             </p>
           ) : null}
 
           <div className="space-y-4">
-            <div className="flex flex-wrap gap-1.5 text-[10px] font-semibold text-zinc-100 sm:text-[11px] lg:flex-nowrap">
+            <div className="flex flex-wrap gap-1.5 text-[9px] font-semibold text-zinc-100 sm:text-[10px] md:text-[11px] lg:flex-nowrap">
               {about.about.birthDate ? (
                 <span className="inline-flex items-center gap-1 rounded-full border border-zinc-300/25 bg-zinc-900/55 px-2.5 py-1 backdrop-blur-sm">
                   <span className="text-zinc-400 whitespace-nowrap">生年月日</span>
