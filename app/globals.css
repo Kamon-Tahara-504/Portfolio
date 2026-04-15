@@ -28,6 +28,18 @@ body {
   overflow: hidden;
 }
 
+/* ルートラッパー配下で文字・画像の選択/ドラッグを無効化する。 */
+.no-select-surface,
+.no-select-surface * {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.no-select-surface img,
+.no-select-surface svg {
+  -webkit-user-drag: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html:focus-within {
     scroll-behavior: auto;
