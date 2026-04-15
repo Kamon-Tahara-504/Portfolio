@@ -12,8 +12,10 @@ export default function VisionSection({ description }: VisionSectionProps) {
       <p className="text-sm font-semibold leading-relaxed text-zinc-200 whitespace-pre-line md:text-base">
         {description}
       </p>
-      {/* 説明文の直下に「遅い処理 × 実装 = 高速化」の可視化オブジェクトを置く */}
-      <VisionConceptEquation />
+      {/* 説明文の直下に「遅い処理 × 実装 = 高速化」の可視化。スマホ幅でははみ出し防止のため非表示 */}
+      <div className="hidden md:block">
+        <VisionConceptEquation />
+      </div>
     </div>
   );
 }
