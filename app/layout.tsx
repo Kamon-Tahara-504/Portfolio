@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 
 // Next.js が参照するアプリ共通メタデータ。
 export const metadata: Metadata = {
-  title: "Creative Portfolio",
+  title: "Portfolio",
   description: "Scroll-driven portfolio with snap sections and parallax layers.",
 };
 
