@@ -11,7 +11,7 @@ const CODE_AFTER  = "await cache.get(key);";
 function SlowSpinner() {
   return (
     <div className="flex flex-col items-center gap-3 sm:gap-4">
-      <div className="relative flex h-28 w-28 items-center justify-center sm:h-40 sm:w-40 md:h-48 md:w-48">
+      <div className="relative flex h-24 w-24 items-center justify-center md:h-32 md:w-32 lg:h-40 lg:w-40 xl:h-48 xl:w-48">
         <svg
           className="h-full w-full animate-[spin_3.5s_linear_infinite]"
           viewBox="0 0 48 48"
@@ -32,7 +32,7 @@ function SlowSpinner() {
           />
         </svg>
       </div>
-      <span className="font-mono text-base font-medium tracking-wider text-red-400/90 sm:text-lg md:text-xl">
+      <span className="font-mono text-sm font-medium tracking-wider text-red-400/90 md:text-base lg:text-lg xl:text-xl">
         3.2s
       </span>
     </div>
@@ -98,7 +98,7 @@ function CodeEditorPanel({ active }: { active: boolean }) {
   const lineColor = isAfterCode ? "text-emerald-300" : "text-red-300/90";
 
   return (
-    <div className="flex w-[min(100%,22rem)] flex-col items-stretch gap-2 self-center sm:w-[min(100%,28rem)] sm:gap-3 md:w-[min(100%,32rem)]">
+    <div className="flex w-[min(100%,20rem)] flex-col items-stretch gap-2 self-center md:w-[min(100%,24rem)] md:gap-3 lg:w-[min(100%,28rem)] xl:w-[min(100%,32rem)]">
       <div className="relative overflow-hidden rounded-lg border border-cyan-500/30 bg-zinc-950/85 shadow-[0_0_32px_-4px_rgba(34,211,238,0.2)] backdrop-blur-sm sm:rounded-xl">
         {/* タイトルバー */}
         <div className="flex items-center gap-1.5 border-b border-zinc-800/90 px-3 py-2 sm:gap-2 sm:px-4 sm:py-2.5">
@@ -140,7 +140,7 @@ function CodeEditorPanel({ active }: { active: boolean }) {
           </p>
         </div>
       </div>
-      <span className="text-center font-mono text-xs font-medium tracking-[0.18em] text-cyan-400/70 uppercase sm:text-sm md:text-base">
+      <span className="text-center font-mono text-xs font-medium tracking-[0.18em] text-cyan-400/70 uppercase md:text-sm lg:text-base">
         refactor
       </span>
     </div>
@@ -171,7 +171,7 @@ function FastSpinner({ active }: { active: boolean }) {
 
   return (
     <div className="flex flex-col items-center gap-3 sm:gap-4">
-      <div className="relative flex h-28 w-28 items-center justify-center sm:h-40 sm:w-40 md:h-48 md:w-48">
+      <div className="relative flex h-24 w-24 items-center justify-center md:h-32 md:w-32 lg:h-40 lg:w-40 xl:h-48 xl:w-48">
         <svg key={cycle} className="h-full w-full" viewBox="0 0 48 48" fill="none">
           {/* 背景リング */}
           <circle
@@ -212,7 +212,7 @@ function FastSpinner({ active }: { active: boolean }) {
           className="pointer-events-none absolute inset-0 rounded-full bg-emerald-500/20 opacity-0 blur-md animate-[pop-glow_0.6s_0.55s_ease-out_forwards]"
         />
       </div>
-      <span className="font-mono text-base font-medium tracking-wider text-green-400/90 sm:text-lg md:text-xl">
+      <span className="font-mono text-sm font-medium tracking-wider text-green-400/90 md:text-base lg:text-lg xl:text-xl">
         0.1s
       </span>
     </div>
@@ -223,7 +223,7 @@ function FastSpinner({ active }: { active: boolean }) {
 function CrossOperator() {
   return (
     // ラベル行(3.2s/0.1s)の分だけ上に補正し、視覚中心を揃える。
-    <div className="relative flex shrink-0 items-center justify-center self-center h-14 w-14 -translate-y-3 sm:h-20 sm:w-20 sm:-translate-y-4 md:h-24 md:w-24">
+    <div className="relative flex h-12 w-12 shrink-0 items-center justify-center self-center -translate-y-2 md:h-16 md:w-16 md:-translate-y-3 lg:h-20 lg:w-20 lg:-translate-y-4 xl:h-24 xl:w-24">
       <span className="absolute h-[6px] w-full rotate-45 rounded-full bg-white" />
       <span className="absolute h-[6px] w-full -rotate-45 rounded-full bg-white" />
     </div>
@@ -234,7 +234,7 @@ function CrossOperator() {
 function EqualOperator() {
   return (
     // × と同じ基準で上方向に補正し、両オペレータの見た目を揃える。
-    <div className="relative flex shrink-0 flex-col items-center justify-center gap-3 self-center w-14 -translate-y-3 sm:w-20 sm:-translate-y-4 sm:gap-4 md:w-24 md:gap-5">
+    <div className="relative flex w-12 shrink-0 flex-col items-center justify-center gap-2 self-center -translate-y-2 md:w-16 md:gap-3 md:-translate-y-3 lg:w-20 lg:gap-4 lg:-translate-y-4 xl:w-24 xl:gap-5">
       <span className="block h-[6px] w-full rounded-full bg-white" />
       <span className="block h-[6px] w-full rounded-full bg-white" />
     </div>
@@ -252,9 +252,9 @@ export default function VisionConceptEquation() {
       initial={{ opacity: 0, y: 20 }}
       animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
-      className="mt-12 sm:mt-16 md:mt-20"
+      className="mt-10 md:mt-14 lg:mt-16 xl:mt-20"
     >
-      <div className="flex items-center justify-center gap-3 sm:gap-5 md:gap-8">
+      <div className="flex w-full max-w-full items-center justify-center gap-2 md:gap-3 lg:gap-5 xl:gap-8">
         <SlowSpinner />
         <CrossOperator />
         <CodeEditorPanel key={isInView ? "vision-editor-in" : "vision-editor-out"} active={isInView} />
