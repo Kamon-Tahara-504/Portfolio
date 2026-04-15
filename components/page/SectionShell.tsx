@@ -16,7 +16,7 @@ export default function SectionShell({ section, shouldReduceMotion, titleAside, 
   return (
     <section
       id={section.id}
-      className="snap-start min-h-screen min-w-0 px-4 pt-24 pb-16 sm:px-6 lg:px-10 lg:pt-28 lg:pb-20"
+      className="snap-start snap-always min-h-screen min-w-0 px-4 pt-24 pb-16 sm:px-6 lg:px-10 lg:pt-28 lg:pb-20"
     >
       <div className="mx-auto flex w-full min-w-0 max-w-7xl items-start">
         <motion.article

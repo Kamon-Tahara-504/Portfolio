@@ -103,11 +103,11 @@ export default function PortfolioPage() {
   }
 
   return (
-    <div className="relative h-screen max-w-full min-w-0 overflow-x-hidden overflow-y-auto snap-y snap-mandatory">
+    <div className="relative h-screen max-w-full min-h-0 min-w-0 snap-y snap-mandatory overflow-x-clip overflow-y-auto overscroll-y-contain">
       <PageBackground activeImage={activeBackground} shouldReduceMotion={shouldReduceMotion} />
       <PageHeaderNav title={heroData.title} sections={SECTION_META} activeSectionId={activeSectionId} />
 
-      <main className="min-w-0 overflow-x-hidden">
+      <main className="contents">
         {SECTION_META.map((section) => (
           <SectionShell
             key={section.id}
