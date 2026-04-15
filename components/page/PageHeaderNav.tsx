@@ -19,8 +19,8 @@ export default function PageHeaderNav({ title, sections, activeSectionId }: Page
   };
 
   return (
-    <header className="fixed top-0 left-0 z-20 flex w-full items-center justify-between px-4 py-4 text-[10px] tracking-[0.18em] text-zinc-200/85 uppercase sm:px-6 sm:text-[11px] sm:tracking-[0.22em] lg:px-10 lg:py-5">
-      <span className="truncate pr-4 text-[10px] sm:text-xs">{title}</span>
+    <header className="fixed top-0 left-0 z-20 flex w-full items-center max-md:justify-end md:justify-between px-4 py-4 text-[10px] tracking-[0.18em] text-zinc-200/85 uppercase sm:px-6 sm:text-[11px] sm:tracking-[0.22em] lg:px-10 lg:py-5">
+      <span className="truncate text-[10px] max-md:pr-0 sm:text-xs md:pr-4">{title}</span>
       <nav className="hidden gap-3 md:flex lg:gap-5">
         {sections.map((section) => (
           <button
