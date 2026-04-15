@@ -40,7 +40,7 @@ export default function SkillsModeToggle({
           transition={{ duration: 0.2 }}
           onClick={onGoToTimeline}
           disabled={phase !== "skills"}
-          className="ml-4 flex-shrink-0 rounded-full border border-zinc-300/30 bg-zinc-900/70 px-4 py-1.5 text-xs font-semibold text-zinc-100 transition hover:bg-zinc-800/80 active:scale-95 disabled:cursor-not-allowed disabled:opacity-50"
+          className="hidden shrink-0 rounded-full border border-zinc-300/30 bg-zinc-900/70 px-4 py-1.5 text-xs font-semibold text-zinc-100 transition hover:bg-zinc-800/80 active:scale-95 disabled:cursor-not-allowed disabled:opacity-50 md:ml-4 md:inline-flex"
         >
           Timeline →
         </motion.button>
