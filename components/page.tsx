@@ -128,6 +128,13 @@ export default function PortfolioPage() {
         <ProjectModal project={selectedProject} onClose={() => setSelectedProject(null)} />
       ) : null}
 
+      <p
+        aria-label="2026 4/15 Renewal"
+        className="pointer-events-none fixed top-1/2 right-1 z-20 -translate-y-1/2 text-[10px] tracking-[0.24em] text-zinc-200/75 [writing-mode:vertical-rl] [text-orientation:mixed] sm:right-2 sm:text-[11px] md:right-3 md:text-xs"
+      >
+        2026 4/15 RENEWAL
+      </p>
+
       <footer className="fixed right-4 bottom-4 z-20 text-[10px] tracking-[0.22em] text-zinc-300 uppercase md:bottom-5 md:right-6 md:text-[11px]">
         <p className="text-right text-zinc-300/85">Copyright</p>
         <p className="mt-1 max-w-sm text-right leading-relaxed text-zinc-400 normal-case tracking-[0.14em]">
