@@ -13,10 +13,12 @@ import PageHeaderNav from "@/components/page/PageHeaderNav";
 import SectionShell from "@/components/page/SectionShell";
 import { SECTION_META, SectionId } from "@/components/page/SectionMeta";
 import { getSectionContent } from "@/components/page/SectionContent";
+import { resolveAssetPath } from "@/lib/collectLocalAssetUrls";
 import { Development } from "@/types/development";
 import { Project } from "@/types/project";
 
 const development = developmentData as Development;
+const basePath = process.env.NODE_ENV === "production" ? "/Portfolio" : "";
 
 // ポートフォリオのルート画面。導入->本編遷移とセクション描画を統括する。
 export default function PortfolioPage() {
@@ -29,12 +31,12 @@ export default function PortfolioPage() {
   const sectionImageMap = useMemo<Record<SectionId, string>>(
     () => ({
       // ナビゲーション順に合わせて Top1〜Top6 を1:1で対応付ける。
-      profile: "/images/profile/Top1.jpg",
-      vision: "/images/profile/Top2.jpg",
-      career: "/images/profile/Top3.jpg",
-      skills: "/images/profile/Top4.jpg",
-      works: "/images/profile/Top5.jpg",
-      stack: "/images/profile/Top6.jpg",
+      profile: resolveAssetPath("/images/profile/Top1.jpg", basePath),
+      vision: resolveAssetPath("/images/profile/Top2.jpg", basePath),
+      career: resolveAssetPath("/images/profile/Top3.jpg", basePath),
+      skills: resolveAssetPath("/images/profile/Top4.jpg", basePath),
+      works: resolveAssetPath("/images/profile/Top5.jpg", basePath),
+      stack: resolveAssetPath("/images/profile/Top6.jpg", basePath),
     }),
     []
   );
