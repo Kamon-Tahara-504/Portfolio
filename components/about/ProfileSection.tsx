@@ -3,11 +3,13 @@
 import { useState } from "react";
 import Image from "next/image";
 import ContactModal from "@/components/about/ContactModal";
+import { resolveAssetPath } from "@/lib/collectLocalAssetUrls";
 import { AboutData, HeroData } from "@/types/profile";
 
 // public/images/about/TAHARA.jpg の実ピクセル比（Next/Image の width/height に使用し縦横比を維持する）
 const PROFILE_IMAGE_WIDTH = 2560;
 const PROFILE_IMAGE_HEIGHT = 1706;
+const basePath = process.env.NODE_ENV === "production" ? "/Portfolio" : "";
 
 // Profileセクションの入力データ。
 interface ProfileSectionProps {
@@ -48,6 +50,7 @@ export default function ProfileSection({ about, hero, profileChips }: ProfileSec
   const currentAffiliation =
     about.affiliations?.find((affiliation) => affiliation.isCurrent) ?? about.affiliations?.[0];
   const currentAge = getAgeFromBirthDate(about.about.birthDate);
+  const profileImageSrc = resolveAssetPath(about.about.image, basePath);
 
   return (
     <>
@@ -55,7 +58,7 @@ export default function ProfileSection({ about, hero, profileChips }: ProfileSec
         <div className="flex flex-col gap-3 lg:gap-4">
           <div className="my-2 w-full max-w-lg sm:max-w-xl md:max-w-2xl lg:my-0 lg:max-w-none">
             <Image
-              src={about.about.image}
+              src={profileImageSrc}
               alt={`${about.name} portrait`}
               width={PROFILE_IMAGE_WIDTH}
               height={PROFILE_IMAGE_HEIGHT}
