@@ -1,5 +1,8 @@
 import Image from "next/image";
 import { Project } from "@/types/project";
+import { resolveAssetPath } from "@/lib/collectLocalAssetUrls";
+
+const basePath = process.env.NODE_ENV === "production" ? "/Portfolio" : "";
 
 // Worksセクションの入力。
 interface WorksSectionProps {
@@ -18,7 +21,10 @@ export default function WorksSection({ workItems, onSelectProject }: WorksSectio
         横スクロールで閲覧できます。トラックパッドまたはShift + マウスホイールでも操作可能です。
       </p>
       <div className="works-scrollbar grid max-h-[36rem] grid-flow-col grid-rows-2 gap-3 overflow-x-auto pb-4 pr-2 snap-x snap-mandatory sm:max-h-[38rem] sm:gap-4">
-        {workItems.map((work) => (
+        {workItems.map((work) => {
+          const primaryImage = work.images[0] ?? "/images/projects/PlaceHolder.png";
+          const imageSrc = resolveAssetPath(primaryImage, basePath);
+          return (
           <button
             key={work.id}
             type="button"
@@ -29,7 +35,7 @@ export default function WorksSection({ workItems, onSelectProject }: WorksSectio
               #{work.number ?? "00"}
             </span>
             <Image
-              src={work.images[0] ?? "/images/projects/PlaceHolder.png"}
+              src={imageSrc}
               alt={`${work.title} preview`}
               fill
               sizes="220px"
@@ -51,7 +57,8 @@ export default function WorksSection({ workItems, onSelectProject }: WorksSectio
               <p className="mt-1 truncate text-[11px] text-zinc-100/85 sm:text-xs">{work.catchphrase}</p>
             </div>
           </button>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
