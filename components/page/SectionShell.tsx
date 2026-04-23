@@ -13,10 +13,13 @@ interface SectionShellProps {
 
 // 見出し・アニメーション・幅制御を共通化したセクションラッパー。
 export default function SectionShell({ section, shouldReduceMotion, titleAside, children }: SectionShellProps) {
+  const verticalSpacingClass =
+    section.id === "works" ? "pt-16 pb-10 lg:pt-20 lg:pb-14" : "pt-24 pb-16 lg:pt-28 lg:pb-20";
+
   return (
     <section
       id={section.id}
-      className="snap-start snap-always min-h-screen min-w-0 px-4 pt-24 pb-16 sm:px-6 lg:px-10 lg:pt-28 lg:pb-20"
+      className={`snap-start snap-always min-h-screen min-w-0 px-4 sm:px-6 lg:px-10 ${verticalSpacingClass}`}
     >
       <div className="mx-auto flex w-full min-w-0 max-w-7xl items-start">
         <motion.article
