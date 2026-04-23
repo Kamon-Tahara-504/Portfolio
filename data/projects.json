@@ -73,8 +73,8 @@
     "number": "04",
     "slug": "kanban",
     "title": "Kanban",
-    "catchphrase": "あなたのワークスペース、あなたの色に。",
-    "description": "「あなたのワークスペース、あなたの色に。」\nタスク管理としても、メモとしても使える。 \n自分好みにカスタマイズ可能なマルチ管理アプリケーションです !",
+    "catchphrase": "あなたのワークスペースを、あなたの色に。",
+    "description": "「あなたのワークスペースを、あなたの色に。」\nタスク管理としても、メモとしても使える。 \n自分好みにカスタマイズ可能なマルチ管理アプリケーションです !",
     "category": "web",
     "images": [
       "/images/projects/Kanban/Kanban.png"
@@ -203,18 +203,22 @@
   {
     "id": "project-10",
     "number": "10",
-    "slug": "coming-soon-1",
-    "title": "準備中",
-    "catchphrase": "準備中",
-    "description": "準備中",
+    "slug": "hypoframe",
+    "title": "HypoFrame",
+    "catchphrase": "営業仮説の思考を再現可能なプロセスへ。",
+    "description": "中小企業向け受託営業のために、企業情報から営業仮説を構造化して生成する Web ツールです。\n仮説の質と再現性を重視し、5段階の営業思考フレームワークに沿って提案文下書きまで作成できます。",
     "category": "web",
+    "productionType": "solo",
     "images": [
-      "/images/projects/PlaceHolder.png"
+      "/images/projects/HypoFrame/HypoFrame.png"
     ],
-    "technologies": ["準備中"],
-    "links": {},
+    "technologies": ["Next.js", "TypeScript", "Tailwind CSS", "Supabase", "Groq"],
+    "links": {
+      "github": "https://github.com/Kamon-Tahara-504/HypoFrame"
+    },
     "date": {
-      "startDate": "2026-04-01"
+      "startDate": "2026-02-23",
+      "endDate": "2026-03-03"
     }
   },
   {
