@@ -4,6 +4,7 @@ import { useEffect, useMemo } from "react";
 import { collectLocalAssetUrls } from "@/lib/collectLocalAssetUrls";
 
 const basePath = process.env.NODE_ENV === "production" ? "/Portfolio" : "";
+const MAX_WARMUP_IMAGES = 8;
 
 function scheduleIdle(fn: () => void) {
   const ric = window.requestIdleCallback;
@@ -18,13 +19,7 @@ function warmupImage(url: string): Promise<void> {
   return new Promise((resolve) => {
     const img = new Image();
     const done = () => resolve();
-    img.onload = () => {
-      if ("decode" in img && typeof img.decode === "function") {
-        img.decode().catch(() => {}).finally(done);
-      } else {
-        done();
-      }
-    };
+    img.onload = done;
     img.onerror = done;
     img.src = url;
   });
@@ -35,7 +30,7 @@ function warmupImage(url: string): Promise<void> {
  * 失敗しても表示コンポーネント側の挙動は変えない。
  */
 export default function AssetWarmup() {
-  const { imageUrls, videoUrls } = useMemo(
+  const { imageUrls } = useMemo(
     () => collectLocalAssetUrls(basePath),
     []
   );
@@ -43,8 +38,19 @@ export default function AssetWarmup() {
   useEffect(() => {
     let cancelled = false;
 
+    const shouldSkipWarmup = () => {
+      const connection = navigator.connection;
+      return Boolean(
+        connection?.saveData ||
+          connection?.effectiveType === "slow-2g" ||
+          connection?.effectiveType === "2g"
+      );
+    };
+
     const run = async () => {
-      for (const url of imageUrls) {
+      if (shouldSkipWarmup()) return;
+      const warmupTargets = imageUrls.slice(0, MAX_WARMUP_IMAGES);
+      for (const url of warmupTargets) {
         if (cancelled) return;
         await new Promise<void>((r) => scheduleIdle(() => r()));
         if (cancelled) return;
@@ -52,27 +58,26 @@ export default function AssetWarmup() {
       }
     };
 
-    run();
+    const startWarmup = () => {
+      // 初期表示中の帯域競合を避けるため、ロード完了後にウォームアップを開始する。
+      scheduleIdle(() => {
+        if (!cancelled) {
+          run();
+        }
+      });
+    };
+
+    if (document.readyState === "complete") {
+      startWarmup();
+    } else {
+      window.addEventListener("load", startWarmup, { once: true });
+    }
+
     return () => {
       cancelled = true;
+      window.removeEventListener("load", startWarmup);
     };
   }, [imageUrls]);
 
-  return (
-    <div
-      className="pointer-events-none fixed top-0 -left-[9999px] z-0 h-px w-px overflow-hidden opacity-0"
-      aria-hidden
-    >
-      {videoUrls.map((src) => (
-        <video
-          key={src}
-          src={src}
-          muted
-          playsInline
-          preload="auto"
-          aria-hidden
-        />
-      ))}
-    </div>
-  );
+  return null;
 }

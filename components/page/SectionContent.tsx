@@ -2,7 +2,6 @@ import { ReactNode } from "react";
 import aboutData from "@/data/about.json";
 import developmentData from "@/data/development.json";
 import experienceData from "@/data/experience.json";
-import heroData from "@/data/hero.json";
 import projectsData from "@/data/projects.json";
 import skillsData from "@/data/skills.json";
 import ProfileSection from "@/components/about/ProfileSection";
@@ -47,7 +46,7 @@ export function getSectionContent(
   const profileChips: string[] = [];
 
   const sectionContentMap: Record<SectionId, ReactNode> = {
-    profile: <ProfileSection about={about} hero={heroData} profileChips={profileChips} />,
+    profile: <ProfileSection about={about} profileChips={profileChips} />,
     vision: <VisionSection description={about.about.description} />,
     career: <CareerSection experiences={experienceData} />,
     skills: <SkillsSection skillGroups={skillGroups} skills={skillsData} />,
