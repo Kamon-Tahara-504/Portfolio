@@ -6,6 +6,15 @@ import { collectLocalAssetUrls } from "@/lib/collectLocalAssetUrls";
 const basePath = process.env.NODE_ENV === "production" ? "/Portfolio" : "";
 const MAX_WARMUP_IMAGES = 8;
 
+type NavigatorConnection = {
+  saveData?: boolean;
+  effectiveType?: "slow-2g" | "2g" | "3g" | "4g";
+};
+
+type NavigatorWithConnection = Navigator & {
+  connection?: NavigatorConnection;
+};
+
 function scheduleIdle(fn: () => void) {
   const ric = window.requestIdleCallback;
   if (typeof ric === "function") {
@@ -39,7 +48,7 @@ export default function AssetWarmup() {
     let cancelled = false;
 
     const shouldSkipWarmup = () => {
-      const connection = navigator.connection;
+      const connection = (navigator as NavigatorWithConnection).connection;
       return Boolean(
         connection?.saveData ||
           connection?.effectiveType === "slow-2g" ||
