@@ -39,7 +39,7 @@ export default function WorksSection({ workItems, onSelectProject }: WorksSectio
               alt={`${work.title} preview`}
               fill
               sizes="220px"
-              className="object-cover transition duration-500 group-hover:scale-105"
+              className="object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
             <div className="absolute right-2.5 bottom-2.5 left-2.5 rounded-2xl border border-white/15 bg-black/40 p-2.5 backdrop-blur-md sm:right-3 sm:bottom-3 sm:left-3 sm:p-3">
@@ -54,7 +54,14 @@ export default function WorksSection({ workItems, onSelectProject }: WorksSectio
               <h2 className="truncate text-[0.95rem] leading-tight font-semibold text-white sm:text-[1.05rem]">
                 {work.title}
               </h2>
-              <p className="mt-1 truncate text-[11px] text-zinc-100/85 sm:text-xs">{work.catchphrase}</p>
+              <div className="mt-1 overflow-hidden text-[11px] text-zinc-100/85 sm:text-xs">
+                <p className="works-catchphrase-track inline-flex w-max whitespace-nowrap">
+                  <span className="pr-6">{work.catchphrase}</span>
+                  <span aria-hidden="true" className="pr-6">
+                    {work.catchphrase}
+                  </span>
+                </p>
+              </div>
             </div>
           </button>
           );

@@ -193,3 +193,20 @@ body {
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
+
+@keyframes catchphrase-marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.works-catchphrase-track {
+  transform: translateX(0);
+}
+
+.group:hover .works-catchphrase-track {
+  animation: catchphrase-marquee 7s linear infinite !important;
+}
