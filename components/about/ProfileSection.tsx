@@ -4,7 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import ContactModal from "@/components/about/ContactModal";
 import { resolveAssetPath } from "@/lib/collectLocalAssetUrls";
-import { AboutData, HeroData } from "@/types/profile";
+import { AboutData } from "@/types/profile";
 
 // public/images/about/TAHARA.jpg の実ピクセル比（Next/Image の width/height に使用し縦横比を維持する）
 const PROFILE_IMAGE_WIDTH = 2560;
@@ -14,7 +14,6 @@ const basePath = process.env.NODE_ENV === "production" ? "/Portfolio" : "";
 // Profileセクションの入力データ。
 interface ProfileSectionProps {
   about: AboutData;
-  hero: HeroData;
   profileChips: string[];
 }
 
@@ -42,7 +41,7 @@ function getAgeFromBirthDate(birthDate?: string): number | null {
 }
 
 // プロフィール画像・基本情報・チップを表示する。
-export default function ProfileSection({ about, hero, profileChips }: ProfileSectionProps) {
+export default function ProfileSection({ about, profileChips }: ProfileSectionProps) {
   // Contactモーダル表示状態。
   const [isContactOpen, setIsContactOpen] = useState(false);
   // GitHubリンク（未設定時は空文字）。
@@ -62,6 +61,7 @@ export default function ProfileSection({ about, hero, profileChips }: ProfileSec
               alt={`${about.name} portrait`}
               width={PROFILE_IMAGE_WIDTH}
               height={PROFILE_IMAGE_HEIGHT}
+              priority
               sizes="(max-width: 640px) min(100vw, 32rem) (max-width: 1024px) min(100vw, 42rem) (max-width: 1536px) 48vw 42vw"
               className="h-auto w-full rounded-2xl border border-zinc-300/20 bg-black/30"
             />
