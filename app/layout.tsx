@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { collectCriticalImageUrls } from "@/lib/collectLocalAssetUrls";
 import "./globals.css";
 
 // UI全体で使うサンセリフ系フォント設定。
@@ -26,11 +27,19 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const basePath = process.env.NODE_ENV === "production" ? "/Portfolio" : "";
+  const criticalImageUrls = collectCriticalImageUrls(basePath);
+
   return (
     <html
       lang="ja"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
+      <head>
+        {criticalImageUrls.map((href) => (
+          <link key={href} rel="preload" as="image" href={href} />
+        ))}
+      </head>
       <body className="min-h-full">
         <div className="no-select-surface min-h-full">{children}</div>
       </body>
