@@ -224,18 +224,22 @@
   {
     "id": "project-11",
     "number": "11",
-    "slug": "coming-soon-2",
-    "title": "準備中",
-    "catchphrase": "準備中",
-    "description": "準備中",
+    "slug": "shiftora",
+    "title": "Shiftora",
+    "catchphrase": "公平なシフト管理で業務を最適化！",
+    "description": "介護事業所向けのシフト自動生成 SaaS です。\n手作業のシフト作成負荷を減らし、最低配置条件を満たす運用を支援します。\nマルチテナント設計で、管理者・職員それぞれの運用フローを実装しています。",
     "category": "web",
+    "productionType": "solo",
     "images": [
-      "/images/projects/PlaceHolder.png"
+      "/images/projects/Shiftora/Shiftora.png"
     ],
-    "technologies": ["準備中"],
-    "links": {},
+    "technologies": ["FastAPI", "Next.js", "Supabase", "PostgreSQL", "OR-Tools", "Docker"],
+    "links": {
+      "github": "https://github.com/Kamon-Tahara-504/Shiftora"
+    },
     "date": {
-      "startDate": "2026-04-03"
+      "startDate": "2026-03-06",
+      "endDate": "2026-04-21"
     }
   },
   {
