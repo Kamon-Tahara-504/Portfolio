@@ -8,7 +8,7 @@ interface VisionSectionProps {
 // ビジョン説明文と「迷い→技術→解決」のコンセプト数式を表示する。
 export default function VisionSection({ description }: VisionSectionProps) {
   return (
-    <div className="space-y-4 xl:ml-10 2xl:ml-16">
+    <div className="space-y-4 md:ml-8 lg:ml-12 xl:ml-16 2xl:ml-20">
       <p className="text-sm font-semibold leading-relaxed text-zinc-200 whitespace-pre-line md:text-base">
         {description}
       </p>

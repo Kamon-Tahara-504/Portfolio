@@ -174,7 +174,7 @@ export default function CareerSection({ experiences }: CareerSectionProps) {
                   <p className="mt-2 text-xs leading-relaxed font-medium whitespace-pre-line text-zinc-200 sm:text-sm">
                     {item.company}
                   </p>
-                  <p className="mt-3 text-sm leading-relaxed text-zinc-300 sm:text-base">
+                  <p className="mt-3 text-sm leading-relaxed whitespace-pre-line text-zinc-300 sm:text-base">
                     {item.description}
                   </p>
                 </div>
