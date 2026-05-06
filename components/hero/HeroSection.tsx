@@ -171,6 +171,16 @@ export default function HeroSection({ nameEn, onLead }: HeroSectionProps) {
     }
     onLead?.();
   };
+  // 画面全体クリック時の進行制御。
+  const handleHeroClick = () => {
+    if (phase === "error" && isCliVisible) {
+      handleResolve();
+      return;
+    }
+    if (canEnterMain) {
+      handleEnterMain();
+    }
+  };
 
   return (
     <section
@@ -178,11 +188,7 @@ export default function HeroSection({ nameEn, onLead }: HeroSectionProps) {
       className={`snap-start relative flex min-h-screen items-center justify-center overflow-hidden ${
         canEnterMain ? "cursor-pointer" : ""
       }`}
-      onClick={() => {
-        if (canEnterMain) {
-          handleEnterMain();
-        }
-      }}
+      onClick={handleHeroClick}
     >
       <div className="pointer-events-none absolute inset-0 bg-black" aria-hidden />
       {(phase === "resolved" || phase === "blinking") ? (
@@ -209,6 +215,27 @@ export default function HeroSection({ nameEn, onLead }: HeroSectionProps) {
       />
 
       <HeroLeadPanel nameEn={nameEn} isResolved={phase === "resolved"} onEnterMain={handleEnterMain} />
+      {phase !== "resolved" && (
+        <p className="pointer-events-none fixed bottom-6 right-6 z-[60] font-mono text-sm font-semibold text-white/65">
+          ※エラーは演出です。クリックで進行できます。
+        </p>
+      )}
+      {phase === "resolved" && (
+        <p
+          aria-label="2026 4/15 Renewal"
+          className="pointer-events-none fixed top-1/2 right-1 z-[60] -translate-y-1/2 text-[10px] tracking-[0.24em] text-zinc-200/75 [writing-mode:vertical-rl] [text-orientation:mixed] sm:right-2 sm:text-[11px] md:right-3 md:text-xs"
+        >
+          2026 4/15 RENEWAL
+        </p>
+      )}
+      {phase === "resolved" && (
+        <footer className="pointer-events-none fixed right-4 bottom-4 z-[60] text-[10px] tracking-[0.22em] text-zinc-300 uppercase md:bottom-5 md:right-6 md:text-[11px]">
+          <p className="text-right text-zinc-300/85">Copyright</p>
+          <p className="mt-1 max-w-sm text-right leading-relaxed text-zinc-400 normal-case tracking-[0.14em]">
+            &copy; 2026 Kamon-Tahara-504
+          </p>
+        </footer>
+      )}
 
       {(phase === "error" || phase === "resolving") && (
         <>
