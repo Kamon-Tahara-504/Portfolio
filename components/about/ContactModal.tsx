@@ -3,6 +3,8 @@
 import { useContext, useState } from "react";
 import emailjs from "@emailjs/browser";
 import { ViewContext } from "@/components/Layout";
+import { usePortfolioView } from "@/components/page/PortfolioViewContext";
+import { ctaButton, modalBackdrop, modalCloseButton, modalPanel } from "@/lib/portfolioViewStyles";
 import ContactModalStatus from "./ContactModal/ContactModalStatus";
 import ContactFormFields from "./ContactModal/ContactFormFields";
 import { getTvPowerAnimationClass, useModalLifecycle } from "@/hooks/useModalLifecycle";
@@ -26,6 +28,7 @@ interface FormErrors {
 }
 
 export default function ContactModal({ onClose }: ContactModalProps) {
+  const { viewMode } = usePortfolioView();
   const viewContext = useContext(ViewContext);
   const { isOpen, isClosing, handleClose } = useModalLifecycle({
     onClose,
@@ -142,7 +145,7 @@ export default function ContactModal({ onClose }: ContactModalProps) {
 
   return (
     <div
-      className={`fixed inset-0 z-[100] flex items-center justify-center bg-black/70 p-3 backdrop-blur-md transition-opacity duration-300 ease-out sm:p-4 lg:p-6 ${
+      className={`${modalBackdrop(viewMode)} z-[100] flex items-center justify-center p-3 transition-opacity duration-300 ease-out sm:p-4 lg:p-6 ${
         isOpen && !isClosing ? "opacity-100" : "opacity-0"
       }`}
       onClick={handleClose}
@@ -150,13 +153,13 @@ export default function ContactModal({ onClose }: ContactModalProps) {
       onWheel={handleWheel}
     >
       <div
-        className={`relative h-[94vh] max-h-[94vh] w-full max-w-[min(980px,94vw)] select-none rounded-2xl border border-zinc-300/20 bg-zinc-950/95 text-zinc-100 shadow-2xl md:h-[88vh] md:max-h-[88vh] lg:h-[84vh] lg:max-h-[84vh] ${getTvPowerAnimationClass(isOpen, isClosing)}`}
+        className={`${modalPanel(viewMode)} h-[94vh] max-h-[94vh] w-full max-w-[min(980px,94vw)] select-none md:h-[88vh] md:max-h-[88vh] lg:h-[84vh] lg:max-h-[84vh] ${getTvPowerAnimationClass(isOpen, isClosing)}`}
         onClick={(e) => e.stopPropagation()}
       >
         {/* 閉じるボタン */}
         <button
           onClick={handleClose}
-          className="absolute right-3 top-3 z-10 flex h-10 w-10 items-center justify-center rounded-full border border-zinc-300/30 bg-zinc-900/90 text-zinc-100 shadow-md transition-[transform,box-shadow] duration-200 hover:bg-zinc-800 active:translate-y-0.5 active:shadow-sm sm:right-4 sm:top-4"
+          className={modalCloseButton(viewMode)}
           aria-label="モーダルを閉じる"
         >
           <span className="text-2xl">×</span>
@@ -182,7 +185,7 @@ export default function ContactModal({ onClose }: ContactModalProps) {
               <button
                 type="button"
                 onClick={handleClose}
-                className="group flex-1 rounded-full border border-zinc-300/30 bg-zinc-900/70 px-6 py-3 text-sm font-bold text-zinc-100 shadow-md transition-[border-color,transform,box-shadow,background-color] duration-300 hover:scale-105 hover:border-zinc-300/50 hover:bg-zinc-800/85 hover:shadow-lg active:scale-[1.02] active:shadow-sm sm:text-base"
+                className={`${ctaButton(viewMode)} flex-1`}
                 disabled={isSubmitting}
               >
                 キャンセル

@@ -6,6 +6,8 @@ import SkillsGridPanel from "@/components/skills/SkillsGridPanel";
 import SkillsModeToggle from "@/components/skills/SkillsModeToggle";
 import SkillsTimelinePanel from "@/components/skills/SkillsTimelinePanel";
 import { Skill, Skills } from "@/types/profile";
+import { usePortfolioView } from "@/components/page/PortfolioViewContext";
+import { bodyText } from "@/lib/portfolioViewStyles";
 import {
   CARD_MOTION_DURATION,
   SkillsPhase,
@@ -35,7 +37,7 @@ interface SkillsSectionProps {
 
 // スキルカードとタイムラインの遷移を制御するコンテナ。
 export default function SkillsSection({ skillGroups, skills }: SkillsSectionProps) {
-  // 現在フェーズとタイムライン本文表示タイミングを管理するstate。
+  const { viewMode } = usePortfolioView();
   const [phase, setPhase] = useState<SkillsPhase>("skills");
   const [timelineContentVisible, setTimelineContentVisible] = useState(false);
   const phaseTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -108,7 +110,7 @@ export default function SkillsSection({ skillGroups, skills }: SkillsSectionProp
   return (
     <div className="space-y-5 sm:space-y-6">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-5">
-        <p className="max-w-3xl text-sm leading-relaxed text-zinc-300 sm:text-base">
+        <p className={`max-w-3xl ${bodyText(viewMode)}`}>
           {isTimelineMode
             ? "スキルの習得時期と成長の流れを、タイムライン形式で可視化しています。"
             : "使用言語・フレームワークの理解度を、カテゴリ別に数値で可視化しています。"}

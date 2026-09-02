@@ -1,20 +1,38 @@
+"use client";
+
 import { motion } from "framer-motion";
 import { ReactNode } from "react";
 import { SectionMeta } from "@/components/page/SectionMeta";
+import { usePortfolioView } from "@/components/page/PortfolioViewContext";
+import { viewClass } from "@/lib/portfolioViewStyles";
 
-// セクション共通シェルの受け取り値。
 interface SectionShellProps {
   section: SectionMeta;
   shouldReduceMotion: boolean | null;
-  /** 見出し（section.title）の右側に並べる任意 UI（例: Stack の GitHub ボタン） */
   titleAside?: ReactNode;
   children: ReactNode;
 }
 
 // 見出し・アニメーション・幅制御を共通化したセクションラッパー。
-export default function SectionShell({ section, shouldReduceMotion, titleAside, children }: SectionShellProps) {
+export default function SectionShell({
+  section,
+  shouldReduceMotion,
+  titleAside,
+  children,
+}: SectionShellProps) {
+  const { viewMode } = usePortfolioView();
   const verticalSpacingClass =
     section.id === "works" ? "pt-16 pb-10 lg:pt-20 lg:pb-14" : "pt-24 pb-16 lg:pt-28 lg:pb-20";
+
+  const articleTextClass = viewClass(viewMode, {
+    personal: "text-zinc-100",
+    recruiter: "text-foreground",
+  });
+
+  const labelClass = viewClass(viewMode, {
+    personal: "text-zinc-300",
+    recruiter: "text-foreground-muted",
+  });
 
   return (
     <section
@@ -25,13 +43,11 @@ export default function SectionShell({ section, shouldReduceMotion, titleAside, 
         <motion.article
           initial={shouldReduceMotion ? false : { opacity: 0, y: 28 }}
           whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
-          // 本文が長いセクションでも交差が取れるよう、露出割合は抑えめにする（0.6 だとモバイルで未発火になり得る）。
           viewport={{ amount: 0.15, once: false }}
           transition={{ duration: 0.7, ease: "easeOut" }}
-          className="w-full min-w-0 space-y-5 text-zinc-100 sm:space-y-6"
+          className={`w-full min-w-0 space-y-5 sm:space-y-6 ${articleTextClass}`}
         >
-          {/* セクション共通の見出し領域をひとまとめにして、本文差し替えだけで使い回せるようにする */}
-          <p className="text-[10px] tracking-[0.2em] text-zinc-300 uppercase sm:text-xs sm:tracking-[0.24em]">
+          <p className={`text-[10px] tracking-[0.2em] uppercase sm:text-xs sm:tracking-[0.24em] ${labelClass}`}>
             {section.label}
           </p>
           {titleAside ? (

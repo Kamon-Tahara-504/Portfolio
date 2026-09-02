@@ -1,14 +1,13 @@
 @import "tailwindcss";
 
-:root {
-  /* アプリ全体で参照する基準色変数。 */
-  --background: #030712;
-  --foreground: #f4f4f5;
-}
-
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-foreground-muted: var(--foreground-muted);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-border: var(--border);
+  --color-overlay: var(--overlay);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -115,6 +114,35 @@ body {
     opacity: 0;
     transform: scale(1.5);
   }
+}
+
+@keyframes carbonation-bubble {
+  /* ゲージ完了時のパーティクル。外周から放射状に広がって消える。 */
+  0% {
+    opacity: 0.9;
+    transform: translate3d(0, 0, 0) scale(0.4);
+  }
+  8% {
+    opacity: var(--bubble-peak-opacity, 0.9);
+    transform: translate3d(calc(var(--bubble-x) * 0.15), calc(var(--bubble-y) * 0.15), 0)
+      scale(1);
+  }
+  70% {
+    opacity: calc(var(--bubble-peak-opacity, 0.9) * 0.6);
+    transform: translate3d(calc(var(--bubble-x) * 0.75), calc(var(--bubble-y) * 0.75), 0)
+      scale(0.95);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(var(--bubble-x), var(--bubble-y), 0) scale(0.7);
+  }
+}
+
+.animate-carbonation-bubble {
+  animation-name: carbonation-bubble;
+  animation-timing-function: cubic-bezier(0.22, 0.61, 0.36, 1);
+  animation-fill-mode: forwards;
+  will-change: transform, opacity;
 }
 
 /* モーダル: TV電源ON/OFF風（中央線から上下へ展開） */

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { collectCriticalImageUrls } from "@/lib/collectLocalAssetUrls";
 import "./globals.css";
+import "./portfolio-view.css";
 
 // UI全体で使うサンセリフ系フォント設定。
 const geistSans = Geist({

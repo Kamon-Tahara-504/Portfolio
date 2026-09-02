@@ -12,7 +12,6 @@ export function collectCriticalImageUrls(basePath: string): string[] {
   const { about } = aboutData as AboutData;
   return [
     resolveAssetPath(about.image, basePath),
-    resolveAssetPath("/images/hero/hero.jpg", basePath),
     resolveAssetPath("/images/profile/Top1.jpg", basePath),
     resolveAssetPath("/images/profile/Top2.jpg", basePath),
   ];

@@ -1,9 +1,10 @@
 "use client";
 
 import Image from "next/image";
+import { usePortfolioView } from "@/components/page/PortfolioViewContext";
+import { modalHeading, modalLinkButton } from "@/lib/portfolioViewStyles";
 import { ProjectLinks } from "@/types/project";
 
-// リンク定義から表示可能なリンクボタン群を組み立てる。
 export default function ProjectModalLinks({
   links,
   basePath,
@@ -11,7 +12,8 @@ export default function ProjectModalLinks({
   links: ProjectLinks;
   basePath: string;
 }) {
-  // 1件でもリンクがある場合のみURLセクション自体を表示する。
+  const { viewMode } = usePortfolioView();
+  const linkClass = modalLinkButton(viewMode);
   const hasAnyLink =
     links.github ||
     links.githubBackend ||
@@ -24,7 +26,7 @@ export default function ProjectModalLinks({
 
   return (
     <div>
-      <h3 className="mb-4 text-xl font-bold tracking-tight text-zinc-100 md:text-2xl">
+      <h3 className={`mb-4 ${modalHeading(viewMode)}`}>
         URL
       </h3>
       <div className="flex flex-wrap gap-2">
@@ -33,7 +35,7 @@ export default function ProjectModalLinks({
             href={links.github}
             target="_blank"
             rel="noopener noreferrer"
-            className="group inline-flex items-center gap-1.5 rounded-full border border-zinc-300/25 bg-zinc-900/70 px-4 py-2 text-sm font-bold text-zinc-100 shadow-md transition-[transform,box-shadow,background-color] duration-300 hover:scale-105 hover:bg-zinc-800/85 hover:shadow-lg active:scale-[1.02] active:shadow-sm"
+            className={linkClass}
           >
             <svg
               className="h-4 w-4 shrink-0 transition-transform duration-300 group-hover:scale-110"
@@ -55,7 +57,7 @@ export default function ProjectModalLinks({
             href={links.githubBackend}
             target="_blank"
             rel="noopener noreferrer"
-            className="group inline-flex items-center gap-1.5 rounded-full border border-zinc-300/25 bg-zinc-900/70 px-4 py-2 text-sm font-bold text-zinc-100 shadow-md transition-[transform,box-shadow,background-color] duration-300 hover:scale-105 hover:bg-zinc-800/85 hover:shadow-lg active:scale-[1.02] active:shadow-sm"
+            className={linkClass}
           >
             <svg
               className="h-4 w-4 shrink-0 transition-transform duration-300 group-hover:scale-110"
@@ -77,7 +79,7 @@ export default function ProjectModalLinks({
             href={links.githubFrontend}
             target="_blank"
             rel="noopener noreferrer"
-            className="group inline-flex items-center gap-1.5 rounded-full border border-zinc-300/25 bg-zinc-900/70 px-4 py-2 text-sm font-bold text-zinc-100 shadow-md transition-[transform,box-shadow,background-color] duration-300 hover:scale-105 hover:bg-zinc-800/85 hover:shadow-lg active:scale-[1.02] active:shadow-sm"
+            className={linkClass}
           >
             <svg
               className="h-4 w-4 shrink-0 transition-transform duration-300 group-hover:scale-110"
@@ -99,7 +101,7 @@ export default function ProjectModalLinks({
             href={links.demo}
             target="_blank"
             rel="noopener noreferrer"
-            className="group inline-flex items-center gap-1.5 rounded-full border border-zinc-300/25 bg-zinc-900/55 px-4 py-2 text-sm font-bold text-zinc-100 shadow-md transition-[transform,box-shadow,background-color,border-color] duration-300 hover:scale-105 hover:border-zinc-300/45 hover:bg-zinc-800/70 hover:shadow-lg active:scale-[1.02] active:shadow-sm"
+            className={linkClass}
           >
             <svg
               className="h-4 w-4 shrink-0 transition-transform duration-300 group-hover:scale-110"
@@ -123,7 +125,7 @@ export default function ProjectModalLinks({
             href={links.appStore}
             target="_blank"
             rel="noopener noreferrer"
-            className="group inline-flex items-center gap-1.5 rounded-full border border-zinc-300/25 bg-zinc-900/55 px-4 py-2 text-sm font-bold text-zinc-100 shadow-md transition-[transform,box-shadow,background-color,border-color] duration-300 hover:scale-105 hover:border-zinc-300/45 hover:bg-zinc-800/70 hover:shadow-lg active:scale-[1.02] active:shadow-sm"
+            className={linkClass}
           >
             <Image
               src={`${basePath}/images/projects/appstore.png`}
@@ -140,7 +142,7 @@ export default function ProjectModalLinks({
             href={links.docs}
             target="_blank"
             rel="noopener noreferrer"
-            className="group inline-flex items-center gap-1.5 rounded-full border border-zinc-300/25 bg-zinc-900/55 px-4 py-2 text-sm font-bold text-zinc-100 shadow-md transition-[transform,box-shadow,background-color,border-color] duration-300 hover:scale-105 hover:border-zinc-300/45 hover:bg-zinc-800/70 hover:shadow-lg active:scale-[1.02] active:shadow-sm"
+            className={linkClass}
           >
             <svg
               className="h-4 w-4 shrink-0 text-zinc-100 transition-transform duration-300 group-hover:scale-110"

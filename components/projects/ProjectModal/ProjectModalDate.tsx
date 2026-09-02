@@ -1,8 +1,9 @@
 "use client";
 
 import { ProjectDateRange } from "@/types/project";
+import { usePortfolioView } from "@/components/page/PortfolioViewContext";
+import { modalHeading, mutedText } from "@/lib/portfolioViewStyles";
 
-// 日付文字列をUI表示用フォーマットに変換する。
 function formatDate(dateString: string): string {
   const date = new Date(dateString);
   const year = date.getFullYear();
@@ -11,19 +12,18 @@ function formatDate(dateString: string): string {
   return `${year} / ${month} / ${day}`;
 }
 
-// プロジェクト日付（単日/期間）を表示するセクション。
 export default function ProjectModalDate({
   date,
 }: {
   date: string | ProjectDateRange;
 }) {
+  const { viewMode } = usePortfolioView();
+
   return (
     <div>
-      <h3 className="mb-2 text-xl font-bold tracking-tight text-zinc-100 md:text-2xl">
-        Date
-      </h3>
+      <h3 className={`mb-2 ${modalHeading(viewMode)}`}>Date</h3>
       {typeof date === "string" ? (
-        <p className="font-semibold text-zinc-300">
+        <p className={`font-semibold ${mutedText(viewMode)}`}>
           {new Date(date).toLocaleDateString("ja-JP", {
             year: "numeric",
             month: "long",
@@ -31,18 +31,13 @@ export default function ProjectModalDate({
           })}
         </p>
       ) : (
-        <div className="space-y-2 font-semibold text-zinc-300">
+        <div className={`space-y-2 font-semibold ${mutedText(viewMode)}`}>
           {date.startDate && <p>開発開始日: {formatDate(date.startDate)}</p>}
           {date.endDate && <p>開発終了日: {formatDate(date.endDate)}</p>}
-          {date.releaseDate && (
-            <p>リリース日: {formatDate(date.releaseDate)}</p>
-          )}
-          {date.deployDate && (
-            <p>デプロイ日: {formatDate(date.deployDate)}</p>
-          )}
+          {date.releaseDate && <p>リリース日: {formatDate(date.releaseDate)}</p>}
+          {date.deployDate && <p>デプロイ日: {formatDate(date.deployDate)}</p>}
         </div>
       )}
     </div>
   );
 }
-
