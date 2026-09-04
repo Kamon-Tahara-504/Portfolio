@@ -1,22 +1,21 @@
 "use client";
 
-// 技術タグ一覧を表示するセクション。
+import { usePortfolioView } from "@/components/page/PortfolioViewContext";
+import { modalHeading, mutedText, tagPill } from "@/lib/portfolioViewStyles";
+
 export default function ProjectModalTechnologies({
   technologies,
 }: {
   technologies: string[];
 }) {
+  const { viewMode } = usePortfolioView();
+
   return (
     <div>
-      <h3 className="mb-4 text-xl font-bold tracking-tight text-zinc-100 md:text-2xl">
-        Technologies
-      </h3>
+      <h3 className={`mb-4 ${modalHeading(viewMode)}`}>Technologies</h3>
       <div className="flex flex-wrap gap-2">
         {technologies.map((tech) => (
-          <span
-            key={tech}
-            className="rounded-md border border-zinc-300/20 bg-zinc-900/55 px-3 py-1.5 text-sm font-semibold text-zinc-200"
-          >
+          <span key={tech} className={tagPill(viewMode)}>
             {tech}
           </span>
         ))}
@@ -24,4 +23,3 @@ export default function ProjectModalTechnologies({
     </div>
   );
 }
-

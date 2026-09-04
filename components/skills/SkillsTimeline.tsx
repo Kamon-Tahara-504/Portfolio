@@ -1,6 +1,8 @@
 "use client";
 
 import { Skills, Skill } from "@/types/profile";
+import { usePortfolioView } from "@/components/page/PortfolioViewContext";
+import { surfaceCard } from "@/lib/portfolioViewStyles";
 import { useTimelineLayout, type TimelineSkill } from "@/hooks/useTimelineLayout";
 import { useTimelineAutoScroll } from "@/hooks/useTimelineAutoScroll";
 import TimelineHeader from "./TimelineHeader";
@@ -16,7 +18,7 @@ interface SkillsTimelineProps {
 
 // スキル習得期間を横軸タイムラインで表示するコンテナ。
 export default function SkillsTimeline({ skills, contentVisible = true }: SkillsTimelineProps) {
-  // カテゴリ配列を1本化し、補助スキルも含めた表示対象を作る。
+  const { viewMode } = usePortfolioView();
   const allSkills: Skill[] = [
     ...skills.frontend,
     ...skills.backend,
@@ -49,7 +51,7 @@ export default function SkillsTimeline({ skills, contentVisible = true }: Skills
 
   return (
     <div className="mt-7 w-full pb-0.5">
-      <div className="relative w-full rounded-lg border border-zinc-300/20 bg-black/30 px-3 pt-2.5 pb-1 shadow-lg shadow-black/35 md:rounded-2xl md:px-4 md:pt-3.5 md:pb-1.5">
+      <div className={`relative w-full px-3 pt-2.5 pb-1 md:px-4 md:pt-3.5 md:pb-1.5 ${surfaceCard(viewMode)} shadow-lg ${viewMode === "personal" ? "shadow-black/35 md:rounded-2xl" : "md:rounded-2xl"}`}>
         <div
           className="transition-opacity duration-300"
           style={{ opacity: contentVisible ? 1 : 0, pointerEvents: contentVisible ? "auto" : "none" }}

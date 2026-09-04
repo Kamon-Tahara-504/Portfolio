@@ -2,7 +2,6 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useReducedMotion } from "framer-motion";
-import aboutData from "@/data/about.json";
 import developmentData from "@/data/development.json";
 import heroData from "@/data/hero.json";
 import { StackGitHubHeaderButton } from "@/components/development/StackSection";
@@ -10,27 +9,29 @@ import HeroSection from "@/components/hero/HeroSection";
 import ProjectModal from "@/components/projects/ProjectModal";
 import PageBackground from "@/components/page/PageBackground";
 import PageHeaderNav from "@/components/page/PageHeaderNav";
+import { PortfolioViewProvider } from "@/components/page/PortfolioViewContext";
 import SectionShell from "@/components/page/SectionShell";
 import { SECTION_META, SectionId } from "@/components/page/SectionMeta";
 import { getSectionContent } from "@/components/page/SectionContent";
 import { resolveAssetPath } from "@/lib/collectLocalAssetUrls";
+import { fixedLabel } from "@/lib/portfolioViewStyles";
 import { Development } from "@/types/development";
 import { Project } from "@/types/project";
+import type { PortfolioViewMode } from "@/types/portfolioView";
 
 const development = developmentData as Development;
 const basePath = process.env.NODE_ENV === "production" ? "/Portfolio" : "";
 
 // ポートフォリオのルート画面。導入->本編遷移とセクション描画を統括する。
 export default function PortfolioPage() {
-  // 画面遷移・モーダル・現在アクティブセクションの主要状態。
   const [hasEntered, setHasEntered] = useState(false);
+  const [viewMode, setViewMode] = useState<PortfolioViewMode | null>(null);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [activeSectionId, setActiveSectionId] = useState<SectionId>(SECTION_META[0].id);
   const shouldReduceMotion = useReducedMotion();
-  // セクションごとの背景画像割り当てマップ。
+
   const sectionImageMap = useMemo<Record<SectionId, string>>(
     () => ({
-      // ナビゲーション順に合わせて Top1〜Top6 を1:1で対応付ける。
       profile: resolveAssetPath("/images/profile/Top1.jpg", basePath),
       vision: resolveAssetPath("/images/profile/Top2.jpg", basePath),
       career: resolveAssetPath("/images/profile/Top3.jpg", basePath),
@@ -41,18 +42,25 @@ export default function PortfolioPage() {
     []
   );
 
-  // スクロール中に最も見えているセクションを追跡し、背景画像の切り替えに使う。
+  // html に data 属性を同期し、CSS 変数と body 背景をビューモード連動させる。
   useEffect(() => {
-    if (!hasEntered) return;
+    if (!viewMode) {
+      document.documentElement.removeAttribute("data-portfolio-view");
+      return;
+    }
+    document.documentElement.setAttribute("data-portfolio-view", viewMode);
+    return () => document.documentElement.removeAttribute("data-portfolio-view");
+  }, [viewMode]);
+
+  useEffect(() => {
+    if (!hasEntered || !viewMode) return;
 
     const sectionElements = SECTION_META.map((section) => document.getElementById(section.id)).filter(
       (section): section is HTMLElement => section !== null
     );
     if (sectionElements.length === 0) return;
 
-    // ごく僅かな露出で切り替わるチラつきを抑えるための閾値。
     const MIN_SWITCH_RATIO = 0.08;
-    // 直前セクションより一定差が出るまで切り替えないヒステリシス。
     const SWITCH_HYSTERESIS = 0.01;
     const visibilityBySection = new Map<SectionId, number>(
       sectionElements.map((section) => [section.id as SectionId, 0])
@@ -87,68 +95,77 @@ export default function PortfolioPage() {
     sectionElements.forEach((section) => observer.observe(section));
 
     return () => observer.disconnect();
-  }, [hasEntered]);
+  }, [hasEntered, viewMode]);
 
-  // セクションIDごとの背景画像を切り替える。
   const activeBackground = sectionImageMap[activeSectionId];
 
-  // Hero は導入画面として独立させ、onLead のみで本編へ遷移する。
-  if (!hasEntered) {
+  if (!hasEntered || !viewMode) {
     return (
       <HeroSection
-        image={aboutData.about.image}
-        title={heroData.title}
-        nameEn={heroData.nameEn}
-        onLead={() => setHasEntered(true)}
+        onLead={(mode) => {
+          setViewMode(mode);
+          setHasEntered(true);
+        }}
       />
     );
   }
 
   return (
-    <div className="relative h-screen max-w-full min-h-0 min-w-0 snap-y snap-mandatory overflow-x-clip overflow-y-auto overscroll-y-contain">
-      <PageBackground activeImage={activeBackground} shouldReduceMotion={shouldReduceMotion} />
-      <PageHeaderNav title={heroData.title} sections={SECTION_META} activeSectionId={activeSectionId} />
-
-      <main className="contents">
-        {SECTION_META.map((section) => (
-          <SectionShell
-            key={section.id}
-            section={section}
-            shouldReduceMotion={shouldReduceMotion}
-            titleAside={
-              section.id === "stack" ? (
-                <StackGitHubHeaderButton repository={development.repository} />
-              ) : undefined
-            }
-          >
-            {getSectionContent(section.id, (project) => setSelectedProject(project))}
-          </SectionShell>
-        ))}
-      </main>
-
-      {selectedProject ? (
-        <ProjectModal project={selectedProject} onClose={() => setSelectedProject(null)} />
-      ) : null}
-
-      <p
-        aria-label="2026 4/15 Renewal"
-        className="pointer-events-none fixed top-1/2 right-1 z-20 -translate-y-1/2 text-[10px] tracking-[0.24em] text-zinc-200/75 [writing-mode:vertical-rl] [text-orientation:mixed] sm:right-2 sm:text-[11px] md:right-3 md:text-xs"
+    <PortfolioViewProvider viewMode={viewMode}>
+      <div
+        data-portfolio-view={viewMode}
+        className={`relative h-screen max-w-full min-h-0 min-w-0 snap-y snap-mandatory overflow-x-clip overflow-y-auto overscroll-y-contain text-foreground ${viewMode === "recruiter" ? "bg-background" : ""}`}
       >
-        2026 4/15 RENEWAL
-      </p>
-      <p
-        aria-label="Web Developer and Mobile Developer"
-        className="pointer-events-none fixed top-1/2 left-1 z-20 -translate-y-1/2 rotate-180 text-[10px] tracking-[0.24em] text-zinc-200/75 [writing-mode:vertical-lr] [text-orientation:mixed] sm:left-2 sm:text-[11px] md:left-3 md:text-xs"
-      >
-        WEB DEVELOPER & MOBILE DEVELOPER
-      </p>
+        {viewMode === "personal" ? (
+          <PageBackground activeImage={activeBackground} shouldReduceMotion={shouldReduceMotion} />
+        ) : null}
+        <div className="relative z-10">
+          <PageHeaderNav title={heroData.title} sections={SECTION_META} activeSectionId={activeSectionId} />
 
-      <footer className="fixed right-4 bottom-4 z-20 text-[10px] tracking-[0.22em] text-zinc-300 uppercase md:bottom-5 md:right-6 md:text-[11px]">
-        <p className="text-right text-zinc-300/85">Copyright</p>
-        <p className="mt-1 max-w-sm text-right leading-relaxed text-zinc-400 normal-case tracking-[0.14em]">
-          &copy; 2026 Kamon-Tahara-504
+          <main className="contents">
+          {SECTION_META.map((section) => (
+            <SectionShell
+              key={section.id}
+              section={section}
+              shouldReduceMotion={shouldReduceMotion}
+              titleAside={
+                section.id === "stack" ? (
+                  <StackGitHubHeaderButton repository={development.repository} />
+                ) : undefined
+              }
+            >
+              {getSectionContent(section.id, (project) => setSelectedProject(project))}
+            </SectionShell>
+          ))}
+          </main>
+        </div>
+
+        {selectedProject ? (
+          <ProjectModal project={selectedProject} onClose={() => setSelectedProject(null)} />
+        ) : null}
+
+        <p
+          aria-label="2026 4/15 Renewal"
+          className={`pointer-events-none fixed top-1/2 right-1 z-20 -translate-y-1/2 text-[10px] tracking-[0.24em] [writing-mode:vertical-rl] [text-orientation:mixed] sm:right-2 sm:text-[11px] md:right-3 md:text-xs ${fixedLabel(viewMode)}`}
+        >
+          2026 4/15 RENEWAL
         </p>
-      </footer>
-    </div>
+        <p
+          aria-label="Web Developer and Mobile Developer"
+          className={`pointer-events-none fixed top-1/2 left-1 z-20 -translate-y-1/2 rotate-180 text-[10px] tracking-[0.24em] [writing-mode:vertical-lr] [text-orientation:mixed] sm:left-2 sm:text-[11px] md:left-3 md:text-xs ${fixedLabel(viewMode)}`}
+        >
+          WEB DEVELOPER & MOBILE DEVELOPER
+        </p>
+
+        <footer
+          className={`fixed right-4 bottom-4 z-20 text-[10px] tracking-[0.22em] uppercase md:bottom-5 md:right-6 md:text-[11px] ${fixedLabel(viewMode)}`}
+        >
+          <p className="text-right opacity-85">Copyright</p>
+          <p className="mt-1 max-w-sm text-right leading-relaxed normal-case tracking-[0.14em] opacity-70">
+            &copy; 2026 Kamon-Tahara-504
+          </p>
+        </footer>
+      </div>
+    </PortfolioViewProvider>
   );
 }

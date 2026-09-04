@@ -1,7 +1,10 @@
+"use client";
+
 import { AnimatePresence, motion } from "framer-motion";
+import { usePortfolioView } from "@/components/page/PortfolioViewContext";
+import { primaryButton } from "@/lib/portfolioViewStyles";
 import { SkillsPhase } from "@/components/skills/skillsTransition";
 
-// スキル表示モード切替ボタンの入力。
 interface SkillsModeToggleProps {
   phase: SkillsPhase;
   isTimelineMode: boolean;
@@ -9,13 +12,15 @@ interface SkillsModeToggleProps {
   onGoToSkills: () => void;
 }
 
-// 現在フェーズに応じて Timeline/Back ボタンを切り替える。
 export default function SkillsModeToggle({
   phase,
   isTimelineMode,
   onGoToTimeline,
   onGoToSkills,
 }: SkillsModeToggleProps) {
+  const { viewMode } = usePortfolioView();
+  const buttonClass = `${primaryButton(viewMode)} px-4 py-1.5 text-xs disabled:cursor-not-allowed disabled:opacity-50 active:scale-95`;
+
   return (
     <AnimatePresence mode="wait" initial={false}>
       {isTimelineMode ? (
@@ -27,7 +32,7 @@ export default function SkillsModeToggle({
           transition={{ duration: 0.2 }}
           onClick={onGoToSkills}
           disabled={phase !== "timeline"}
-          className="ml-4 flex-shrink-0 rounded-full border border-zinc-300/30 bg-zinc-900/70 px-4 py-1.5 text-xs font-semibold text-zinc-100 transition hover:bg-zinc-800/80 active:scale-95 disabled:cursor-not-allowed disabled:opacity-50"
+          className={`ml-4 flex-shrink-0 ${buttonClass}`}
         >
           ← Back
         </motion.button>
@@ -40,7 +45,7 @@ export default function SkillsModeToggle({
           transition={{ duration: 0.2 }}
           onClick={onGoToTimeline}
           disabled={phase !== "skills"}
-          className="hidden shrink-0 rounded-full border border-zinc-300/30 bg-zinc-900/70 px-4 py-1.5 text-xs font-semibold text-zinc-100 transition hover:bg-zinc-800/80 active:scale-95 disabled:cursor-not-allowed disabled:opacity-50 md:ml-4 md:inline-flex"
+          className={`hidden shrink-0 md:ml-4 md:inline-flex ${buttonClass}`}
         >
           Timeline →
         </motion.button>

@@ -1,6 +1,16 @@
+"use client";
+
+import { usePortfolioView } from "@/components/page/PortfolioViewContext";
+import {
+  bodyText,
+  headerActionButton,
+  sectionHeading,
+  surfaceCard,
+  tagPill,
+  viewClass,
+} from "@/lib/portfolioViewStyles";
 import { Development, Repository } from "@/types/development";
 
-// 日付文字列を表示用フォーマットに変換する。
 function formatDate(dateString: string): string {
   const date = new Date(dateString);
   const year = date.getFullYear();
@@ -9,20 +19,20 @@ function formatDate(dateString: string): string {
   return `${year} / ${month} / ${day}`;
 }
 
-// Stackセクションの入力。
 interface StackSectionProps {
   development: Development;
 }
 
-// 見出し「STACK」右に置く GitHub 遷移ボタン（リポジトリ URL 表示ボックスは本文側に置かない）。
 export function StackGitHubHeaderButton({ repository }: { repository: Repository }) {
+  const { viewMode } = usePortfolioView();
+
   return (
     <a
       href={repository.url}
       target="_blank"
       rel="noreferrer"
       aria-label={repository.label}
-      className="inline-flex shrink-0 items-center gap-2 rounded-md border border-zinc-300/30 bg-zinc-900/55 px-3 py-2 text-xs font-semibold text-zinc-100 transition hover:border-zinc-300/50 hover:bg-zinc-900/75 sm:px-4 sm:py-2.5 sm:text-sm"
+      className={headerActionButton(viewMode)}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -38,60 +48,47 @@ export function StackGitHubHeaderButton({ repository }: { repository: Repository
   );
 }
 
-// 技術スタックと開発プロセス情報を表示する。
 export default function StackSection({ development }: StackSectionProps) {
+  const { viewMode } = usePortfolioView();
+  const dateTextClass = viewClass(viewMode, {
+    personal: "font-semibold text-zinc-300",
+    recruiter: "font-semibold text-foreground-muted",
+  });
+
+  const cards = [
+    { title: "Design Philosophy", body: development.developmentProcess.designPhilosophy },
+    { title: "Implementation Highlights", body: development.developmentProcess.implementationHighlights },
+    { title: "Learnings", body: development.developmentProcess.learnings },
+    { title: "Future Improvements", body: development.developmentProcess.futureImprovements },
+  ];
+
   return (
     <div className="space-y-4 sm:space-y-5">
-      <p className="max-w-3xl text-sm leading-relaxed text-zinc-300 sm:text-base">
+      <p className={`max-w-3xl ${bodyText(viewMode)}`}>
         このポートフォリオで使用している主要技術です。
       </p>
       <div className="grid gap-3 sm:gap-4 lg:grid-cols-2">
-        <article className="rounded-lg border border-zinc-300/20 bg-black/30 p-4 sm:p-5">
-          <h3 className="text-sm font-semibold tracking-wide text-zinc-100 uppercase sm:text-base">Design Philosophy</h3>
-          <p className="mt-2 text-sm leading-relaxed text-zinc-300 sm:text-base">
-            {development.developmentProcess.designPhilosophy}
-          </p>
-        </article>
-        <article className="rounded-lg border border-zinc-300/20 bg-black/30 p-4 sm:p-5">
-          <h3 className="text-sm font-semibold tracking-wide text-zinc-100 uppercase sm:text-base">
-            Implementation Highlights
-          </h3>
-          <p className="mt-2 text-sm leading-relaxed text-zinc-300 sm:text-base">
-            {development.developmentProcess.implementationHighlights}
-          </p>
-        </article>
-        <article className="rounded-lg border border-zinc-300/20 bg-black/30 p-4 sm:p-5">
-          <h3 className="text-sm font-semibold tracking-wide text-zinc-100 uppercase sm:text-base">Learnings</h3>
-          <p className="mt-2 text-sm leading-relaxed text-zinc-300 sm:text-base">
-            {development.developmentProcess.learnings}
-          </p>
-        </article>
-        <article className="rounded-lg border border-zinc-300/20 bg-black/30 p-4 sm:p-5">
-          <h3 className="text-sm font-semibold tracking-wide text-zinc-100 uppercase sm:text-base">
-            Future Improvements
-          </h3>
-          <p className="mt-2 text-sm leading-relaxed text-zinc-300 sm:text-base">
-            {development.developmentProcess.futureImprovements}
-          </p>
-        </article>
+        {cards.map((card) => (
+          <article key={card.title} className={surfaceCard(viewMode)}>
+            <h3 className={sectionHeading(viewMode)}>{card.title}</h3>
+            <p className={`mt-2 ${bodyText(viewMode)}`}>{card.body}</p>
+          </article>
+        ))}
       </div>
       <div className="grid gap-3 sm:gap-4 lg:grid-cols-2">
-        <article className="rounded-lg border border-zinc-300/20 bg-black/30 p-4 sm:p-5">
-          <h3 className="text-sm font-semibold tracking-wide text-zinc-100 uppercase sm:text-base">Date</h3>
-          <div className="mt-2 space-y-2 font-semibold text-zinc-300">
+        <article className={surfaceCard(viewMode)}>
+          <h3 className={sectionHeading(viewMode)}>Date</h3>
+          <div className={`mt-2 space-y-2 ${dateTextClass}`}>
             <p>開発開始日: {formatDate(development.dates.startDate)}</p>
             <p>開発終了日: {formatDate(development.dates.endDate)}</p>
             <p>最終更新日: {formatDate(development.dates.lastUpdated)}</p>
           </div>
         </article>
-        <article className="rounded-lg border border-zinc-300/20 bg-black/30 p-4 sm:p-5">
-          <h3 className="text-sm font-semibold tracking-wide text-zinc-100 uppercase sm:text-base">Tech Stack</h3>
+        <article className={surfaceCard(viewMode)}>
+          <h3 className={sectionHeading(viewMode)}>Tech Stack</h3>
           <div className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
             {development.techStack.map((tech) => (
-              <div
-                key={tech}
-                className="rounded-md border border-zinc-300/25 bg-zinc-900/55 px-3 py-2 text-xs font-medium text-zinc-100 sm:text-sm"
-              >
+              <div key={tech} className={tagPill(viewMode)}>
                 {tech}
               </div>
             ))}

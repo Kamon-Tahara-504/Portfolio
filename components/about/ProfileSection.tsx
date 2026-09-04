@@ -3,7 +3,9 @@
 import { useState } from "react";
 import Image from "next/image";
 import ContactModal from "@/components/about/ContactModal";
+import { usePortfolioView } from "@/components/page/PortfolioViewContext";
 import { resolveAssetPath } from "@/lib/collectLocalAssetUrls";
+import { chip, ctaButton, divider, mutedText, viewClass } from "@/lib/portfolioViewStyles";
 import { AboutData } from "@/types/profile";
 
 // public/images/about/TAHARA.jpg の実ピクセル比（Next/Image の width/height に使用し縦横比を維持する）
@@ -42,7 +44,7 @@ function getAgeFromBirthDate(birthDate?: string): number | null {
 
 // プロフィール画像・基本情報・チップを表示する。
 export default function ProfileSection({ about, profileChips }: ProfileSectionProps) {
-  // Contactモーダル表示状態。
+  const { viewMode } = usePortfolioView();
   const [isContactOpen, setIsContactOpen] = useState(false);
   // GitHubリンク（未設定時は空文字）。
   const githubUrl = about.contact?.github ?? "";
@@ -63,25 +65,28 @@ export default function ProfileSection({ about, profileChips }: ProfileSectionPr
               height={PROFILE_IMAGE_HEIGHT}
               priority
               sizes="(max-width: 640px) min(100vw, 32rem) (max-width: 1024px) min(100vw, 42rem) (max-width: 1536px) 48vw 42vw"
-              className="h-auto w-full rounded-2xl border border-zinc-300/20 bg-black/30"
+              className={`h-auto w-full rounded-2xl border ${viewClass(viewMode, {
+                personal: "border-zinc-300/20 bg-black/30",
+                recruiter: "border-border bg-surface",
+              })}`}
             />
           </div>
-          <div className="flex flex-wrap gap-1.5 text-[9px] font-semibold text-zinc-100 sm:text-[10px] md:text-[11px]">
+          <div className={`flex flex-wrap gap-1.5 text-[9px] font-semibold sm:text-[10px] md:text-[11px] ${viewClass(viewMode, { personal: "text-zinc-100", recruiter: "text-foreground" })}`}>
             {about.about.birthDate ? (
-              <span className="inline-flex items-center gap-1 rounded-full border border-zinc-300/25 bg-zinc-900/55 px-2.5 py-1 backdrop-blur-sm">
-                <span className="text-zinc-400 whitespace-nowrap">生年月日</span>
+              <span className={chip(viewMode)}>
+                <span className={`whitespace-nowrap ${mutedText(viewMode)}`}>生年月日</span>
                 <span>{about.about.birthDate}</span>
               </span>
             ) : null}
             {about.about.birthplace ? (
-              <span className="inline-flex items-center gap-1 rounded-full border border-zinc-300/25 bg-zinc-900/55 px-2.5 py-1 backdrop-blur-sm">
-                <span className="text-zinc-400 whitespace-nowrap">出身</span>
+              <span className={chip(viewMode)}>
+                <span className={`whitespace-nowrap ${mutedText(viewMode)}`}>出身</span>
                 <span>{about.about.birthplace}</span>
               </span>
             ) : null}
             {about.about.hobby ? (
-              <span className="inline-flex max-w-full items-center gap-1 rounded-full border border-zinc-300/25 bg-zinc-900/55 px-2.5 py-1 backdrop-blur-sm lg:max-w-full">
-                <span className="text-zinc-400 whitespace-nowrap">好きなこと</span>
+              <span className={`${chip(viewMode)} max-w-full lg:max-w-full`}>
+                <span className={`whitespace-nowrap ${mutedText(viewMode)}`}>好きなこと</span>
                 <span className="truncate">{about.about.hobby}</span>
               </span>
             ) : null}
@@ -90,39 +95,39 @@ export default function ProfileSection({ about, profileChips }: ProfileSectionPr
         <div className="flex flex-col gap-4 lg:gap-5">
           <div className="space-y-1">
             {currentAffiliation ? (
-              <p className="mb-2 max-w-full text-[clamp(0.5625rem,2.15vw,0.875rem)] font-medium leading-tight tracking-wide text-zinc-300 max-md:overflow-x-auto max-md:whitespace-nowrap sm:text-xs md:overflow-visible md:whitespace-normal lg:text-sm">
+              <p className={`mb-2 max-w-full text-[clamp(0.5625rem,2.15vw,0.875rem)] font-medium leading-tight tracking-wide max-md:overflow-x-auto max-md:whitespace-nowrap sm:text-xs md:overflow-visible md:whitespace-normal lg:text-sm ${mutedText(viewMode)}`}>
                 {currentAffiliation.name}
                 {currentAffiliation.stage ? ` / ${currentAffiliation.stage}` : ""}
               </p>
             ) : null}
             <div className="flex flex-wrap items-end gap-x-2 gap-y-1 sm:gap-3">
-              <p className="min-w-0 text-[clamp(1.55rem,5.8vw,3.3rem)] leading-none font-bold tracking-tight text-white">
+              <p className={`min-w-0 text-[clamp(1.55rem,5.8vw,3.3rem)] leading-none font-bold tracking-tight ${viewClass(viewMode, { personal: "text-white", recruiter: "text-foreground" })}`}>
                 {about.name}
               </p>
               {currentAge !== null ? (
-                <p className="shrink-0 pb-0.5 text-xs font-semibold text-zinc-300 sm:pb-1 sm:text-sm md:text-base">
+                <p className={`shrink-0 pb-0.5 text-xs font-semibold sm:pb-1 sm:text-sm md:text-base ${mutedText(viewMode)}`}>
                   {currentAge}歳
                 </p>
               ) : null}
             </div>
-            <p className="mb-2 text-sm font-semibold text-zinc-200/90 sm:text-base lg:mb-3 lg:text-lg xl:text-2xl">
+            <p className={`mb-2 text-sm font-semibold sm:text-base lg:mb-3 lg:text-lg xl:text-2xl ${viewClass(viewMode, { personal: "text-zinc-200/90", recruiter: "text-foreground-muted" })}`}>
               {about.nameEn}
             </p>
           </div>
 
           {profileChips.filter(Boolean).length > 0 ? (
-            <p className="text-sm leading-relaxed text-zinc-200 lg:text-base">
+            <p className={`text-sm leading-relaxed lg:text-base ${viewClass(viewMode, { personal: "text-zinc-200", recruiter: "text-foreground" })}`}>
               {profileChips.filter(Boolean).join(" / ")}
             </p>
           ) : null}
 
           {about.about.introduction ? (
-            <p className="text-xs font-semibold leading-[1.75] text-pretty whitespace-pre-line text-zinc-200 sm:text-sm lg:leading-relaxed lg:text-base">
+            <p className={`text-xs font-semibold leading-[1.75] text-pretty whitespace-pre-line sm:text-sm lg:leading-relaxed lg:text-base ${viewClass(viewMode, { personal: "text-zinc-200", recruiter: "text-foreground" })}`}>
               {about.about.introduction}
             </p>
           ) : null}
 
-          <div className="h-px w-full bg-white/40" aria-hidden />
+          <div className={divider(viewMode)} aria-hidden />
 
           <div className="flex flex-wrap gap-3 sm:gap-4">
             <a
@@ -130,10 +135,8 @@ export default function ProfileSection({ about, profileChips }: ProfileSectionPr
               target="_blank"
               rel="noopener noreferrer"
               aria-disabled={!githubUrl}
-              className={`group inline-flex h-11 items-center justify-center gap-2 rounded-full border px-5 text-sm font-bold tracking-wide transition-[transform,box-shadow,background-color,border-color] duration-300 sm:h-12 ${
-                githubUrl
-                  ? "border-zinc-300/25 bg-zinc-900/70 text-zinc-100 shadow-md hover:scale-105 hover:border-zinc-300/45 hover:bg-zinc-800/85 hover:shadow-lg active:scale-[1.02] active:shadow-sm"
-                  : "pointer-events-none border-zinc-300/20 bg-zinc-900/30 text-zinc-500"
+              className={`${ctaButton(viewMode)} ${
+                githubUrl ? "" : "pointer-events-none opacity-50"
               }`}
             >
               <svg
@@ -153,7 +156,7 @@ export default function ProfileSection({ about, profileChips }: ProfileSectionPr
             <button
               type="button"
               onClick={() => setIsContactOpen(true)}
-              className="group inline-flex h-11 items-center justify-center gap-2 rounded-full border border-zinc-300/25 bg-zinc-900/70 px-5 text-sm font-bold tracking-wide text-zinc-100 shadow-md transition-[transform,box-shadow,background-color,border-color] duration-300 hover:scale-105 hover:border-zinc-300/45 hover:bg-zinc-800/85 hover:shadow-lg active:scale-[1.02] active:shadow-sm sm:h-12"
+              className={ctaButton(viewMode)}
             >
               <svg
                 className="h-4 w-4 shrink-0"

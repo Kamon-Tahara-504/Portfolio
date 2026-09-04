@@ -9,7 +9,7 @@ interface PageBackgroundProps {
 // セクション状態に追従して背景画像をクロスフェード表示する。
 export default function PageBackground({ activeImage, shouldReduceMotion }: PageBackgroundProps) {
   return (
-    <motion.div aria-hidden className="pointer-events-none fixed inset-0 -z-10">
+    <motion.div aria-hidden className="pointer-events-none fixed inset-0 z-0">
       <AnimatePresence mode="sync">
         <motion.img
           key={activeImage}

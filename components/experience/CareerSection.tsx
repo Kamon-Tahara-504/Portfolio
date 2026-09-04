@@ -1,6 +1,14 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { usePortfolioView } from "@/components/page/PortfolioViewContext";
+import {
+  bodyText,
+  careerCard,
+  mutedText,
+  titleStrong,
+  viewClass,
+} from "@/lib/portfolioViewStyles";
 import { Experience } from "@/types/profile";
 
 // Careerセクションの入力。
@@ -24,6 +32,7 @@ type MobileVLine = {
 
 // 経歴カードと接続線を並べて表示するセクション。
 export default function CareerSection({ experiences }: CareerSectionProps) {
+  const { viewMode } = usePortfolioView();
   const listRef = useRef<HTMLDivElement>(null);
   const nodeRefs = useRef<Array<HTMLSpanElement | null>>([]);
   const [segments, setSegments] = useState<Segment[]>([]);
@@ -84,7 +93,7 @@ export default function CareerSection({ experiences }: CareerSectionProps) {
 
   return (
     <div className="space-y-5 sm:space-y-6">
-      <p className="max-w-4xl text-sm leading-relaxed text-zinc-300 sm:text-base">
+      <p className={`max-w-4xl ${bodyText(viewMode)}`}>
         学習歴と所属歴を時系列で整理し、星座をたどるように成長の流れを可視化しています。
       </p>
       <div className="mx-auto w-full">
@@ -147,7 +156,7 @@ export default function CareerSection({ experiences }: CareerSectionProps) {
                   ref={(node) => {
                     nodeRefs.current[index] = node;
                   }}
-                  className="block h-3 w-3 rounded-full bg-zinc-100 shadow-[0_0_0_1px_rgba(24,24,27,0.85)]"
+                  className={`block h-3 w-3 rounded-full shadow-[0_0_0_1px_rgba(24,24,27,0.85)] ${viewClass(viewMode, { personal: "bg-zinc-100", recruiter: "bg-foreground" })}`}
                 />
                 <span className="absolute top-1/2 left-1/2 h-8 w-8 -translate-x-1/2 -translate-y-1/2 rounded-full bg-zinc-100/20 blur-sm" />
               </span>
@@ -157,7 +166,7 @@ export default function CareerSection({ experiences }: CareerSectionProps) {
                 className={`flex max-md:ml-[var(--career-gutter)] max-md:min-w-0 ${index % 2 === 0 ? "justify-start" : "justify-end"}`}
               >
                 <div
-                    className={`w-full min-w-0 rounded-2xl border border-zinc-300/20 bg-black/30 px-3.5 py-3 backdrop-blur-[2px] md:w-[calc(50%-5.5rem)] md:px-4 ${
+                    className={`md:w-[calc(50%-5.5rem)] ${careerCard(viewMode)} ${
                     index % 2 === 0
                       ? index % 4 === 0
                         ? "md:translate-x-2"
@@ -168,13 +177,13 @@ export default function CareerSection({ experiences }: CareerSectionProps) {
                   }`}
                 >
                   <div className="flex flex-wrap items-end gap-x-4 gap-y-1 text-left">
-                    <h3 className="text-base leading-none font-semibold text-white sm:text-lg md:text-xl">{item.title}</h3>
-                    <p className="text-xs font-medium text-zinc-300 sm:text-sm md:text-base">{item.period}</p>
+                    <h3 className={titleStrong(viewMode)}>{item.title}</h3>
+                    <p className={`text-xs font-medium sm:text-sm md:text-base ${mutedText(viewMode)}`}>{item.period}</p>
                   </div>
-                  <p className="mt-2 text-xs leading-relaxed font-medium whitespace-pre-line text-zinc-200 sm:text-sm">
+                  <p className={`mt-2 text-xs leading-relaxed font-medium whitespace-pre-line sm:text-sm ${viewClass(viewMode, { personal: "text-zinc-200", recruiter: "text-foreground" })}`}>
                     {item.company}
                   </p>
-                  <p className="mt-3 text-sm leading-relaxed whitespace-pre-line text-zinc-300 sm:text-base">
+                  <p className={`mt-3 text-sm leading-relaxed whitespace-pre-line sm:text-base ${bodyText(viewMode)}`}>
                     {item.description}
                   </p>
                 </div>
