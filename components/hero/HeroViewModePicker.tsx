@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import HeroRadialBurst, { RADIAL_BURST_HOLD_MS } from "@/components/hero/HeroRadialBurst";
+import HeroViewModeAmbientWords from "@/components/hero/HeroViewModeAmbientWords";
 import { PREVIEW_FADE_MS } from "@/components/hero/HeroViewModePreview";
 import type { PortfolioViewMode } from "@/types/portfolioView";
 
@@ -47,53 +48,38 @@ function getPromptStyleClass(previewMode: PortfolioViewMode | null): string {
   }
 }
 
-// 未選択時（黒背景）のゲージ色。
+// 未選択時／個人向けプレビューのゲージ色。
 const IDLE_TRACK_STROKE = "rgba(244,244,245,0.12)";
 const IDLE_PROGRESS_STROKE = "rgba(244,244,245,0.85)";
 const IDLE_PROGRESS_RING_OPACITY = 0.35;
-// 担当者プレビュー（白背景）の非選択ゲージ色。
-const RECRUITER_IDLE_TRACK_STROKE = "rgba(0,0,0,0.18)";
-const RECRUITER_IDLE_PROGRESS_STROKE = "rgba(0,0,0,0.35)";
-const RECRUITER_IDLE_PROGRESS_RING_OPACITY = 0.35;
+// 担当者プレビュー時のゲージ色（白背景で空リングも見える濃さ）。
+const RECRUITER_TRACK_STROKE = "rgba(0,0,0,0.22)";
+const RECRUITER_PROGRESS_STROKE = "#000000";
+const RECRUITER_IDLE_PROGRESS_STROKE = "rgba(0,0,0,0.38)";
+// 背景フェードより早くゲージ色を切り替えて、プレビュー途中でも空リングを見せる。
+const GAUGE_COLOR_MS = 360;
 
-// 担当者プレビュー時は白地・黒文字。非選択側のゲージは未選択時と同透明度。
-function getButtonInnerClass(isRecruiterPreview: boolean, isActive: boolean): string {
-  if (isRecruiterPreview) {
-    return "bg-white";
-  }
+// ボタン内側はプレビュー種別に依存せず、個人向けと同じ暗色を維持する。
+function getButtonInnerClass(isActive: boolean): string {
   return isActive ? "bg-zinc-950/70" : "bg-zinc-950/55 group-hover:bg-zinc-950/70";
 }
 
-function getTrackStroke(isRecruiterPreview: boolean): string {
-  return isRecruiterPreview ? RECRUITER_IDLE_TRACK_STROKE : IDLE_TRACK_STROKE;
-}
-
-function getProgressStroke(isRecruiterPreview: boolean, isActive: boolean): string {
-  if (isRecruiterPreview) {
-    return isActive ? "#000000" : RECRUITER_IDLE_PROGRESS_STROKE;
-  }
-  return IDLE_PROGRESS_STROKE;
-}
-
-function getProgressRingOpacity(isRecruiterPreview: boolean, isActive: boolean): number {
-  if (isRecruiterPreview) {
-    return isActive ? 1 : RECRUITER_IDLE_PROGRESS_RING_OPACITY;
-  }
+function getProgressRingOpacity(isActive: boolean): number {
   return isActive ? 1 : IDLE_PROGRESS_RING_OPACITY;
 }
 
-function getTitleClass(isRecruiterPreview: boolean): string {
-  return isRecruiterPreview ? "text-black" : "text-white";
-}
-
-function getDescriptionClass(isRecruiterPreview: boolean): string {
-  return isRecruiterPreview ? "text-black" : "text-zinc-400 sm:text-sm";
-}
-
-function getFocusOutlineClass(isRecruiterPreview: boolean): string {
-  return isRecruiterPreview
-    ? "focus-visible:ring-black"
-    : "focus-visible:ring-zinc-100/70";
+// 担当者プレビュー中は両ボタンとも暗色ゲージ（白背景で空ゲージが見えるようにする）。
+function getGaugeStrokes(isRecruiterPreview: boolean, isActive: boolean): {
+  track: string;
+  progress: string;
+} {
+  if (!isRecruiterPreview) {
+    return { track: IDLE_TRACK_STROKE, progress: IDLE_PROGRESS_STROKE };
+  }
+  return {
+    track: RECRUITER_TRACK_STROKE,
+    progress: isActive ? RECRUITER_PROGRESS_STROKE : RECRUITER_IDLE_PROGRESS_STROKE,
+  };
 }
 
 // ゲージ完了後に表示するビューモード選択 UI。
@@ -195,7 +181,6 @@ export default function HeroViewModePicker({
     ? ""
     : "transition-opacity ease-in-out";
 
-  const isRecruiterPreview = previewMode === "recruiter";
   const colorTransitionClass = prefersReducedMotion
     ? ""
     : "transition-[background-color,color,stroke,opacity] ease-in-out";
@@ -207,8 +192,13 @@ export default function HeroViewModePicker({
       }`}
       style={prefersReducedMotion ? undefined : { transitionDuration: `${SELECT_EXIT_MS}ms` }}
     >
+      <HeroViewModeAmbientWords
+        previewMode={previewMode}
+        isEntered={isEntered}
+        prefersReducedMotion={prefersReducedMotion}
+      />
       <p
-        className={`max-w-xl text-center text-base font-semibold tracking-[0.16em] uppercase sm:text-lg md:text-xl ${promptColorTransitionClass} ${getPromptStyleClass(previewMode)} ${enterTransitionClass} ${
+        className={`relative z-10 max-w-xl text-center text-base font-semibold tracking-[0.16em] uppercase sm:text-lg md:text-xl ${promptColorTransitionClass} ${getPromptStyleClass(previewMode)} ${enterTransitionClass} ${
           isEntered ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0"
         }`}
         style={{
@@ -218,17 +208,23 @@ export default function HeroViewModePicker({
       >
         表示モードを選択してください
       </p>
-      <div className="flex flex-row flex-wrap items-center justify-center gap-12 sm:gap-16 md:gap-20">
-        {OPTIONS.map((option, index) => {
+      <div className="relative z-10 flex flex-row flex-wrap items-center justify-center gap-12 sm:gap-16 md:gap-20">
+        {OPTIONS.map((option) => {
           const isActive = previewMode === option.mode;
           const isConfirming = confirmingMode === option.mode;
           const isGaugeReady = gaugeReadyMode === option.mode;
           const canConfirm = isGaugeReady && confirmingMode === null;
-          const enterDelayMs = prefersReducedMotion ? 0 : 180 + index * 120;
           const ringTransitionStyle = prefersReducedMotion
             ? undefined
             : { transitionDuration: `${PREVIEW_FADE_MS}ms` };
+          // ゲージ色だけ早めに切り替えて、背景クロスフェード途中でも空リングを見せる。
+          const gaugeColorTransitionStyle = prefersReducedMotion
+            ? undefined
+            : { transitionDuration: `${GAUGE_COLOR_MS}ms` };
           const burstTone = option.mode === "recruiter" ? "dark" : "light";
+          // ホバー解除と同時に元色へ戻す（display ホールドしない）。
+          const isRecruiterPreview = previewMode === "recruiter";
+          const gaugeStrokes = getGaugeStrokes(isRecruiterPreview, isActive);
 
           return (
             <div
@@ -265,11 +261,12 @@ export default function HeroViewModePicker({
                   if (!confirmingMode) onPreviewChange(null);
                 }}
                 onClick={() => handleSelect(option.mode)}
-                className={`group relative flex h-full w-full items-center justify-center overflow-hidden rounded-full [clip-path:circle(50%_at_50%_50%)] focus-visible:ring-2 focus-visible:ring-offset-4 focus-visible:outline-none disabled:cursor-default ${getFocusOutlineClass(isRecruiterPreview)} ${enterTransitionClass} ${
+                className={`group relative flex h-full w-full items-center justify-center overflow-hidden rounded-full [clip-path:circle(50%_at_50%_50%)] focus-visible:ring-2 focus-visible:ring-offset-4 focus-visible:outline-none disabled:cursor-default focus-visible:ring-zinc-100/70 ${enterTransitionClass} ${
                   isEntered ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0"
                 } ${isEntered && isActive ? "scale-[1.02]" : isEntered ? "scale-100 hover:scale-[1.02]" : "scale-95"}`}
                 style={{
-                  transitionDelay: prefersReducedMotion || confirmingMode ? undefined : `${enterDelayMs}ms`,
+                  // 左右のボタンは同じタイミングで入場させる。
+                  transitionDelay: prefersReducedMotion || confirmingMode ? undefined : "180ms",
                 }}
               >
                 <svg
@@ -284,7 +281,7 @@ export default function HeroViewModePicker({
                     fill="none"
                     strokeWidth="6"
                     className={colorTransitionClass}
-                    style={{ ...ringTransitionStyle, stroke: getTrackStroke(isRecruiterPreview) }}
+                    style={{ ...gaugeColorTransitionStyle, stroke: gaugeStrokes.track }}
                   />
                   <circle
                     cx="100"
@@ -297,28 +294,32 @@ export default function HeroViewModePicker({
                     strokeDashoffset={isActive ? 0 : CIRCUMFERENCE}
                     className={`transition-[stroke-dashoffset,opacity,stroke] ease-in-out ${prefersReducedMotion ? "duration-0" : ""}`}
                     style={{
-                      ...ringTransitionStyle,
-                      stroke: getProgressStroke(isRecruiterPreview, isActive),
-                      opacity: getProgressRingOpacity(isRecruiterPreview, isActive),
+                      // 充填はゲージ時間、色は早めに切り替えて視認性を確保する。
+                      transitionDuration: prefersReducedMotion
+                        ? undefined
+                        : `${PREVIEW_FADE_MS}ms, ${PREVIEW_FADE_MS}ms, ${GAUGE_COLOR_MS}ms`,
+                      transitionProperty: "stroke-dashoffset, opacity, stroke",
+                      stroke: gaugeStrokes.progress,
+                      opacity: getProgressRingOpacity(isActive),
                     }}
                   />
                 </svg>
                 <span
                   aria-hidden
-                  className={`pointer-events-none absolute inset-[10%] rounded-full ${colorTransitionClass} ${getButtonInnerClass(isRecruiterPreview, isActive)} ${
-                    isRecruiterPreview || !isActive ? "" : "shadow-[0_0_32px_rgba(244,244,245,0.08)]"
+                  className={`pointer-events-none absolute inset-[10%] rounded-full ${colorTransitionClass} ${getButtonInnerClass(isActive)} ${
+                    isActive ? "shadow-[0_0_32px_rgba(244,244,245,0.08)]" : ""
                   }`}
                   style={ringTransitionStyle}
                 />
                 <span className="relative z-10 flex max-w-[72%] flex-col items-center gap-2 text-center sm:gap-2.5">
                   <span
-                    className={`text-base font-semibold tracking-wide sm:text-lg ${colorTransitionClass} ${getTitleClass(isRecruiterPreview)}`}
+                    className={`text-base font-semibold tracking-wide text-white sm:text-lg ${colorTransitionClass}`}
                     style={ringTransitionStyle}
                   >
                     {option.title}
                   </span>
                   <span
-                    className={`text-xs leading-snug ${colorTransitionClass} ${getDescriptionClass(isRecruiterPreview)}`}
+                    className={`text-xs leading-snug text-zinc-400 sm:text-sm ${colorTransitionClass}`}
                     style={ringTransitionStyle}
                   >
                     {option.description}
