@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 // 背景クロスフェード描画の入力パラメータ。
@@ -8,6 +11,15 @@ interface PageBackgroundProps {
 
 // セクション状態に追従して背景画像をクロスフェード表示する。
 export default function PageBackground({ activeImage, shouldReduceMotion }: PageBackgroundProps) {
+  // ヒーロー個人プレビューから続く初回だけ、同じ画像を透明から載せない。
+  const isFirstImageRef = useRef(true);
+
+  useEffect(() => {
+    isFirstImageRef.current = false;
+  }, []);
+
+  const initialOpacity = isFirstImageRef.current ? 1 : 0;
+
   return (
     <motion.div aria-hidden className="pointer-events-none fixed inset-0 z-0">
       <AnimatePresence mode="sync">
@@ -19,7 +31,7 @@ export default function PageBackground({ activeImage, shouldReduceMotion }: Page
           className="absolute inset-0 h-full w-full scale-101 object-cover blur-[3px]"
           loading="eager"
           decoding="async"
-          initial={{ opacity: 0 }}
+          initial={{ opacity: initialOpacity }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={shouldReduceMotion ? { duration: 0 } : { duration: 1.4, ease: "easeInOut" }}
