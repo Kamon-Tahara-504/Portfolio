@@ -2,80 +2,101 @@
 
 import { useEffect, useState } from "react";
 
-const MAX_ZOOM_COMPENSATION = 4;
-const BASELINE_DPR_STORAGE_KEY = "portfolio-baseline-device-pixel-ratio";
+// 表示倍率の許容範囲外でロックする。
+const LOCK_MIN_RATIO = 0.5; // 50% 以下
+const LOCK_MAX_RATIO = 1.3; // 130% より大きい
+// ブラウザの一般的なズーム段階。測定ノイズで +1% になるのを防ぐ。
+const BROWSER_ZOOM_STEPS = [
+  25, 33, 50, 67, 75, 80, 90, 100, 110, 125, 150, 175, 200, 250, 300, 400, 500,
+];
 
-function getBaselineDevicePixelRatio(): number {
-  const currentDevicePixelRatio = window.devicePixelRatio;
-  // macOS のRetina環境では100%時のDPRが通常2。縮小状態で初めて開いても基準を失わない。
-  const platformBaseline = navigator.platform.includes("Mac") ? 2 : 1;
+export type BrowserZoomLockReason = "too-large" | "too-small" | null;
 
-  try {
-    const storedValue = Number(window.localStorage.getItem(BASELINE_DPR_STORAGE_KEY));
-    const validStoredValue =
-      Number.isFinite(storedValue) && storedValue > 0 ? storedValue : 0;
-    const baselineDevicePixelRatio = Math.max(
-      platformBaseline,
-      currentDevicePixelRatio,
-      validStoredValue
-    );
-
-    // 再読み込み後も、最初に記録した100%時の倍率を基準として使う。
-    window.localStorage.setItem(
-      BASELINE_DPR_STORAGE_KEY,
-      String(baselineDevicePixelRatio)
-    );
-    return baselineDevicePixelRatio;
-  } catch {
-    // ストレージを利用できない環境では、現在値をこの表示中だけの基準にする。
-  }
-
-  return Math.max(platformBaseline, currentDevicePixelRatio);
+export interface BrowserZoomLockState {
+  isLocked: boolean;
+  reason: BrowserZoomLockReason;
+  /** 推定表示倍率（100 = 100%） */
+  zoomPercent: number;
 }
 
-// 初回表示時の DPR を100%時の基準として、ズームアウト分だけ逆倍率を返す。
-export function useBrowserZoomCompensation(): number {
-  const [compensation, setCompensation] = useState(1);
+function getPlatformNativeDpr(): number {
+  // Retina Mac はブラウザ 100% 時に DPR 2 が一般的。
+  return navigator.platform.includes("Mac") ? 2 : 1;
+}
+
+/**
+ * ブラウザの表示倍率を推定する。
+ * outer/inner は OS の表示スケールと分離でき、ブラウザズーム自体を拾いやすい。
+ * 使えない環境だけ DPR 比へフォールバックする。
+ */
+function getBrowserZoomRatio(): number {
+  const outerWidth = window.outerWidth;
+  const innerWidth = window.innerWidth;
+
+  if (outerWidth > 0 && innerWidth > 0) {
+    const ratio = outerWidth / innerWidth;
+    // DevTools 等で極端な値になる場合は捨てる。
+    if (Number.isFinite(ratio) && ratio >= 0.35 && ratio <= 4) {
+      return ratio;
+    }
+  }
+
+  const currentDpr = window.devicePixelRatio;
+  const nativeDpr = getPlatformNativeDpr();
+  if (currentDpr > 0 && nativeDpr > 0) {
+    return currentDpr / nativeDpr;
+  }
+
+  return 1;
+}
+
+function toZoomPercent(ratio: number): number {
+  const rawPercent = ratio * 100;
+  return BROWSER_ZOOM_STEPS.reduce((best, step) =>
+    Math.abs(step - rawPercent) < Math.abs(best - rawPercent) ? step : best
+  );
+}
+
+function readZoomLockState(): BrowserZoomLockState {
+  const ratio = getBrowserZoomRatio();
+  const zoomPercent = toZoomPercent(ratio);
+
+  if (ratio > LOCK_MAX_RATIO) {
+    return { isLocked: true, reason: "too-large", zoomPercent };
+  }
+  if (ratio <= LOCK_MIN_RATIO) {
+    return { isLocked: true, reason: "too-small", zoomPercent };
+  }
+  return { isLocked: false, reason: null, zoomPercent };
+}
+
+/** 表示倍率が 50% 以下 / 130% より大きいとき閲覧ロックする。 */
+export function useBrowserZoomLock(): BrowserZoomLockState {
+  const [state, setState] = useState<BrowserZoomLockState>({
+    isLocked: false,
+    reason: null,
+    zoomPercent: 100,
+  });
 
   useEffect(() => {
-    const baselineDevicePixelRatio = getBaselineDevicePixelRatio();
-
-    const syncCompensation = () => {
-      const currentDevicePixelRatio = window.devicePixelRatio;
-      if (currentDevicePixelRatio <= 0) return;
-
-      // DiaなどDPRが変わらないブラウザ向けに、ズームで広がるCSS表示幅からも倍率を推定する。
-      const screenWidth = window.screen.availWidth;
-      const viewportWidth = document.documentElement.clientWidth;
-      const viewportCompensation =
-        screenWidth > 0 ? Math.max(1, viewportWidth / screenWidth) : 1;
-      const devicePixelRatioCompensation =
-        baselineDevicePixelRatio / currentDevicePixelRatio;
-      const nextCompensation = Math.min(
-        MAX_ZOOM_COMPENSATION,
-        Math.max(
-          1,
-          devicePixelRatioCompensation,
-          viewportCompensation
-        )
-      );
-
-      // 小数誤差による不要な再描画を避ける。
-      setCompensation(Math.round(nextCompensation * 100) / 100);
+    const sync = () => {
+      setState(readZoomLockState());
     };
 
-    syncCompensation();
-    const documentResizeObserver = new ResizeObserver(syncCompensation);
-    documentResizeObserver.observe(document.documentElement);
-    window.addEventListener("resize", syncCompensation);
-    window.visualViewport?.addEventListener("resize", syncCompensation);
+    sync();
+    window.addEventListener("resize", sync);
+    window.visualViewport?.addEventListener("resize", sync);
 
     return () => {
-      documentResizeObserver.disconnect();
-      window.removeEventListener("resize", syncCompensation);
-      window.visualViewport?.removeEventListener("resize", syncCompensation);
+      window.removeEventListener("resize", sync);
+      window.visualViewport?.removeEventListener("resize", sync);
     };
   }, []);
 
-  return compensation;
+  return state;
+}
+
+/** 既存呼び出し互換。自動拡大縮小は行わない。 */
+export function useBrowserZoomCompensation(): number {
+  return 1;
 }

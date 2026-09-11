@@ -49,7 +49,7 @@ export default function FixedExperienceLabel() {
   return (
     <p
       aria-label={`エンジニア歴 ${label}`}
-      className={`pointer-events-none fixed top-1/2 right-1 z-20 -translate-y-1/2 text-[10px] tracking-[0.24em] tabular-nums [writing-mode:vertical-rl] [text-orientation:mixed] sm:right-2 sm:text-[11px] md:right-3 md:text-xs ${fixedLabel(viewMode)}`}
+      className={`pointer-events-none fixed top-1/2 right-1 z-20 hidden -translate-y-1/2 text-[10px] tracking-[0.24em] tabular-nums [writing-mode:vertical-rl] [text-orientation:mixed] md:block md:right-3 md:text-xs ${fixedLabel(viewMode)}`}
       style={{ zoom: zoomCompensation }}
     >
       {label}

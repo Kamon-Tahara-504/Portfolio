@@ -95,34 +95,34 @@ export default function ProfileSection({ about, profileChips }: ProfileSectionPr
         <div className="flex flex-col gap-4 lg:gap-5">
           <div className="space-y-1">
             {currentAffiliation ? (
-              <p className={`mb-2 max-w-full text-[clamp(0.5625rem,2.15vw,0.875rem)] font-medium leading-tight tracking-wide max-md:overflow-x-auto max-md:whitespace-nowrap sm:text-xs md:overflow-visible md:whitespace-normal lg:text-sm ${mutedText(viewMode)}`}>
+              <p className={`mb-1.5 max-w-full text-[clamp(0.5625rem,2vw,0.8125rem)] font-medium leading-tight tracking-wide max-md:overflow-x-auto max-md:whitespace-nowrap sm:text-xs md:overflow-visible md:whitespace-normal lg:text-sm ${mutedText(viewMode)}`}>
                 {currentAffiliation.name}
                 {currentAffiliation.stage ? ` / ${currentAffiliation.stage}` : ""}
               </p>
             ) : null}
             <div className="flex flex-wrap items-end gap-x-2 gap-y-1 sm:gap-3">
-              <p className={`min-w-0 text-[clamp(1.55rem,5.8vw,3.3rem)] leading-none font-bold tracking-tight ${viewClass(viewMode, { personal: "text-white", recruiter: "text-foreground" })}`}>
+              <p className={`min-w-0 text-[clamp(1.35rem,4.6vw,2.6rem)] leading-none font-bold tracking-tight ${viewClass(viewMode, { personal: "text-white", recruiter: "text-foreground" })}`}>
                 {about.name}
               </p>
               {currentAge !== null ? (
-                <p className={`shrink-0 pb-0.5 text-xs font-semibold sm:pb-1 sm:text-sm md:text-base ${mutedText(viewMode)}`}>
+                <p className={`shrink-0 pb-0.5 text-xs font-semibold sm:pb-1 sm:text-sm ${mutedText(viewMode)}`}>
                   {currentAge}歳
                 </p>
               ) : null}
             </div>
-            <p className={`mb-2 text-sm font-semibold sm:text-base lg:mb-3 lg:text-lg xl:text-2xl ${viewClass(viewMode, { personal: "text-zinc-200/90", recruiter: "text-foreground-muted" })}`}>
+            <p className={`mb-1.5 text-sm font-semibold sm:text-base lg:mb-2 lg:text-lg ${viewClass(viewMode, { personal: "text-zinc-200/90", recruiter: "text-foreground-muted" })}`}>
               {about.nameEn}
             </p>
           </div>
 
           {profileChips.filter(Boolean).length > 0 ? (
-            <p className={`text-sm leading-relaxed lg:text-base ${viewClass(viewMode, { personal: "text-zinc-200", recruiter: "text-foreground" })}`}>
+            <p className={`text-sm leading-relaxed ${viewClass(viewMode, { personal: "text-zinc-200", recruiter: "text-foreground" })}`}>
               {profileChips.filter(Boolean).join(" / ")}
             </p>
           ) : null}
 
           {about.about.introduction ? (
-            <p className={`text-xs font-semibold leading-[1.75] text-pretty whitespace-pre-line sm:text-sm lg:leading-relaxed lg:text-base ${viewClass(viewMode, { personal: "text-zinc-200", recruiter: "text-foreground" })}`}>
+            <p className={`text-xs font-semibold leading-[1.7] text-pretty whitespace-pre-line sm:text-sm lg:leading-relaxed ${viewClass(viewMode, { personal: "text-zinc-200", recruiter: "text-foreground" })}`}>
               {about.about.introduction}
             </p>
           ) : null}

@@ -14,6 +14,7 @@ interface SectionShellProps {
 }
 
 // 見出し・アニメーション・幅制御を共通化したセクションラッパー。
+// 横は max-w-6xl 中央、縦は min-h-screen 内で中央寄せ（長い内容はセクションが伸びる）。
 export default function SectionShell({
   section,
   shouldReduceMotion,
@@ -21,8 +22,9 @@ export default function SectionShell({
   children,
 }: SectionShellProps) {
   const { viewMode, zoomCompensation } = usePortfolioView();
+  // 固定ナビとの干渉を避けつつ、余白が余るときは縦中央に見えるようにする。
   const verticalSpacingClass =
-    section.id === "works" ? "pt-16 pb-10 lg:pt-20 lg:pb-14" : "pt-24 pb-16 lg:pt-28 lg:pb-20";
+    section.id === "works" ? "py-14 lg:py-16" : "py-16 lg:py-20";
 
   const articleTextClass = viewClass(viewMode, {
     personal: "text-zinc-100",
@@ -37,10 +39,10 @@ export default function SectionShell({
   return (
     <section
       id={section.id}
-      className={`snap-start snap-always min-h-screen min-w-0 px-4 sm:px-6 lg:px-10 ${verticalSpacingClass}`}
+      className={`flex min-h-screen min-w-0 snap-start snap-always flex-col justify-center px-4 sm:px-6 md:px-12 lg:px-14 ${verticalSpacingClass}`}
     >
       <div
-        className="mx-auto flex w-full min-w-0 max-w-7xl items-start"
+        className="mx-auto flex w-full min-w-0 max-w-6xl justify-center"
         style={{ zoom: zoomCompensation }}
       >
         <motion.article
@@ -48,20 +50,20 @@ export default function SectionShell({
           whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
           viewport={{ amount: 0.15, once: false }}
           transition={{ duration: 0.7, ease: "easeOut" }}
-          className={`w-full min-w-0 space-y-5 sm:space-y-6 ${articleTextClass}`}
+          className={`w-full min-w-0 space-y-4 sm:space-y-5 ${articleTextClass}`}
         >
           <p className={`text-[10px] tracking-[0.2em] uppercase sm:text-xs sm:tracking-[0.24em] ${labelClass}`}>
             {section.label}
           </p>
           {titleAside ? (
-            <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-3">
-              <h1 className="max-w-[min(100%,42rem)] text-[clamp(2rem,5.2vw,3.8rem)] leading-[1.08] font-semibold tracking-tight">
+            <div className="flex items-center justify-between gap-x-3 gap-y-2">
+              <h1 className="min-w-0 text-[clamp(1.75rem,4.2vw,3rem)] leading-[1.08] font-semibold tracking-tight">
                 {section.title}
               </h1>
               {titleAside}
             </div>
           ) : (
-            <h1 className="max-w-5xl text-[clamp(2rem,5.2vw,3.8rem)] leading-[1.08] font-semibold tracking-tight">
+            <h1 className="text-[clamp(1.75rem,4.2vw,3rem)] leading-[1.08] font-semibold tracking-tight">
               {section.title}
             </h1>
           )}
