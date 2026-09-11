@@ -5,7 +5,7 @@ import { resolveAssetPath } from "@/lib/collectLocalAssetUrls";
 import type { PortfolioViewMode } from "@/types/portfolioView";
 
 const basePath = process.env.NODE_ENV === "production" ? "/Portfolio" : "";
-const previewImage = resolveAssetPath("/images/profile/Top1.jpg", basePath);
+const previewImage = resolveAssetPath("/images/section/Hero.png", basePath);
 
 // 本編 PageBackground のオーバーレイに合わせる。
 const PERSONAL_OVERLAY_OPACITY = 0.42;
@@ -57,7 +57,7 @@ export default function HeroViewModePreview({ previewMode }: HeroViewModePreview
         <img
           src={previewImage}
           alt=""
-          className="absolute inset-0 h-full w-full scale-101 object-cover blur-[3px]"
+          className="absolute inset-0 h-full w-full object-cover"
         />
         <div
           className="absolute inset-0 bg-black"

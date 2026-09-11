@@ -5,19 +5,27 @@ import type { PortfolioViewMode } from "@/types/portfolioView";
 
 interface PortfolioViewContextValue {
   viewMode: PortfolioViewMode;
+  zoomCompensation: number;
 }
 
 const PortfolioViewContext = createContext<PortfolioViewContextValue | null>(null);
 
 interface PortfolioViewProviderProps {
   viewMode: PortfolioViewMode;
+  zoomCompensation?: number;
   children: ReactNode;
 }
 
 // 本編セクション向けに選択済みビューモードを配布する。
-export function PortfolioViewProvider({ viewMode, children }: PortfolioViewProviderProps) {
+export function PortfolioViewProvider({
+  viewMode,
+  zoomCompensation = 1,
+  children,
+}: PortfolioViewProviderProps) {
   return (
-    <PortfolioViewContext.Provider value={{ viewMode }}>{children}</PortfolioViewContext.Provider>
+    <PortfolioViewContext.Provider value={{ viewMode, zoomCompensation }}>
+      {children}
+    </PortfolioViewContext.Provider>
   );
 }
 

@@ -12,8 +12,9 @@ export function collectCriticalImageUrls(basePath: string): string[] {
   const { about } = aboutData as AboutData;
   return [
     resolveAssetPath(about.image, basePath),
-    resolveAssetPath("/images/profile/Top1.jpg", basePath),
-    resolveAssetPath("/images/profile/Top2.jpg", basePath),
+    resolveAssetPath("/images/section/Hero.png", basePath),
+    resolveAssetPath("/images/section/Top1.png", basePath),
+    resolveAssetPath("/images/section/Top2.png", basePath),
   ];
 }
 
@@ -25,10 +26,9 @@ export function collectLocalAssetUrls(basePath: string): {
   const projects = projectsData as Project[];
   const criticalImageUrls = collectCriticalImageUrls(basePath);
   const warmupSet = new Set<string>([
-    resolveAssetPath("/images/profile/Top3.jpg", basePath),
-    resolveAssetPath("/images/profile/Top4.jpg", basePath),
-    resolveAssetPath("/images/profile/Top5.jpg", basePath),
-    resolveAssetPath("/images/profile/Top6.jpg", basePath),
+    resolveAssetPath("/images/section/Top3.png", basePath),
+    resolveAssetPath("/images/section/Top4.png", basePath),
+    resolveAssetPath("/images/section/Top5.png", basePath),
     resolveAssetPath("/images/projects/appstore.png", basePath),
   ]);
 

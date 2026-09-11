@@ -15,6 +15,7 @@ import { SECTION_META, SectionId } from "@/components/page/SectionMeta";
 import { getSectionContent } from "@/components/page/SectionContent";
 import { resolveAssetPath } from "@/lib/collectLocalAssetUrls";
 import { fixedLabel } from "@/lib/portfolioViewStyles";
+import { useBrowserZoomCompensation } from "@/lib/useBrowserZoomCompensation";
 import { Development } from "@/types/development";
 import { Project } from "@/types/project";
 import type { PortfolioViewMode } from "@/types/portfolioView";
@@ -29,15 +30,17 @@ export default function PortfolioPage() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [activeSectionId, setActiveSectionId] = useState<SectionId>(SECTION_META[0].id);
   const shouldReduceMotion = useReducedMotion();
+  const zoomCompensation = useBrowserZoomCompensation();
 
+  // public/images/section の実ファイルに対応（Top6 は無いので stack は Top5 を再利用）
   const sectionImageMap = useMemo<Record<SectionId, string>>(
     () => ({
-      profile: resolveAssetPath("/images/profile/Top1.jpg", basePath),
-      vision: resolveAssetPath("/images/profile/Top2.jpg", basePath),
-      career: resolveAssetPath("/images/profile/Top3.jpg", basePath),
-      skills: resolveAssetPath("/images/profile/Top4.jpg", basePath),
-      works: resolveAssetPath("/images/profile/Top5.jpg", basePath),
-      stack: resolveAssetPath("/images/profile/Top6.jpg", basePath),
+      profile: resolveAssetPath("/images/section/Top1.png", basePath),
+      vision: resolveAssetPath("/images/section/Top2.png", basePath),
+      career: resolveAssetPath("/images/section/Top3.png", basePath),
+      skills: resolveAssetPath("/images/section/Top4.png", basePath),
+      works: resolveAssetPath("/images/section/Top5.png", basePath),
+      stack: resolveAssetPath("/images/section/Top5.png", basePath),
     }),
     []
   );
@@ -111,7 +114,7 @@ export default function PortfolioPage() {
   }
 
   return (
-    <PortfolioViewProvider viewMode={viewMode}>
+    <PortfolioViewProvider viewMode={viewMode} zoomCompensation={zoomCompensation}>
       <div
         data-portfolio-view={viewMode}
         className={`relative h-screen max-w-full min-h-0 min-w-0 snap-y snap-mandatory overflow-x-clip overflow-y-auto overscroll-y-contain text-foreground ${viewMode === "recruiter" ? "bg-background" : ""}`}
@@ -147,18 +150,21 @@ export default function PortfolioPage() {
         <p
           aria-label="2026 4/15 Renewal"
           className={`pointer-events-none fixed top-1/2 right-1 z-20 -translate-y-1/2 text-[10px] tracking-[0.24em] [writing-mode:vertical-rl] [text-orientation:mixed] sm:right-2 sm:text-[11px] md:right-3 md:text-xs ${fixedLabel(viewMode)}`}
+          style={{ zoom: zoomCompensation }}
         >
           2026 4/15 RENEWAL
         </p>
         <p
           aria-label="Web Developer and Mobile Developer"
           className={`pointer-events-none fixed top-1/2 left-1 z-20 -translate-y-1/2 rotate-180 text-[10px] tracking-[0.24em] [writing-mode:vertical-lr] [text-orientation:mixed] sm:left-2 sm:text-[11px] md:left-3 md:text-xs ${fixedLabel(viewMode)}`}
+          style={{ zoom: zoomCompensation }}
         >
           WEB DEVELOPER & MOBILE DEVELOPER
         </p>
 
         <footer
           className={`fixed right-4 bottom-4 z-20 text-[10px] tracking-[0.22em] uppercase md:bottom-5 md:right-6 md:text-[11px] ${fixedLabel(viewMode)}`}
+          style={{ zoom: zoomCompensation }}
         >
           <p className="text-right opacity-85">Copyright</p>
           <p className="mt-1 max-w-sm text-right leading-relaxed normal-case tracking-[0.14em] opacity-70">

@@ -13,7 +13,7 @@ interface PageHeaderNavProps {
 
 // 固定ヘッダーとセクションアンカーリンクを表示する。
 export default function PageHeaderNav({ title, sections, activeSectionId }: PageHeaderNavProps) {
-  const { viewMode } = usePortfolioView();
+  const { viewMode, zoomCompensation } = usePortfolioView();
 
   const handleSectionMove = (sectionId: string) => {
     const target = document.getElementById(sectionId);
@@ -24,6 +24,7 @@ export default function PageHeaderNav({ title, sections, activeSectionId }: Page
   return (
     <header
       className={`fixed top-0 left-0 z-20 flex w-full items-center max-md:justify-end md:justify-between px-4 py-4 text-[10px] tracking-[0.18em] uppercase sm:px-6 sm:text-[11px] sm:tracking-[0.22em] lg:px-10 lg:py-5 ${navText(viewMode)}`}
+      style={{ zoom: zoomCompensation }}
     >
       <span className="truncate text-[10px] max-md:pr-0 sm:text-xs md:pr-4">{title}</span>
       <nav className="hidden gap-3 md:flex lg:gap-5">
