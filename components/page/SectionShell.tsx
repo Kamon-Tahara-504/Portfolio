@@ -20,7 +20,7 @@ export default function SectionShell({
   titleAside,
   children,
 }: SectionShellProps) {
-  const { viewMode } = usePortfolioView();
+  const { viewMode, zoomCompensation } = usePortfolioView();
   const verticalSpacingClass =
     section.id === "works" ? "pt-16 pb-10 lg:pt-20 lg:pb-14" : "pt-24 pb-16 lg:pt-28 lg:pb-20";
 
@@ -39,7 +39,10 @@ export default function SectionShell({
       id={section.id}
       className={`snap-start snap-always min-h-screen min-w-0 px-4 sm:px-6 lg:px-10 ${verticalSpacingClass}`}
     >
-      <div className="mx-auto flex w-full min-w-0 max-w-7xl items-start">
+      <div
+        className="mx-auto flex w-full min-w-0 max-w-7xl items-start"
+        style={{ zoom: zoomCompensation }}
+      >
         <motion.article
           initial={shouldReduceMotion ? false : { opacity: 0, y: 28 }}
           whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}

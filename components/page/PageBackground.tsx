@@ -27,8 +27,8 @@ export default function PageBackground({ activeImage, shouldReduceMotion }: Page
           key={activeImage}
           src={activeImage}
           alt=""
-          // 画像自体に軽いぼかしを載せ、scaleでぼかし端の白縁を画面外へ逃がす。
-          className="absolute inset-0 h-full w-full scale-101 object-cover blur-[3px]"
+          // セクション切替時にクロスフェードする背景画像。
+          className="absolute inset-0 h-full w-full object-cover"
           loading="eager"
           decoding="async"
           initial={{ opacity: initialOpacity }}
@@ -37,17 +37,8 @@ export default function PageBackground({ activeImage, shouldReduceMotion }: Page
           transition={shouldReduceMotion ? { duration: 0 } : { duration: 1.4, ease: "easeInOut" }}
         />
       </AnimatePresence>
-      {/* 画像のぼかしは固定にし、明暗だけを緩やかに往復させる */}
-      <motion.div
-        className="absolute inset-0 bg-black"
-        initial={{ opacity: 0.42 }}
-        animate={shouldReduceMotion ? { opacity: 0.42 } : { opacity: [0.48, 0.34, 0.44, 0.36, 0.46] }}
-        transition={
-          shouldReduceMotion
-            ? { duration: 0 }
-            : { duration: 8, ease: "easeInOut", repeat: Infinity, repeatType: "mirror" }
-        }
-      />
+      {/* 背景画像の上に一定の暗幕を載せ、本文の可読性を保つ */}
+      <div className="absolute inset-0 bg-black/42" />
     </motion.div>
   );
 }

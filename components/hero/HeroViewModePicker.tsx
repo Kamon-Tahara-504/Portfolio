@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import HeroRadialBurst, { RADIAL_BURST_HOLD_MS } from "@/components/hero/HeroRadialBurst";
-import HeroViewModeAmbientWords from "@/components/hero/HeroViewModeAmbientWords";
+import HeroViewModeAmbientLines from "@/components/hero/HeroViewModeAmbientLines";
 import { PREVIEW_FADE_MS } from "@/components/hero/HeroViewModePreview";
 import type { PortfolioViewMode } from "@/types/portfolioView";
 
@@ -192,7 +192,7 @@ export default function HeroViewModePicker({
       }`}
       style={prefersReducedMotion ? undefined : { transitionDuration: `${SELECT_EXIT_MS}ms` }}
     >
-      <HeroViewModeAmbientWords
+      <HeroViewModeAmbientLines
         previewMode={previewMode}
         isEntered={isEntered}
         prefersReducedMotion={prefersReducedMotion}
