@@ -9,6 +9,7 @@ import HeroSection from "@/components/hero/HeroSection";
 import ProjectModal from "@/components/projects/ProjectModal";
 import PageBackground from "@/components/page/PageBackground";
 import PageHeaderNav from "@/components/page/PageHeaderNav";
+import FixedExperienceLabel from "@/components/page/FixedExperienceLabel";
 import { PortfolioViewProvider } from "@/components/page/PortfolioViewContext";
 import SectionShell from "@/components/page/SectionShell";
 import { SECTION_META, SectionId } from "@/components/page/SectionMeta";
@@ -147,13 +148,7 @@ export default function PortfolioPage() {
           <ProjectModal project={selectedProject} onClose={() => setSelectedProject(null)} />
         ) : null}
 
-        <p
-          aria-label="2026 4/15 Renewal"
-          className={`pointer-events-none fixed top-1/2 right-1 z-20 -translate-y-1/2 text-[10px] tracking-[0.24em] [writing-mode:vertical-rl] [text-orientation:mixed] sm:right-2 sm:text-[11px] md:right-3 md:text-xs ${fixedLabel(viewMode)}`}
-          style={{ zoom: zoomCompensation }}
-        >
-          2026 4/15 RENEWAL
-        </p>
+        <FixedExperienceLabel />
         <p
           aria-label="Web Developer and Mobile Developer"
           className={`pointer-events-none fixed top-1/2 left-1 z-20 -translate-y-1/2 rotate-180 text-[10px] tracking-[0.24em] [writing-mode:vertical-lr] [text-orientation:mixed] sm:left-2 sm:text-[11px] md:left-3 md:text-xs ${fixedLabel(viewMode)}`}
