@@ -8,7 +8,6 @@ import { useTimelineAutoScroll } from "@/hooks/useTimelineAutoScroll";
 import TimelineHeader from "./TimelineHeader";
 import TimelineRuler from "./TimelineRuler";
 import TimelineSkillBar from "./TimelineSkillBar";
-import EngineerExperienceCard from "./EngineerExperienceCard";
 
 // タイムライン表示に必要な入力。
 interface SkillsTimelineProps {
@@ -56,9 +55,6 @@ export default function SkillsTimeline({ skills, contentVisible = true }: Skills
           className="transition-opacity duration-300"
           style={{ opacity: contentVisible ? 1 : 0, pointerEvents: contentVisible ? "auto" : "none" }}
         >
-          <div className="absolute right-4 top-4 z-10 md:right-6 md:top-6">
-            <EngineerExperienceCard />
-          </div>
           <TimelineHeader onPlay={handlePlay} isPlaying={isPlaying} />
           <div
             ref={scrollContainerRef}

@@ -1,27 +1,18 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import SkillsGridPanel from "@/components/skills/SkillsGridPanel";
-import SkillsModeToggle from "@/components/skills/SkillsModeToggle";
 import SkillsTimelinePanel from "@/components/skills/SkillsTimelinePanel";
-import { Skill, Skills } from "@/types/profile";
+import { useSkillsView } from "@/components/skills/SkillsViewContext";
 import { usePortfolioView } from "@/components/page/PortfolioViewContext";
 import { bodyText } from "@/lib/portfolioViewStyles";
+import { Skill, Skills } from "@/types/profile";
 import {
-  CARD_MOTION_DURATION,
-  SkillsPhase,
-  TIMELINE_CONTENT_HIDE_DELAY_MS,
-  TIMELINE_CONTENT_SHOW_DELAY_MS,
   TIMELINE_ENTER_DURATION,
   TIMELINE_ENTER_EASE,
   TIMELINE_EXIT_DURATION,
   TIMELINE_EXIT_EASE,
-  TIMELINE_TO_SKILLS_START_DELAY_MS,
-  TIMELINE_SWITCH_RATIO,
 } from "@/components/skills/skillsTransition";
-
-const TO_SKILLS_PREP_ADVANCE_MS = 80;
 
 // SkillsSectionへ渡すカテゴリグループ構造。
 interface SkillGroup {
@@ -38,90 +29,22 @@ interface SkillsSectionProps {
 // スキルカードとタイムラインの遷移を制御するコンテナ。
 export default function SkillsSection({ skillGroups, skills }: SkillsSectionProps) {
   const { viewMode } = usePortfolioView();
-  const [phase, setPhase] = useState<SkillsPhase>("skills");
-  const [timelineContentVisible, setTimelineContentVisible] = useState(false);
-  const phaseTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const timelineContentTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  useEffect(() => {
-    return () => {
-      if (phaseTimeoutRef.current) {
-        clearTimeout(phaseTimeoutRef.current);
-      }
-      if (timelineContentTimeoutRef.current) {
-        clearTimeout(timelineContentTimeoutRef.current);
-      }
-    };
-  }, []);
-
-  // スキルグリッドからタイムラインへ遷移する。
-  const goToTimeline = () => {
-    if (phaseTimeoutRef.current) {
-      clearTimeout(phaseTimeoutRef.current);
-    }
-    if (timelineContentTimeoutRef.current) {
-      clearTimeout(timelineContentTimeoutRef.current);
-    }
-    setTimelineContentVisible(false);
-    setPhase("toTimeline");
-    phaseTimeoutRef.current = setTimeout(
-      () => {
-        setPhase("timeline");
-        timelineContentTimeoutRef.current = setTimeout(
-          () => setTimelineContentVisible(true),
-          TIMELINE_CONTENT_SHOW_DELAY_MS
-        );
-      },
-      CARD_MOTION_DURATION * TIMELINE_SWITCH_RATIO * 1000
-    );
-  };
-
-  // タイムラインからスキルグリッドへ戻る。
-  const goToSkills = () => {
-    if (phaseTimeoutRef.current) {
-      clearTimeout(phaseTimeoutRef.current);
-    }
-    if (timelineContentTimeoutRef.current) {
-      clearTimeout(timelineContentTimeoutRef.current);
-    }
-    timelineContentTimeoutRef.current = setTimeout(
-      () => setTimelineContentVisible(false),
-      TIMELINE_CONTENT_HIDE_DELAY_MS
-    );
-
-    phaseTimeoutRef.current = setTimeout(
-      () => setPhase("toSkillsPrep"),
-      Math.max(0, TIMELINE_TO_SKILLS_START_DELAY_MS - TO_SKILLS_PREP_ADVANCE_MS)
-    );
-  };
-
-  const handleTimelineExitComplete = () => {
-    if (phase !== "toSkillsPrep") {
-      return;
-    }
-    setPhase("toSkills");
-    phaseTimeoutRef.current = setTimeout(() => setPhase("skills"), CARD_MOTION_DURATION * 1000);
-  };
-
-  const showGrid = phase !== "timeline" && phase !== "toSkillsPrep";
-  const showTimeline = phase === "timeline";
-  const isTimelineMode = phase === "timeline" || phase === "toSkillsPrep" || phase === "toSkills";
+  const {
+    phase,
+    timelineContentVisible,
+    isTimelineMode,
+    showGrid,
+    showTimeline,
+    handleTimelineExitComplete,
+  } = useSkillsView();
 
   return (
     <div className="space-y-5 sm:space-y-6">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-5">
-        <p className={`max-w-3xl ${bodyText(viewMode)}`}>
-          {isTimelineMode
-            ? "スキルの習得時期と成長の流れを、タイムライン形式で可視化しています。"
-            : "使用言語・フレームワークの理解度を、カテゴリ別に数値で可視化しています。"}
-        </p>
-        <SkillsModeToggle
-          phase={phase}
-          isTimelineMode={isTimelineMode}
-          onGoToTimeline={goToTimeline}
-          onGoToSkills={goToSkills}
-        />
-      </div>
+      <p className={`max-w-3xl ${bodyText(viewMode)}`}>
+        {isTimelineMode
+          ? "スキルの習得時期と成長の流れを、タイムライン形式で可視化しています。"
+          : "使用言語・フレームワークの理解度を、カテゴリ別に数値で可視化しています。"}
+      </p>
 
       <div className="relative">
         <AnimatePresence initial={false}>

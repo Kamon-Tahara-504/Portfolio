@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { Fragment, useEffect, useMemo, useState } from "react";
 import { useReducedMotion } from "framer-motion";
 import developmentData from "@/data/development.json";
 import heroData from "@/data/hero.json";
@@ -9,13 +9,20 @@ import HeroSection from "@/components/hero/HeroSection";
 import ProjectModal from "@/components/projects/ProjectModal";
 import PageBackground from "@/components/page/PageBackground";
 import PageHeaderNav from "@/components/page/PageHeaderNav";
+import FixedExperienceLabel from "@/components/page/FixedExperienceLabel";
 import { PortfolioViewProvider } from "@/components/page/PortfolioViewContext";
 import SectionShell from "@/components/page/SectionShell";
 import { SECTION_META, SectionId } from "@/components/page/SectionMeta";
 import { getSectionContent } from "@/components/page/SectionContent";
+import SkillsModeToggle from "@/components/skills/SkillsModeToggle";
+import { SkillsViewProvider } from "@/components/skills/SkillsViewContext";
 import { resolveAssetPath } from "@/lib/collectLocalAssetUrls";
 import { fixedLabel } from "@/lib/portfolioViewStyles";
-import { useBrowserZoomCompensation } from "@/lib/useBrowserZoomCompensation";
+import {
+  useBrowserZoomCompensation,
+  useBrowserZoomLock,
+} from "@/lib/useBrowserZoomCompensation";
+import BrowserZoomLock from "@/components/page/BrowserZoomLock";
 import { Development } from "@/types/development";
 import { Project } from "@/types/project";
 import type { PortfolioViewMode } from "@/types/portfolioView";
@@ -31,6 +38,7 @@ export default function PortfolioPage() {
   const [activeSectionId, setActiveSectionId] = useState<SectionId>(SECTION_META[0].id);
   const shouldReduceMotion = useReducedMotion();
   const zoomCompensation = useBrowserZoomCompensation();
+  const zoomLock = useBrowserZoomLock();
 
   // public/images/section の実ファイルに対応（Top6 は無いので stack は Top5 を再利用）
   const sectionImageMap = useMemo<Record<SectionId, string>>(
@@ -104,17 +112,21 @@ export default function PortfolioPage() {
 
   if (!hasEntered || !viewMode) {
     return (
-      <HeroSection
-        onLead={(mode) => {
-          setViewMode(mode);
-          setHasEntered(true);
-        }}
-      />
+      <>
+        <BrowserZoomLock lock={zoomLock} />
+        <HeroSection
+          onLead={(mode) => {
+            setViewMode(mode);
+            setHasEntered(true);
+          }}
+        />
+      </>
     );
   }
 
   return (
     <PortfolioViewProvider viewMode={viewMode} zoomCompensation={zoomCompensation}>
+      <BrowserZoomLock lock={zoomLock} />
       <div
         data-portfolio-view={viewMode}
         className={`relative h-screen max-w-full min-h-0 min-w-0 snap-y snap-mandatory overflow-x-clip overflow-y-auto overscroll-y-contain text-foreground ${viewMode === "recruiter" ? "bg-background" : ""}`}
@@ -126,20 +138,30 @@ export default function PortfolioPage() {
           <PageHeaderNav title={heroData.title} sections={SECTION_META} activeSectionId={activeSectionId} />
 
           <main className="contents">
-          {SECTION_META.map((section) => (
-            <SectionShell
-              key={section.id}
-              section={section}
-              shouldReduceMotion={shouldReduceMotion}
-              titleAside={
-                section.id === "stack" ? (
-                  <StackGitHubHeaderButton repository={development.repository} />
-                ) : undefined
-              }
-            >
-              {getSectionContent(section.id, (project) => setSelectedProject(project))}
-            </SectionShell>
-          ))}
+          {SECTION_META.map((section) => {
+            const titleAside =
+              section.id === "stack" ? (
+                <StackGitHubHeaderButton repository={development.repository} />
+              ) : section.id === "skills" ? (
+                <SkillsModeToggle />
+              ) : undefined;
+
+            const shell = (
+              <SectionShell
+                section={section}
+                shouldReduceMotion={shouldReduceMotion}
+                titleAside={titleAside}
+              >
+                {getSectionContent(section.id, (project) => setSelectedProject(project))}
+              </SectionShell>
+            );
+
+            return section.id === "skills" ? (
+              <SkillsViewProvider key={section.id}>{shell}</SkillsViewProvider>
+            ) : (
+              <Fragment key={section.id}>{shell}</Fragment>
+            );
+          })}
           </main>
         </div>
 
@@ -147,16 +169,10 @@ export default function PortfolioPage() {
           <ProjectModal project={selectedProject} onClose={() => setSelectedProject(null)} />
         ) : null}
 
-        <p
-          aria-label="2026 4/15 Renewal"
-          className={`pointer-events-none fixed top-1/2 right-1 z-20 -translate-y-1/2 text-[10px] tracking-[0.24em] [writing-mode:vertical-rl] [text-orientation:mixed] sm:right-2 sm:text-[11px] md:right-3 md:text-xs ${fixedLabel(viewMode)}`}
-          style={{ zoom: zoomCompensation }}
-        >
-          2026 4/15 RENEWAL
-        </p>
+        <FixedExperienceLabel />
         <p
           aria-label="Web Developer and Mobile Developer"
-          className={`pointer-events-none fixed top-1/2 left-1 z-20 -translate-y-1/2 rotate-180 text-[10px] tracking-[0.24em] [writing-mode:vertical-lr] [text-orientation:mixed] sm:left-2 sm:text-[11px] md:left-3 md:text-xs ${fixedLabel(viewMode)}`}
+          className={`pointer-events-none fixed top-1/2 left-1 z-20 hidden -translate-y-1/2 rotate-180 text-[10px] tracking-[0.24em] [writing-mode:vertical-lr] [text-orientation:mixed] md:block md:left-3 md:text-xs ${fixedLabel(viewMode)}`}
           style={{ zoom: zoomCompensation }}
         >
           WEB DEVELOPER & MOBILE DEVELOPER
