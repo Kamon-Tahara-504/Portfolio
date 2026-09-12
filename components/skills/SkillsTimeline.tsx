@@ -58,6 +58,7 @@ export default function SkillsTimeline({ skills, contentVisible = true }: Skills
           <TimelineHeader onPlay={handlePlay} isPlaying={isPlaying} />
           <div
             ref={scrollContainerRef}
+            data-native-scroll
             className="w-full overflow-x-auto overflow-y-hidden timeline-scrollbar"
             style={{
               WebkitOverflowScrolling: "touch",

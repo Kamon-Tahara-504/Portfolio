@@ -20,7 +20,7 @@ body {
   max-width: 100vw;
 }
 
-/* 文書全体のスクロールを止め、ポートフォリオ内スナップコンテナだけが縦スクロールする */
+/* 文書全体のスクロールを止め、ポートフォリオ内コンテナだけが縦スクロールする */
 html,
 body {
   height: 100%;
@@ -224,17 +224,20 @@ body {
 
 @keyframes catchphrase-marquee {
   0% {
-    transform: translateX(0);
+    transform: translate3d(0, 0, 0);
   }
   100% {
-    transform: translateX(-50%);
+    transform: translate3d(-50%, 0, 0);
   }
 }
 
 .works-catchphrase-track {
-  transform: translateX(0);
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
 }
 
-.group:hover .works-catchphrase-track {
-  animation: catchphrase-marquee 7s linear infinite !important;
+@media (hover: hover) and (pointer: fine) {
+  .group:hover .works-catchphrase-track {
+    animation: catchphrase-marquee 7s linear infinite;
+  }
 }

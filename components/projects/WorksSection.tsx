@@ -25,7 +25,11 @@ export default function WorksSection({ workItems, onSelectProject }: WorksSectio
       <p className={`text-xs sm:text-sm ${mutedText(viewMode)}`}>
         横スクロールで閲覧できます。トラックパッドまたはShift + マウスホイールでも操作可能です。
       </p>
-      <div className="works-scrollbar grid max-h-[36rem] grid-flow-col grid-rows-2 gap-3 overflow-x-auto pb-4 pr-2 snap-x snap-mandatory sm:max-h-[38rem] sm:gap-4">
+      {/* overflow-y-hidden 必須: overflow-x-auto だけだと縦も微スクロールし震える */}
+      <div
+        className="works-scrollbar grid max-h-[36rem] grid-flow-col grid-rows-2 gap-3 overflow-x-auto overflow-y-hidden overscroll-x-contain pb-4 pr-2 sm:max-h-[38rem] sm:gap-4"
+        data-native-scroll
+      >
         {workItems.map((work) => {
           const primaryImage = work.images[0] ?? "/images/projects/PlaceHolder.png";
           const imageSrc = resolveAssetPath(primaryImage, basePath);
@@ -36,6 +40,16 @@ export default function WorksSection({ workItems, onSelectProject }: WorksSectio
               onClick={() => onSelectProject(work)}
               className={worksCard(viewMode)}
             >
+              <Image
+                src={imageSrc}
+                alt={`${work.title} preview`}
+                fill
+                sizes="220px"
+                className="object-cover"
+              />
+              {!isRecruiter ? (
+                <span className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+              ) : null}
               <span
                 className={`absolute top-3 left-3 z-10 rounded-md border px-2 py-1 text-[10px] font-semibold tracking-wide ${
                   isRecruiter
@@ -45,16 +59,6 @@ export default function WorksSection({ workItems, onSelectProject }: WorksSectio
               >
                 #{work.number ?? "00"}
               </span>
-              <Image
-                src={imageSrc}
-                alt={`${work.title} preview`}
-                fill
-                sizes="220px"
-                className="object-cover"
-              />
-              {!isRecruiter ? (
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
-              ) : null}
               <div
                 className={`absolute right-2.5 bottom-2.5 left-2.5 rounded-2xl border p-2.5 sm:right-3 sm:bottom-3 sm:left-3 sm:p-3 ${
                   isRecruiter
