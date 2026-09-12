@@ -8,6 +8,8 @@ import { usePortfolioView } from "@/components/page/PortfolioViewContext";
 import { bodyText } from "@/lib/portfolioViewStyles";
 import { Skill, Skills } from "@/types/profile";
 import {
+  CONTENT_FADE_DURATION,
+  CONTENT_FADE_EASE,
   TIMELINE_ENTER_DURATION,
   TIMELINE_ENTER_EASE,
   TIMELINE_EXIT_DURATION,
@@ -38,15 +40,32 @@ export default function SkillsSection({ skillGroups, skills }: SkillsSectionProp
     handleTimelineExitComplete,
   } = useSkillsView();
 
+  const description = isTimelineMode
+    ? "スキルの習得時期と成長の流れを、タイムライン形式で可視化しています。"
+    : "使用言語・フレームワークの理解度を、カテゴリ別に数値で可視化しています。";
+
   return (
     <div className="space-y-5 sm:space-y-6">
-      <p className={`max-w-3xl ${bodyText(viewMode)}`}>
-        {isTimelineMode
-          ? "スキルの習得時期と成長の流れを、タイムライン形式で可視化しています。"
-          : "使用言語・フレームワークの理解度を、カテゴリ別に数値で可視化しています。"}
-      </p>
+      {/* 説明文はクロスフェード＋わずかな上下移動で切り替える */}
+      <div className="relative min-h-[3.25rem] max-w-3xl sm:min-h-[3.5rem]">
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.p
+            key={isTimelineMode ? "timeline-desc" : "skills-desc"}
+            className={`absolute inset-x-0 top-0 ${bodyText(viewMode)}`}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -6 }}
+            transition={{
+              duration: CONTENT_FADE_DURATION,
+              ease: CONTENT_FADE_EASE,
+            }}
+          >
+            {description}
+          </motion.p>
+        </AnimatePresence>
+      </div>
 
-      <div className="relative">
+      <div className="relative min-h-[36rem] sm:min-h-[38rem] md:min-h-[40rem]">
         <AnimatePresence initial={false}>
           {showGrid ? (
             <motion.div

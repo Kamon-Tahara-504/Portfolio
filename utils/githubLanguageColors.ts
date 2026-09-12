@@ -26,6 +26,7 @@ const GITHUB_LANGUAGE_COLORS: Record<string, string> = {
   React: "#61dafb",
   "React.js": "#61dafb",
   "Next.js": "#000000", // 公式ロゴに合わせる（Linguist には未登録のため）
+  AWS: "#FF9900",
 };
 
 const FALLBACK_COLOR = "#6b7280";
