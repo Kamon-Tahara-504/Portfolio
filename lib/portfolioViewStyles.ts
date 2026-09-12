@@ -90,7 +90,7 @@ export function navText(viewMode: PortfolioViewMode): string {
   });
 }
 
-/** チップ（Profile 等）。 */
+/** チップ（About 等）。 */
 export function chip(viewMode: PortfolioViewMode): string {
   return viewClass(viewMode, {
     personal: "inline-flex items-center gap-1 rounded-full border border-zinc-300/25 bg-zinc-900/55 px-2.5 py-1 backdrop-blur-sm text-zinc-100",

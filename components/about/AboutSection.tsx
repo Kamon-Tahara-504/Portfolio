@@ -9,14 +9,14 @@ import { chip, ctaButton, divider, mutedText, viewClass } from "@/lib/portfolioV
 import { AboutData } from "@/types/profile";
 
 // public/images/about/TAHARA.jpg の実ピクセル比（Next/Image の width/height に使用し縦横比を維持する）
-const PROFILE_IMAGE_WIDTH = 2560;
-const PROFILE_IMAGE_HEIGHT = 1706;
+const ABOUT_IMAGE_WIDTH = 2560;
+const ABOUT_IMAGE_HEIGHT = 1706;
 const basePath = process.env.NODE_ENV === "production" ? "/Portfolio" : "";
 
-// Profileセクションの入力データ。
-interface ProfileSectionProps {
+// Aboutセクションの入力データ。
+interface AboutSectionProps {
   about: AboutData;
-  profileChips: string[];
+  aboutChips: string[];
 }
 
 function getAgeFromBirthDate(birthDate?: string): number | null {
@@ -43,7 +43,7 @@ function getAgeFromBirthDate(birthDate?: string): number | null {
 }
 
 // プロフィール画像・基本情報・チップを表示する。
-export default function ProfileSection({ about, profileChips }: ProfileSectionProps) {
+export default function AboutSection({ about, aboutChips }: AboutSectionProps) {
   const { viewMode } = usePortfolioView();
   const [isContactOpen, setIsContactOpen] = useState(false);
   // GitHubリンク（未設定時は空文字）。
@@ -51,7 +51,7 @@ export default function ProfileSection({ about, profileChips }: ProfileSectionPr
   const currentAffiliation =
     about.affiliations?.find((affiliation) => affiliation.isCurrent) ?? about.affiliations?.[0];
   const currentAge = getAgeFromBirthDate(about.about.birthDate);
-  const profileImageSrc = resolveAssetPath(about.about.image, basePath);
+  const aboutImageSrc = resolveAssetPath(about.about.image, basePath);
 
   return (
     <>
@@ -59,10 +59,10 @@ export default function ProfileSection({ about, profileChips }: ProfileSectionPr
         <div className="flex flex-col gap-3 lg:gap-4">
           <div className="my-2 w-full max-w-lg sm:max-w-xl md:max-w-2xl lg:my-0 lg:max-w-none">
             <Image
-              src={profileImageSrc}
+              src={aboutImageSrc}
               alt={`${about.name} portrait`}
-              width={PROFILE_IMAGE_WIDTH}
-              height={PROFILE_IMAGE_HEIGHT}
+              width={ABOUT_IMAGE_WIDTH}
+              height={ABOUT_IMAGE_HEIGHT}
               priority
               sizes="(max-width: 640px) min(100vw, 32rem) (max-width: 1024px) min(100vw, 42rem) (max-width: 1536px) 48vw 42vw"
               className={`h-auto w-full rounded-2xl border ${viewClass(viewMode, {
@@ -115,9 +115,9 @@ export default function ProfileSection({ about, profileChips }: ProfileSectionPr
             </p>
           </div>
 
-          {profileChips.filter(Boolean).length > 0 ? (
+          {aboutChips.filter(Boolean).length > 0 ? (
             <p className={`text-sm leading-relaxed ${viewClass(viewMode, { personal: "text-zinc-200", recruiter: "text-foreground" })}`}>
-              {profileChips.filter(Boolean).join(" / ")}
+              {aboutChips.filter(Boolean).join(" / ")}
             </p>
           ) : null}
 
