@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import ContactModal from "@/components/about/ContactModal";
+import ProtectedImage from "@/components/ProtectedImage";
 import { usePortfolioView } from "@/components/page/PortfolioViewContext";
 import { resolveAssetPath } from "@/lib/collectLocalAssetUrls";
 import { chip, ctaButton, divider, mutedText, viewClass } from "@/lib/portfolioViewStyles";
@@ -58,7 +58,8 @@ export default function AboutSection({ about, aboutChips }: AboutSectionProps) {
       <div className="grid items-start gap-6 min-[780px]:grid-cols-2 min-[780px]:items-center min-[780px]:gap-10 lg:gap-14 xl:gap-16">
         <div className="flex flex-col gap-3 lg:gap-4">
           <div className="my-2 w-full max-w-lg sm:max-w-xl md:max-w-2xl lg:my-0 lg:max-w-none">
-            <Image
+            <ProtectedImage
+              wrapperClassName="relative overflow-hidden rounded-2xl"
               src={aboutImageSrc}
               alt={`${about.name} portrait`}
               width={ABOUT_IMAGE_WIDTH}
