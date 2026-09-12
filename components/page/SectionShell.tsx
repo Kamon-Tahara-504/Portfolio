@@ -23,8 +23,13 @@ export default function SectionShell({
 }: SectionShellProps) {
   const { viewMode, zoomCompensation } = usePortfolioView();
   // 固定ナビとの干渉を避けつつ、余白が余るときは縦中央に見えるようにする。
+  // about のみ上余白を少し削って、要素をわずかに上寄せする。
   const verticalSpacingClass =
-    section.id === "works" ? "py-14 lg:py-16" : "py-16 lg:py-20";
+    section.id === "works"
+      ? "py-14 lg:py-16"
+      : section.id === "about"
+        ? "pt-10 pb-16 lg:pt-12 lg:pb-20"
+        : "py-16 lg:py-20";
 
   const articleTextClass = viewClass(viewMode, {
     personal: "text-zinc-100",

@@ -4,7 +4,7 @@ import developmentData from "@/data/development.json";
 import experienceData from "@/data/experience.json";
 import projectsData from "@/data/projects.json";
 import skillsData from "@/data/skills.json";
-import ProfileSection from "@/components/about/ProfileSection";
+import AboutSection from "@/components/about/AboutSection";
 import VisionSection from "@/components/about/VisionSection";
 import StackSection from "@/components/development/StackSection";
 import CareerSection from "@/components/experience/CareerSection";
@@ -43,10 +43,10 @@ export function getSectionContent(
   sectionId: SectionId,
   onSelectProject: (project: Project) => void
 ) {
-  const profileChips: string[] = [];
+  const aboutChips: string[] = [];
 
   const sectionContentMap: Record<SectionId, ReactNode> = {
-    profile: <ProfileSection about={about} profileChips={profileChips} />,
+    about: <AboutSection about={about} aboutChips={aboutChips} />,
     vision: <VisionSection description={about.about.description} />,
     career: <CareerSection experiences={experienceData} />,
     skills: <SkillsSection skillGroups={skillGroups} skills={skillsData} />,

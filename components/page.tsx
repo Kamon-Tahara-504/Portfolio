@@ -47,7 +47,7 @@ export default function PortfolioPage() {
   // public/images/section の実ファイルに対応（Top6 は無いので stack は Top5 を再利用）
   const sectionImageMap = useMemo<Record<SectionId, string>>(
     () => ({
-      profile: resolveAssetPath("/images/section/Top1.png", basePath),
+      about: resolveAssetPath("/images/section/Top1.png", basePath),
       vision: resolveAssetPath("/images/section/Top2.png", basePath),
       career: resolveAssetPath("/images/section/Top3.png", basePath),
       skills: resolveAssetPath("/images/section/Top4.png", basePath),
