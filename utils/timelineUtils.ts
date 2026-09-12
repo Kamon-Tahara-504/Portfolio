@@ -34,12 +34,12 @@ export const PIXELS_PER_MONTH = 50;
 
 /** 上側5層・下側5層のレイヤー高さ（px） */
 export const LAYER_HEIGHTS = {
-  above: [-50, -100, -150, -200, -250],
-  below: [50, 100, 150, 200, 250],
+  above: [-58, -116, -174, -232, -290],
+  below: [58, 116, 174, 232, 290],
 };
 
-/** タイムライン領域の高さ（px） */
-export const TIMELINE_HEIGHT = 450;
+/** タイムライン領域の高さ（px）。スキルカード群に近いボリュームにする。 */
+export const TIMELINE_HEIGHT = 550;
 
 /** 中央基準線の上端位置（px） */
-export const BASE_LINE_TOP = 225;
+export const BASE_LINE_TOP = 275;

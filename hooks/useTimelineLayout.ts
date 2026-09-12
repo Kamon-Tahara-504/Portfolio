@@ -28,6 +28,9 @@ export interface SkillPosition {
 
 type LayerOccupancy = Array<{ start: number; end: number }>;
 
+// 見た目のバランス用に、上下どちらかを優先するスキル。
+const PREFER_ABOVE_SKILLS = new Set(["SwiftUI / Swift"]);
+
 export function useTimelineLayout(timelineSkills: TimelineSkill[]) {
   const now = new Date();
   const currentYear = now.getFullYear();
@@ -129,7 +132,9 @@ export function useTimelineLayout(timelineSkills: TimelineSkill[]) {
     }
 
     if (assignedLayer === -1) {
-      const preferAbove = sortedSkills.indexOf(skill) % 2 === 0;
+      const preferAbove = PREFER_ABOVE_SKILLS.has(skill.name)
+        ? true
+        : sortedSkills.indexOf(skill) % 2 === 0;
       isAbove = preferAbove;
       usedLayers = preferAbove ? aboveLayers : belowLayers;
 

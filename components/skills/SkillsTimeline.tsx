@@ -23,7 +23,9 @@ export default function SkillsTimeline({ skills, contentVisible = true }: Skills
     ...skills.backend,
     ...skills.mobile,
     ...skills.tools,
+    // 一覧には出さずタイムラインのみ表示する項目。
     { name: "C#", level: 0, startDate: "2022-05", endDate: "2022-11" },
+    { name: "AWS", level: 20, startDate: "2026-05", endDate: null },
   ];
 
   // 期間情報を持つスキルのみタイムライン表示対象にする。
@@ -49,8 +51,8 @@ export default function SkillsTimeline({ skills, contentVisible = true }: Skills
   } = layout;
 
   return (
-    <div className="mt-7 w-full pb-0.5">
-      <div className={`relative w-full px-3 pt-2.5 pb-1 md:px-4 md:pt-3.5 md:pb-1.5 ${surfaceCard(viewMode)} shadow-lg ${viewMode === "personal" ? "shadow-black/35 md:rounded-2xl" : "md:rounded-2xl"}`}>
+    <div className="mt-0 w-full pb-0.5">
+      <div className={`relative w-full px-3 pt-4 pb-3 md:px-4 md:pt-5 md:pb-4 ${surfaceCard(viewMode)} shadow-lg ${viewMode === "personal" ? "shadow-black/35 md:rounded-2xl" : "md:rounded-2xl"}`}>
         <div
           className="transition-opacity duration-300"
           style={{ opacity: contentVisible ? 1 : 0, pointerEvents: contentVisible ? "auto" : "none" }}
@@ -73,8 +75,8 @@ export default function SkillsTimeline({ skills, contentVisible = true }: Skills
                 height: `${timelineHeight}px`,
                 minWidth: `${minTimelineWidth}px`,
                 width: "100%",
-                paddingTop: "48px",
-                paddingBottom: "0px",
+                paddingTop: "56px",
+                paddingBottom: "8px",
               }}
             >
               <TimelineRuler
