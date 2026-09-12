@@ -20,6 +20,9 @@ export default function BrowserZoomLock({ lock }: BrowserZoomLockProps) {
       ? "ブラウザの表示倍率を下げてから再度お試しください。"
       : "ブラウザの表示倍率を上げてから再度お試しください。";
 
+  // ブラウザズームで文言まで縮小／拡大されないよう、検出倍率で逆補正する。
+  const scale = 100 / Math.max(lock.zoomPercent, 1);
+
   return (
     <div
       role="alertdialog"
@@ -28,7 +31,14 @@ export default function BrowserZoomLock({ lock }: BrowserZoomLockProps) {
       aria-describedby="browser-zoom-lock-desc"
       className="fixed inset-0 z-[200] flex items-center justify-center bg-black px-6"
     >
-      <div className="max-w-md text-center text-zinc-100">
+      <div
+        className="text-center text-zinc-100"
+        style={{
+          transform: `scale(${scale})`,
+          transformOrigin: "center center",
+          width: `min(28rem, ${85 / scale}vw)`,
+        }}
+      >
         <p
           id="browser-zoom-lock-title"
           className="text-lg font-semibold tracking-[0.18em] uppercase sm:text-xl"
