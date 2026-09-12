@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment, useEffect, useMemo, useState } from "react";
+import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import { useReducedMotion } from "framer-motion";
 import developmentData from "@/data/development.json";
 import heroData from "@/data/hero.json";
@@ -22,6 +22,7 @@ import {
   useBrowserZoomCompensation,
   useBrowserZoomLock,
 } from "@/lib/useBrowserZoomCompensation";
+import { useHeavySmoothScroll } from "@/lib/useHeavySmoothScroll";
 import BrowserZoomLock from "@/components/page/BrowserZoomLock";
 import { Development } from "@/types/development";
 import { Project } from "@/types/project";
@@ -39,6 +40,9 @@ export default function PortfolioPage() {
   const shouldReduceMotion = useReducedMotion();
   const zoomCompensation = useBrowserZoomCompensation();
   const zoomLock = useBrowserZoomLock();
+  const mainScrollRef = useRef<HTMLDivElement>(null);
+
+  useHeavySmoothScroll(mainScrollRef, hasEntered && Boolean(viewMode) && !zoomLock.isLocked);
 
   // public/images/section の実ファイルに対応（Top6 は無いので stack は Top5 を再利用）
   const sectionImageMap = useMemo<Record<SectionId, string>>(
@@ -128,8 +132,9 @@ export default function PortfolioPage() {
     <PortfolioViewProvider viewMode={viewMode} zoomCompensation={zoomCompensation}>
       <BrowserZoomLock lock={zoomLock} />
       <div
+        ref={mainScrollRef}
         data-portfolio-view={viewMode}
-        className={`relative h-screen max-w-full min-h-0 min-w-0 snap-y snap-mandatory overflow-x-clip overflow-y-auto overscroll-y-contain text-foreground ${viewMode === "recruiter" ? "bg-background" : ""}`}
+        className={`relative h-screen max-w-full min-h-0 min-w-0 overflow-x-clip overflow-y-auto overscroll-none text-foreground ${viewMode === "recruiter" ? "bg-background" : ""}`}
       >
         {viewMode === "personal" ? (
           <PageBackground activeImage={activeBackground} shouldReduceMotion={shouldReduceMotion} />

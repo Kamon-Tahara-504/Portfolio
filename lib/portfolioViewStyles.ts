@@ -162,13 +162,13 @@ export function tagPill(viewMode: PortfolioViewMode): string {
   });
 }
 
-/** Works カード外枠。 */
+/** Works カード外枠。横 snap / hover scale は振動の原因になるため付けない。 */
 export function worksCard(viewMode: PortfolioViewMode): string {
   return viewClass(viewMode, {
     personal:
-      "group relative h-[14.5rem] w-[11.5rem] snap-start overflow-hidden rounded-2xl border border-zinc-300/20 bg-zinc-900/40 text-left shadow-lg shadow-black/35 transition hover:scale-[1.01] hover:border-zinc-300/40 sm:h-[16.5rem] sm:w-[13.5rem] lg:h-[17.5rem] lg:w-[14.5rem]",
+      "group relative h-[14.5rem] w-[11.5rem] shrink-0 overflow-hidden rounded-2xl border border-zinc-300/20 bg-zinc-900/40 text-left shadow-lg shadow-black/35 transition-[border-color] hover:border-zinc-300/40 sm:h-[16.5rem] sm:w-[13.5rem] lg:h-[17.5rem] lg:w-[14.5rem]",
     recruiter:
-      "group relative h-[14.5rem] w-[11.5rem] snap-start overflow-hidden rounded-2xl border border-border bg-surface text-left shadow-md transition hover:scale-[1.01] hover:border-zinc-400 sm:h-[16.5rem] sm:w-[13.5rem] lg:h-[17.5rem] lg:w-[14.5rem]",
+      "group relative h-[14.5rem] w-[11.5rem] shrink-0 overflow-hidden rounded-2xl border border-border bg-surface text-left shadow-md transition-[border-color] hover:border-zinc-400 sm:h-[16.5rem] sm:w-[13.5rem] lg:h-[17.5rem] lg:w-[14.5rem]",
   });
 }
 

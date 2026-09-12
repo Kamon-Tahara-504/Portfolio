@@ -39,7 +39,7 @@ export default function SectionShell({
   return (
     <section
       id={section.id}
-      className={`flex min-h-screen min-w-0 snap-start snap-always flex-col justify-center px-4 sm:px-6 md:px-12 lg:px-14 ${verticalSpacingClass}`}
+      className={`flex min-h-screen min-w-0 flex-col justify-center px-4 sm:px-6 md:px-12 lg:px-14 ${verticalSpacingClass}`}
     >
       <div
         className="mx-auto flex w-full min-w-0 max-w-6xl justify-center"
