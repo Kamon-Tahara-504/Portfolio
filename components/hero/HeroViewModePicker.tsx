@@ -35,6 +35,15 @@ const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
 const BUTTON_SIZE = "min(46vw, 280px)";
 // 選択確定後のフェード退場時間（ms）。
 const SELECT_EXIT_MS = 420;
+// ゲージ充填・減少時間。背景フェードより短くして、早く確定確認できるようにする。
+const GAUGE_FILL_MS = 980;
+// 満タン判定の許容誤差。
+const GAUGE_READY_EPSILON = 0.001;
+
+/** 序盤は加速、終盤は減速して収まる充填カーブ。 */
+function easeInOutCubic(t: number): number {
+  return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+}
 
 // 背景プレビューに合わせて案内文の色・影を切り替える。
 function getPromptStyleClass(previewMode: PortfolioViewMode | null): string {
@@ -64,12 +73,15 @@ function getButtonInnerClass(isActive: boolean): string {
   return isActive ? "bg-zinc-950/70" : "bg-zinc-950/55 group-hover:bg-zinc-950/70";
 }
 
-function getProgressRingOpacity(isActive: boolean): number {
-  return isActive ? 1 : IDLE_PROGRESS_RING_OPACITY;
+function getProgressRingOpacity(hasProgress: boolean): number {
+  return hasProgress ? 1 : IDLE_PROGRESS_RING_OPACITY;
 }
 
 // 担当者プレビュー中は両ボタンとも暗色ゲージ（白背景で空ゲージが見えるようにする）。
-function getGaugeStrokes(isRecruiterPreview: boolean, isActive: boolean): {
+function getGaugeStrokes(
+  isRecruiterPreview: boolean,
+  isActive: boolean
+): {
   track: string;
   progress: string;
 } {
@@ -93,9 +105,14 @@ export default function HeroViewModePicker({
   // クリック確定後のモード。エフェクト表示中は再選択不可。
   const [confirmingMode, setConfirmingMode] = useState<PortfolioViewMode | null>(null);
   const [isExiting, setIsExiting] = useState(false);
-  // リングゲージが満タンになったモードのみ確定可能。
-  const [gaugeReadyMode, setGaugeReadyMode] = useState<PortfolioViewMode | null>(null);
+  // リング見た目の進捗 0〜1（イージング後）。クリック可否も同じ値を使う。
+  const [gaugeProgress, setGaugeProgress] = useState(0);
+  // 進捗を表示しているボタン（解除後の減少中も維持する）。
+  const [gaugeProgressMode, setGaugeProgressMode] = useState<PortfolioViewMode | null>(null);
   const hasCommittedRef = useRef(false);
+  // 線形時間 0〜1。見た目はこの値を ease-in したものを使う。
+  const gaugeTimeRef = useRef(0);
+  const gaugeProgressModeRef = useRef<PortfolioViewMode | null>(null);
 
   useEffect(() => {
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -110,26 +127,76 @@ export default function HeroViewModePicker({
     return () => window.cancelAnimationFrame(frame);
   }, []);
 
-  // プレビュー中のリング充填完了を待つ。完了前のクリックでは確定しない。
+  // ゲージ進捗を JS で駆動し、見た目と ready 判定を常に一致させる。
   useEffect(() => {
     if (confirmingMode) return;
 
-    if (!previewMode) {
-      setGaugeReadyMode(null);
-      return;
-    }
-
     if (prefersReducedMotion) {
-      setGaugeReadyMode(previewMode);
+      if (previewMode) {
+        gaugeTimeRef.current = 1;
+        gaugeProgressModeRef.current = previewMode;
+        setGaugeProgress(1);
+        setGaugeProgressMode(previewMode);
+      } else {
+        gaugeTimeRef.current = 0;
+        gaugeProgressModeRef.current = null;
+        setGaugeProgress(0);
+        setGaugeProgressMode(null);
+      }
       return;
     }
 
-    setGaugeReadyMode(null);
-    const readyTimer = window.setTimeout(() => {
-      setGaugeReadyMode(previewMode);
-    }, PREVIEW_FADE_MS);
+    // 別モードへ移ったら進捗をリセットして詰め直す。
+    if (previewMode && gaugeProgressModeRef.current && previewMode !== gaugeProgressModeRef.current) {
+      gaugeTimeRef.current = 0;
+      setGaugeProgress(0);
+    }
+    if (previewMode) {
+      gaugeProgressModeRef.current = previewMode;
+      setGaugeProgressMode(previewMode);
+    }
 
-    return () => window.clearTimeout(readyTimer);
+    const target = previewMode ? 1 : 0;
+    let frameId = 0;
+    let lastTs = performance.now();
+
+    const tick = (now: number) => {
+      const dt = Math.min(64, now - lastTs);
+      lastTs = now;
+      const step = dt / GAUGE_FILL_MS;
+      const current = gaugeTimeRef.current;
+
+      let nextTime = current;
+      if (current < target) {
+        nextTime = Math.min(target, current + step);
+      } else if (current > target) {
+        nextTime = Math.max(target, current - step);
+      }
+
+      gaugeTimeRef.current = nextTime;
+      // 線形時間を加速→終盤減速のカーブへ変換して見た目・判定を同期する。
+      const nextProgress = easeInOutCubic(nextTime);
+      setGaugeProgress(nextProgress);
+
+      if (!previewMode && nextTime <= GAUGE_READY_EPSILON) {
+        gaugeTimeRef.current = 0;
+        gaugeProgressModeRef.current = null;
+        setGaugeProgress(0);
+        setGaugeProgressMode(null);
+        return;
+      }
+
+      if (Math.abs(nextTime - target) > GAUGE_READY_EPSILON) {
+        frameId = window.requestAnimationFrame(tick);
+        return;
+      }
+
+      gaugeTimeRef.current = target;
+      setGaugeProgress(easeInOutCubic(target));
+    };
+
+    frameId = window.requestAnimationFrame(tick);
+    return () => window.cancelAnimationFrame(frameId);
   }, [previewMode, confirmingMode, prefersReducedMotion]);
 
   useEffect(() => {
@@ -159,8 +226,9 @@ export default function HeroViewModePicker({
 
   const handleSelect = (mode: PortfolioViewMode) => {
     if (confirmingMode) return;
-    // ゲージが溜まり切るまで確定させない。
-    if (gaugeReadyMode !== mode) return;
+    // 進捗が満タンかつ、そのモードをホバー中のときだけ確定できる。
+    if (previewMode !== mode) return;
+    if (gaugeProgressMode !== mode || gaugeProgress < 1 - GAUGE_READY_EPSILON) return;
     setConfirmingMode(mode);
     // 確定中はプレビューを固定する。
     onPreviewChange(mode);
@@ -212,7 +280,9 @@ export default function HeroViewModePicker({
         {OPTIONS.map((option) => {
           const isActive = previewMode === option.mode;
           const isConfirming = confirmingMode === option.mode;
-          const isGaugeReady = gaugeReadyMode === option.mode;
+          const ringProgress = gaugeProgressMode === option.mode ? gaugeProgress : 0;
+          const isGaugeReady =
+            isActive && gaugeProgressMode === option.mode && gaugeProgress >= 1 - GAUGE_READY_EPSILON;
           const canConfirm = isGaugeReady && confirmingMode === null;
           const ringTransitionStyle = prefersReducedMotion
             ? undefined
@@ -224,7 +294,7 @@ export default function HeroViewModePicker({
           const burstTone = option.mode === "recruiter" ? "dark" : "light";
           // ホバー解除と同時に元色へ戻す（display ホールドしない）。
           const isRecruiterPreview = previewMode === "recruiter";
-          const gaugeStrokes = getGaugeStrokes(isRecruiterPreview, isActive);
+          const gaugeStrokes = getGaugeStrokes(isRecruiterPreview, isActive || ringProgress > 0);
 
           return (
             <div
@@ -291,16 +361,14 @@ export default function HeroViewModePicker({
                     strokeWidth="6"
                     strokeLinecap="round"
                     strokeDasharray={CIRCUMFERENCE}
-                    strokeDashoffset={isActive ? 0 : CIRCUMFERENCE}
-                    className={`transition-[stroke-dashoffset,opacity,stroke] ease-in-out ${prefersReducedMotion ? "duration-0" : ""}`}
+                    strokeDashoffset={CIRCUMFERENCE * (1 - ringProgress)}
+                    className={colorTransitionClass}
                     style={{
-                      // 充填はゲージ時間、色は早めに切り替えて視認性を確保する。
-                      transitionDuration: prefersReducedMotion
-                        ? undefined
-                        : `${PREVIEW_FADE_MS}ms, ${PREVIEW_FADE_MS}ms, ${GAUGE_COLOR_MS}ms`,
-                      transitionProperty: "stroke-dashoffset, opacity, stroke",
+                      // dashoffset は JS 進捗と同期。色だけ CSS で切り替える。
+                      transitionDuration: prefersReducedMotion ? undefined : `${GAUGE_COLOR_MS}ms`,
+                      transitionProperty: "stroke, opacity",
                       stroke: gaugeStrokes.progress,
-                      opacity: getProgressRingOpacity(isActive),
+                      opacity: getProgressRingOpacity(ringProgress > GAUGE_READY_EPSILON),
                     }}
                   />
                 </svg>
