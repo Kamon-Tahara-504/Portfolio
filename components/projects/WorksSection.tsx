@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import ProtectedImage from "@/components/ProtectedImage";
 import { usePortfolioView } from "@/components/page/PortfolioViewContext";
 import { bodyText, mutedText, viewClass, worksCard } from "@/lib/portfolioViewStyles";
 import { Project } from "@/types/project";
@@ -40,7 +40,8 @@ export default function WorksSection({ workItems, onSelectProject }: WorksSectio
               onClick={() => onSelectProject(work)}
               className={worksCard(viewMode)}
             >
-              <Image
+              <ProtectedImage
+                wrapperClassName="absolute inset-0"
                 src={imageSrc}
                 alt={`${work.title} preview`}
                 fill
