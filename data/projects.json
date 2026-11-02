@@ -245,18 +245,22 @@
   {
     "id": "project-12",
     "number": "12",
-    "slug": "coming-soon-3",
-    "title": "準備中",
-    "catchphrase": "準備中",
-    "description": "準備中",
-    "category": "web",
+    "slug": "plotty",
+    "title": "Plotty",
+    "catchphrase": "日常の管理を、1つの会話で。",
+    "description": "タスク管理やスケジュール管理が苦手な方でも、気軽に使える生産性向上アプリ！AIにチャットで予定ややるべきことを送るだけで、内容を自動で整理し、タスクやスケジュールに反映します。メモ感覚で手軽に使える操作性と、タスク・スケジュール・メモ機能の連携によって、日々の管理の手間を減らし、自分の時間をより有効に活用できるモバイルアプリケーションです！",
+    "category": "mobile",
+    "productionType": "collaborative",
     "images": [
-      "/images/projects/PlaceHolder.png"
+      "/images/projects/Plotty/Plotty.png"
     ],
-    "technologies": ["準備中"],
-    "links": {},
+    "technologies": ["SwiftUI", "TypeScript", "Supabase", "Groq"],
+    "links": {
+      "github": "https://github.com/Team-Plotty/Plotty"
+    },
     "date": {
-      "startDate": "2026-04-05"
+      "startDate": "2026-05-04",
+      "endDate": "2026-06-29"
     }
   }
 ]
