@@ -7,6 +7,7 @@ import heroData from "@/data/hero.json";
 import { StackGitHubHeaderButton } from "@/components/development/StackSection";
 import HeroSection from "@/components/hero/HeroSection";
 import ProjectModal from "@/components/projects/ProjectModal";
+import EntryBlackout from "@/components/page/EntryBlackout";
 import PageBackground from "@/components/page/PageBackground";
 import PageHeaderNav from "@/components/page/PageHeaderNav";
 import FixedExperienceLabel from "@/components/page/FixedExperienceLabel";
@@ -31,12 +32,24 @@ import type { PortfolioViewMode } from "@/types/portfolioView";
 const development = developmentData as Development;
 const basePath = process.env.NODE_ENV === "production" ? "/Portfolio" : "";
 
+// 個人向け確定後、Hero → About の間に挟む暗転の時間。
+const ENTRY_BLACKOUT_COVER_MS = 450;
+const ENTRY_BLACKOUT_REVEAL_MS = 600;
+
+type EntryBlackoutStage = "cover" | "reveal";
+
+interface EntryBlackoutState {
+  opacity: number;
+  stage: EntryBlackoutStage;
+}
+
 // ポートフォリオのルート画面。導入->本編遷移とセクション描画を統括する。
 export default function PortfolioPage() {
   const [hasEntered, setHasEntered] = useState(false);
   const [viewMode, setViewMode] = useState<PortfolioViewMode | null>(null);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [activeSectionId, setActiveSectionId] = useState<SectionId>(SECTION_META[0].id);
+  const [entryBlackout, setEntryBlackout] = useState<EntryBlackoutState | null>(null);
   const shouldReduceMotion = useReducedMotion();
   const zoomCompensation = useBrowserZoomCompensation();
   const zoomLock = useBrowserZoomLock();
@@ -112,87 +125,145 @@ export default function PortfolioPage() {
     return () => observer.disconnect();
   }, [hasEntered, viewMode]);
 
-  const activeBackground = sectionImageMap[activeSectionId];
+  // 初回描画で opacity 0 を確定してから目標値へ変え、CSS トランジションを確実に走らせる。
+  useEffect(() => {
+    if (!entryBlackout) return;
 
-  if (!hasEntered || !viewMode) {
-    return (
-      <>
-        <BrowserZoomLock lock={zoomLock} />
-        <HeroSection
-          onLead={(mode) => {
-            setViewMode(mode);
-            setHasEntered(true);
-          }}
-        />
-      </>
-    );
-  }
+    const shouldStartCover = entryBlackout.stage === "cover" && entryBlackout.opacity === 0;
+    const shouldStartReveal = entryBlackout.stage === "reveal" && entryBlackout.opacity === 1;
+    if (!shouldStartCover && !shouldStartReveal) return;
+
+    let frame2 = 0;
+    const frame1 = window.requestAnimationFrame(() => {
+      frame2 = window.requestAnimationFrame(() => {
+        if (shouldStartCover) {
+          setEntryBlackout({ opacity: 1, stage: "cover" });
+          return;
+        }
+        setEntryBlackout({ opacity: 0, stage: "reveal" });
+      });
+    });
+
+    return () => {
+      window.cancelAnimationFrame(frame1);
+      window.cancelAnimationFrame(frame2);
+    };
+  }, [entryBlackout]);
+
+  const enterMain = (mode: PortfolioViewMode) => {
+    setViewMode(mode);
+    setHasEntered(true);
+  };
+
+  const handleLead = (mode: PortfolioViewMode) => {
+    // 担当者様向けは白背景のまま入る。個人向けは Hero→Top1 の飛びを暗転で隠す。
+    if (mode !== "personal") {
+      enterMain(mode);
+      return;
+    }
+
+    setEntryBlackout({ opacity: 0, stage: "cover" });
+  };
+
+  const handleBlackoutTransitionEnd = () => {
+    if (!entryBlackout) return;
+
+    if (entryBlackout.stage === "cover" && entryBlackout.opacity === 1) {
+      // 黒が完全になったフレームで本編を載せ、その下で Top1 を表示する。
+      enterMain("personal");
+      setEntryBlackout({ opacity: 1, stage: "reveal" });
+      return;
+    }
+
+    if (entryBlackout.stage === "reveal" && entryBlackout.opacity === 0) {
+      setEntryBlackout(null);
+    }
+  };
+
+  const activeBackground = sectionImageMap[activeSectionId];
+  const blackoutDurationMs =
+    entryBlackout?.stage === "reveal" ? ENTRY_BLACKOUT_REVEAL_MS : ENTRY_BLACKOUT_COVER_MS;
 
   return (
-    <PortfolioViewProvider viewMode={viewMode} zoomCompensation={zoomCompensation}>
+    <>
       <BrowserZoomLock lock={zoomLock} />
-      <div
-        ref={mainScrollRef}
-        data-portfolio-view={viewMode}
-        className={`relative h-screen max-w-full min-h-0 min-w-0 overflow-x-clip overflow-y-auto overscroll-none text-foreground ${viewMode === "recruiter" ? "bg-background" : ""}`}
-      >
-        {viewMode === "personal" ? (
-          <PageBackground activeImage={activeBackground} shouldReduceMotion={shouldReduceMotion} />
-        ) : null}
-        <div className="relative z-10">
-          <PageHeaderNav title={heroData.title} sections={SECTION_META} activeSectionId={activeSectionId} />
 
-          <main className="contents">
-          {SECTION_META.map((section) => {
-            const titleAside =
-              section.id === "stack" ? (
-                <StackGitHubHeaderButton repository={development.repository} />
-              ) : section.id === "skills" ? (
-                <SkillsModeToggle />
-              ) : undefined;
+      {!hasEntered || !viewMode ? (
+        <HeroSection onLead={handleLead} />
+      ) : (
+        <PortfolioViewProvider viewMode={viewMode} zoomCompensation={zoomCompensation}>
+          <div
+            ref={mainScrollRef}
+            data-portfolio-view={viewMode}
+            className={`relative h-screen max-w-full min-h-0 min-w-0 overflow-x-clip overflow-y-auto overscroll-none text-foreground ${viewMode === "recruiter" ? "bg-background" : ""}`}
+          >
+            {viewMode === "personal" ? (
+              <PageBackground activeImage={activeBackground} shouldReduceMotion={shouldReduceMotion} />
+            ) : null}
+            <div className="relative z-10">
+              <PageHeaderNav title={heroData.title} sections={SECTION_META} activeSectionId={activeSectionId} />
 
-            const shell = (
-              <SectionShell
-                section={section}
-                shouldReduceMotion={shouldReduceMotion}
-                titleAside={titleAside}
-              >
-                {getSectionContent(section.id, (project) => setSelectedProject(project))}
-              </SectionShell>
-            );
+              <main className="contents">
+                {SECTION_META.map((section) => {
+                  const titleAside =
+                    section.id === "stack" ? (
+                      <StackGitHubHeaderButton repository={development.repository} />
+                    ) : section.id === "skills" ? (
+                      <SkillsModeToggle />
+                    ) : undefined;
 
-            return section.id === "skills" ? (
-              <SkillsViewProvider key={section.id}>{shell}</SkillsViewProvider>
-            ) : (
-              <Fragment key={section.id}>{shell}</Fragment>
-            );
-          })}
-          </main>
-        </div>
+                  const shell = (
+                    <SectionShell
+                      section={section}
+                      shouldReduceMotion={shouldReduceMotion}
+                      titleAside={titleAside}
+                    >
+                      {getSectionContent(section.id, (project) => setSelectedProject(project))}
+                    </SectionShell>
+                  );
 
-        {selectedProject ? (
-          <ProjectModal project={selectedProject} onClose={() => setSelectedProject(null)} />
-        ) : null}
+                  return section.id === "skills" ? (
+                    <SkillsViewProvider key={section.id}>{shell}</SkillsViewProvider>
+                  ) : (
+                    <Fragment key={section.id}>{shell}</Fragment>
+                  );
+                })}
+              </main>
+            </div>
 
-        <FixedExperienceLabel />
-        <p
-          aria-label="Web Developer and Mobile Developer"
-          className={`pointer-events-none fixed top-1/2 left-1 z-20 hidden -translate-y-1/2 rotate-180 text-[10px] tracking-[0.24em] [writing-mode:vertical-lr] [text-orientation:mixed] md:block md:left-3 md:text-xs ${fixedLabel(viewMode)}`}
-          style={{ zoom: zoomCompensation }}
-        >
-          WEB DEVELOPER & MOBILE DEVELOPER
-        </p>
+            {selectedProject ? (
+              <ProjectModal project={selectedProject} onClose={() => setSelectedProject(null)} />
+            ) : null}
 
-        <footer
-          className={`fixed right-4 bottom-4 z-20 text-[10px] tracking-[0.22em] uppercase md:bottom-5 md:right-6 md:text-[11px] ${fixedLabel(viewMode)}`}
-          style={{ zoom: zoomCompensation }}
-        >
-          <p className="text-right opacity-85">Copyright</p>
-          <p className="mt-1 max-w-sm text-right leading-relaxed normal-case tracking-[0.14em] opacity-70">
-            &copy; 2026 Kamon-Tahara-504
-          </p>
-        </footer>
-      </div>
-    </PortfolioViewProvider>
+            <FixedExperienceLabel />
+            <p
+              aria-label="Web Developer and Mobile Developer"
+              className={`pointer-events-none fixed top-1/2 left-1 z-20 hidden -translate-y-1/2 rotate-180 text-[10px] tracking-[0.24em] [writing-mode:vertical-lr] [text-orientation:mixed] md:block md:left-3 md:text-xs ${fixedLabel(viewMode)}`}
+              style={{ zoom: zoomCompensation }}
+            >
+              WEB DEVELOPER & MOBILE DEVELOPER
+            </p>
+
+            <footer
+              className={`fixed right-4 bottom-4 z-20 text-[10px] tracking-[0.22em] uppercase md:bottom-5 md:right-6 md:text-[11px] ${fixedLabel(viewMode)}`}
+              style={{ zoom: zoomCompensation }}
+            >
+              <p className="text-right opacity-85">Copyright</p>
+              <p className="mt-1 max-w-sm text-right leading-relaxed normal-case tracking-[0.14em] opacity-70">
+                &copy; 2026 Kamon-Tahara-504
+              </p>
+            </footer>
+          </div>
+        </PortfolioViewProvider>
+      )}
+
+      {entryBlackout ? (
+        <EntryBlackout
+          opacity={entryBlackout.opacity}
+          durationMs={blackoutDurationMs}
+          onTransitionEnd={handleBlackoutTransitionEnd}
+        />
+      ) : null}
+    </>
   );
 }
