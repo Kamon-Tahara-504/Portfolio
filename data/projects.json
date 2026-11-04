@@ -27,7 +27,7 @@
     "slug": "thisone",
     "title": "ThisOne",
     "catchphrase": "全ての管理を、これ一つで。",
-    "description": "タスク管理､スケジュール管理､メモ機能､を一つのアプリで一括管理 !\nそれぞれの連携力を高めることで日々の生産性向上を目指し \n数多くの機能を搭載し使いやすさを限りなく追求した \nFlutter製のモバイルアプリケーションです !",
+    "description": "タスク管理､スケジュール管理､メモ機能､を一つのアプリで一括管理 !\nそれぞれの連携力を高めることで日々の生産性向上を目指し \n数多くの機能を搭載し使いやすさを限りなく追求した \nモバイルアプリケーションです !",
     "category": "mobile",
     "images": [
       "/images/projects/ThisOne/ThisOne.png",
@@ -114,7 +114,7 @@
     "number": "06",
     "slug": "ojiichan-game",
     "title": "おじいちゃんゲーム",
-    "catchphrase": "子供を合体させて おじいちゃんを作ろう！",
+    "catchphrase": "子供を合体させておじいちゃんを作ろう！",
     "description": "子供キャラをくっつけておじいちゃんを目指す、\nブラウザで遊べるパズルゲームです。\n2D 描画に PixiJS、物理演算に Matter.js を使い、\nドラッグや衝突を活かした操作感を実現しました !",
     "category": "web",
     "images": [
@@ -159,7 +159,7 @@
     "number": "08",
     "slug": "myshop",
     "title": "MyShop",
-    "catchphrase": "男性層のシェア奪取を目指す！",
+    "catchphrase": "男性ユーザー特化のフリマアプリ", 
     "description": "2年次後期の開発課題として、男性ユーザーを主なターゲットにしたフリマアプリに取り組みました。\nSpring と Thymeleaf でバックエンドと画面を組み、AWS EC2 でデプロイしています。",
     "category": "web",
     "productionType": "collaborative",
