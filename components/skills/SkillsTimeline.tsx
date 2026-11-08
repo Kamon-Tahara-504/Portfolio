@@ -52,7 +52,7 @@ export default function SkillsTimeline({ skills, contentVisible = true }: Skills
 
   return (
     <div className="mt-0 w-full pb-0.5">
-      <div className={`relative w-full px-3 pt-4 pb-3 md:px-4 md:pt-5 md:pb-4 ${surfaceCard(viewMode)} shadow-lg ${viewMode === "personal" ? "shadow-black/35 md:rounded-2xl" : "md:rounded-2xl"}`}>
+      <div className={`relative w-full px-3 pt-4 pb-3 md:px-4 md:pt-5 md:pb-4 ${surfaceCard(viewMode)} ${viewMode === "personal" ? "shadow-lg shadow-black/35 md:rounded-2xl" : "md:rounded-2xl"}`}>
         <div
           className="transition-opacity duration-300"
           style={{ opacity: contentVisible ? 1 : 0, pointerEvents: contentVisible ? "auto" : "none" }}

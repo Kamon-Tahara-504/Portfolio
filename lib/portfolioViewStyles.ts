@@ -14,6 +14,14 @@ export function isRecruiterView(viewMode: PortfolioViewMode): boolean {
   return viewMode === "recruiter";
 }
 
+// 担当者向けの GitHub / Contact ボタンと同じ、薄いグレーで少し浮いた面。
+const recruiterSoftSurface =
+  "border border-zinc-200/80 bg-surface-muted shadow-[0_6px_18px_rgba(15,23,42,0.08)]";
+
+// 個人向けのチップと同じ、半透明＋軽いぼかしのリキッド面。
+const personalLiquidSurface =
+  "border border-zinc-300/25 bg-zinc-900/55 backdrop-blur-sm";
+
 /** セクション本文の muted テキスト。 */
 export function mutedText(viewMode: PortfolioViewMode): string {
   return viewClass(viewMode, {
@@ -26,7 +34,7 @@ export function mutedText(viewMode: PortfolioViewMode): string {
 export function surfaceCard(viewMode: PortfolioViewMode): string {
   return viewClass(viewMode, {
     personal: "rounded-lg border border-zinc-300/20 bg-black/30 p-4 sm:p-5",
-    recruiter: "rounded-lg border border-border bg-surface p-4 sm:p-5",
+    recruiter: `rounded-lg p-4 sm:p-5 ${recruiterSoftSurface}`,
   });
 }
 
@@ -93,16 +101,15 @@ export function navText(viewMode: PortfolioViewMode): string {
 /** チップ（About 等）。 */
 export function chip(viewMode: PortfolioViewMode): string {
   return viewClass(viewMode, {
-    personal: "inline-flex items-center gap-1 rounded-full border border-zinc-300/25 bg-zinc-900/55 px-2.5 py-1 backdrop-blur-sm text-zinc-100",
-    recruiter: "inline-flex items-center gap-1 rounded-full border border-border bg-surface-muted px-2.5 py-1 text-foreground",
+    personal: `inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-zinc-100 ${personalLiquidSurface}`,
+    recruiter: `inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-foreground ${recruiterSoftSurface}`,
   });
 }
 
 /** CTA ボタン（GitHub / Contact / モーダルリンク）。 */
 export function ctaButton(viewMode: PortfolioViewMode): string {
   return viewClass(viewMode, {
-    personal:
-      "group inline-flex h-11 items-center justify-center gap-2 rounded-full border border-zinc-300/25 bg-zinc-900/70 px-5 text-sm font-bold tracking-wide text-zinc-100 shadow-md transition-[transform,box-shadow,background-color,border-color] duration-300 hover:scale-105 hover:border-zinc-300/45 hover:bg-zinc-800/85 hover:shadow-lg active:scale-[1.02] active:shadow-sm sm:h-12",
+    personal: `group inline-flex h-11 items-center justify-center gap-2 rounded-full px-5 text-sm font-bold tracking-wide text-zinc-100 shadow-md transition-[transform,box-shadow,background-color,border-color] duration-300 hover:scale-105 hover:border-zinc-300/45 hover:bg-zinc-900/70 hover:shadow-lg active:scale-[1.02] active:shadow-sm sm:h-12 ${personalLiquidSurface}`,
     recruiter:
       "group inline-flex h-11 items-center justify-center gap-2 rounded-full border border-border bg-surface-muted px-5 text-sm font-bold tracking-wide text-foreground shadow-sm transition-[transform,box-shadow,background-color,border-color] duration-300 hover:scale-105 hover:border-zinc-400 hover:bg-zinc-100 hover:shadow-md active:scale-[1.02] sm:h-12",
   });
@@ -176,7 +183,7 @@ export function worksCard(viewMode: PortfolioViewMode): string {
 export function careerCard(viewMode: PortfolioViewMode): string {
   return viewClass(viewMode, {
     personal: "w-full min-w-0 rounded-2xl border border-zinc-300/20 bg-black/30 px-3.5 py-3 backdrop-blur-[2px] md:px-4",
-    recruiter: "w-full min-w-0 rounded-2xl border border-border bg-surface px-3.5 py-3 md:px-4",
+    recruiter: `w-full min-w-0 rounded-2xl px-3.5 py-3 md:px-4 ${recruiterSoftSurface}`,
   });
 }
 
