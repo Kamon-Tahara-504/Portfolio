@@ -1,0 +1,113 @@
+/* サブカラーの黒を面として使うのはこの締めのセクションだけにする */
+.contact {
+  position: relative;
+  padding-top: var(--space-16);
+  padding-bottom: var(--space-4);
+  background-color: var(--color-ink);
+  color: var(--color-inverse);
+  overflow: hidden;
+  scroll-margin-top: var(--header-height);
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.rule {
+  flex: 0 0 58px;
+  height: 1px;
+  background-color: currentColor;
+  transform-origin: left;
+}
+
+.title {
+  font-family: var(--font-en);
+  font-size: clamp(2rem, 1.2rem + 4vw, 4.8rem);
+  font-weight: 500;
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+}
+
+.lead {
+  max-width: 27.2rem;
+  margin-top: var(--space-3);
+  color: rgba(255, 255, 255, 0.7);
+  font-size: var(--text-sm);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4);
+  margin-top: var(--space-8);
+}
+
+.mail {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--space-3);
+  flex: 1 1 25.6rem;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-inverse);
+  transition:
+    background-color 0.35s,
+    color 0.35s;
+}
+
+.mail:hover {
+  background-color: var(--color-inverse);
+  color: var(--color-ink);
+}
+
+.mailLabel {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.mailAddress {
+  font-family: var(--font-en);
+  font-size: clamp(0.8rem, 0.64rem + 0.8vw, 1.28rem);
+  overflow-wrap: anywhere;
+}
+
+.arrow {
+  font-size: var(--text-lg);
+  transition: transform 0.4s var(--ease-out);
+}
+
+.mail:hover .arrow {
+  transform: translateX(6px);
+}
+
+.bottom {
+  display: flex;
+  justify-content: space-between;
+  margin-top: var(--space-16);
+  padding-top: var(--space-3);
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 560px) {
+  .mail {
+    grid-template-columns: 1fr auto;
+  }
+
+  .mailLabel {
+    grid-column: 1 / -1;
+  }
+}

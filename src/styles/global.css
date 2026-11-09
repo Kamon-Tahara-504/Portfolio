@@ -1,0 +1,132 @@
+@import "./tokens.css";
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* 斜めスライドインの初期位置が画面外へはみ出すため横方向を切り取る。
+   hidden だとスクロールコンテナになり position: sticky が効かなくなるので clip を使う */
+html,
+body {
+  overflow-x: clip;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  /* .grid-layer をページ全体の高さに広げる基準 */
+  position: relative;
+  font-family: var(--font-jp);
+  font-size: var(--text-base);
+  line-height: 1.8;
+  color: var(--color-ink);
+  background-color: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 細い罫線のトーンに合わせた薄いグリッド。
+   スクロールに合わせて横へ動かすので、移動量（画面幅の 45%）より広く左右へはみ出させておく */
+.grid-layer {
+  position: absolute;
+  inset: 0 -50vw;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(var(--color-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-grid) 1px, transparent 1px);
+  background-size: 120px 120px;
+  background-position: center top;
+  will-change: transform;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+section[id] {
+  scroll-margin-top: var(--header-height);
+}
+
+:focus-visible {
+  outline: 1px solid var(--color-ink);
+  outline-offset: 4px;
+}
+
+.container {
+  width: 100%;
+  max-width: calc(var(--container) + var(--gutter) * 2);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.section {
+  position: relative;
+  padding-block: var(--space-16);
+}
+
+@media (max-width: 768px) {
+  .section {
+    padding-block: var(--space-12);
+  }
+}
+
+/* 下線が左から伸びるテキストリンク。カードやピルを使わずに操作対象を示す */
+.text-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  font-family: var(--font-en);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.text-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 1px;
+  background-color: currentColor;
+  transform: scaleX(0.35);
+  transform-origin: left;
+  transition: transform 0.5s var(--ease-out);
+}
+
+.text-link:hover::after {
+  transform: scaleX(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}

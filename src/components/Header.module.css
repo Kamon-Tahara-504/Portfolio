@@ -1,0 +1,138 @@
+.header {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 50;
+  height: var(--header-height);
+  background-color: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(8px);
+  border-bottom: var(--border);
+}
+
+.inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.brand {
+  font-family: var(--font-en);
+  font-size: var(--text-base);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.list {
+  display: flex;
+  gap: var(--space-4);
+}
+
+.link {
+  position: relative;
+  font-family: var(--font-en);
+  font-size: var(--text-sm);
+  letter-spacing: 0.04em;
+}
+
+.link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 100%;
+  height: 1px;
+  background-color: var(--color-ink);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.45s var(--ease-out);
+}
+
+.link:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+.cta {
+  padding: 0.55rem 1.4rem;
+  border: var(--border);
+  font-family: var(--font-en);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  transition:
+    background-color 0.3s,
+    color 0.3s;
+}
+
+.cta:hover {
+  background-color: var(--color-ink);
+  color: var(--color-inverse);
+}
+
+.toggle {
+  display: none;
+  padding: 0.4rem 1rem;
+  border: var(--border);
+  font-family: var(--font-en);
+  font-size: var(--text-sm);
+}
+
+@media (max-width: 768px) {
+  .toggle {
+    display: block;
+  }
+
+  .nav {
+    position: fixed;
+    inset: var(--header-height) 0 auto;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: var(--space-2) var(--gutter) var(--space-4);
+    background-color: var(--color-bg);
+    border-bottom: var(--border);
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(-8px);
+    transition:
+      opacity 0.3s,
+      transform 0.3s var(--ease-out),
+      visibility 0.3s;
+  }
+
+  .nav[data-open="true"] {
+    visibility: visible;
+    opacity: 1;
+    transform: none;
+  }
+
+  .list {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .list li {
+    border-bottom: var(--border-soft);
+  }
+
+  .link {
+    display: block;
+    padding-block: var(--space-2);
+    font-size: var(--text-base);
+  }
+
+  .link::after {
+    display: none;
+  }
+
+  .cta {
+    margin-top: var(--space-3);
+    text-align: center;
+  }
+}

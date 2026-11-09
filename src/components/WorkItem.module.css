@@ -1,0 +1,312 @@
+.item {
+  display: flex;
+  width: 100%;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  flex-direction: column;
+  border: var(--border);
+  background-color: var(--color-bg);
+  /* 左端の縦線で「今見ているカード」を示す。画像拡大は使わない */
+  box-shadow: inset 0 0 0 0 var(--color-ink);
+  transition:
+    background-color 0.3s var(--ease-out),
+    box-shadow 0.3s var(--ease-out);
+}
+
+.item:hover,
+.item:focus-visible {
+  background-color: var(--color-surface);
+  box-shadow: inset 4px 0 0 0 var(--color-ink);
+  outline: none;
+}
+
+.frame {
+  position: relative;
+  overflow: hidden;
+  border-bottom: var(--border);
+  aspect-ratio: 16 / 10;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.number {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 0.28rem 0.6rem;
+  background-color: var(--color-bg);
+  border-right: var(--border);
+  border-bottom: var(--border);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: var(--space-1);
+  padding: var(--space-4);
+}
+
+.meta {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.06em;
+  color: var(--color-muted);
+}
+
+.title {
+  font-family: var(--font-en);
+  font-size: var(--text-xl);
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.catch {
+  font-weight: 700;
+}
+
+.description {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  /* 拡大表示と改行位置をそろえ、展開時に文章のかたちが急に変わらないようにする */
+  white-space: pre-line;
+  color: var(--color-muted);
+  font-size: var(--text-sm);
+}
+
+.tech {
+  margin-top: var(--space-1);
+  padding-top: var(--space-2);
+  border-top: var(--border-soft);
+  /* 拡大表示の Tech 本文と同じ書体にして、展開時の切り替わりを目立たせない */
+  font-size: var(--text-xs);
+}
+
+
+.more {
+  align-self: flex-start;
+  margin-top: auto;
+  padding: 0.35rem 0.7rem;
+  border: var(--border);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.06em;
+  transition:
+    background-color 0.3s var(--ease-out),
+    color 0.3s var(--ease-out);
+}
+
+.item:hover .more,
+.item:focus-visible .more,
+.hidden .more {
+  background-color: var(--color-ink);
+  color: var(--color-inverse);
+}
+
+/*
+ * 拡大中は、拡大表示へ移動していく部品だけを隠す。
+ * .more は開いた瞬間に覆いでホバーが外れて白へ切り替わるのを防ぐため、ホバー時の見た目を保ってからフェードさせる。
+ * 一覧にしかない番号や線(data-card-only)は残し、アニメーションでフェードアウトさせる
+ */
+.hidden [data-flip-id] {
+  visibility: hidden;
+}
+
+.hidden [data-card-only] {
+  visibility: visible;
+}
+
+@media (max-width: 480px) {
+  .body {
+    padding: var(--space-3);
+  }
+}
+
+/* ---- 拡大表示 ---- */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+}
+
+.backdrop {
+  position: absolute;
+  inset: 0;
+  background-color: rgb(255 255 255 / 0.92);
+}
+
+.expanded,
+.frameBox {
+  position: fixed;
+  inset: var(--space-6) var(--gutter);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.frameBox {
+  border: var(--border);
+  background-color: var(--color-bg);
+  pointer-events: none;
+}
+
+.expanded {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  outline: none;
+}
+
+
+.expandedInner {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  gap: var(--space-3) var(--space-6);
+  align-items: start;
+  padding: var(--space-4) var(--space-6) var(--space-6);
+}
+
+.topBar {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: var(--space-2);
+  border-bottom: var(--border);
+}
+
+.topNumber {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+}
+
+.close {
+  padding: 0.4rem 0.9rem;
+  border: var(--border);
+  background-color: var(--color-bg);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition:
+    background-color 0.3s var(--ease-out),
+    color 0.3s var(--ease-out);
+}
+
+.close:hover,
+.close:focus-visible {
+  background-color: var(--color-ink);
+  color: var(--color-inverse);
+}
+
+.mainFrame {
+  overflow: hidden;
+  border: var(--border);
+  background-color: var(--color-surface);
+  aspect-ratio: 1 / 1;
+  /* 正方形は横幅がそのまま高さになるため、上限を決めて画面の縦に収める */
+  width: 100%;
+  max-width: 620px;
+}
+
+.mainImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.detail {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+/* 一覧カードより一段大きくして、拡大表示での読みやすさを優先する */
+.detail .meta {
+  font-size: var(--text-sm);
+}
+
+.detailTitle {
+  font-family: var(--font-en);
+  font-size: clamp(1.6rem, 1.2rem + 1vw, 2.1rem);
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.detail .catch {
+  font-size: var(--text-lg);
+}
+
+.fullDescription {
+  white-space: pre-line;
+  color: var(--color-muted);
+  font-size: var(--text-base);
+  /* 一覧カードの説明文(本文の 1.8 を継承)と揃える。比率が違うと拡大の途中で行間が急に変わって見える */
+  line-height: 1.8;
+}
+
+.facts {
+  border-top: var(--border-soft);
+}
+
+/*
+ * 線の色をアニメーションで出し入れするため、太さ 0 の辺も含めて 4 辺とも同じ色にしておく。
+ * 揃えないと途中で文字色(濃い色)へ向かって補間され、終了時に薄い色へ急に戻って見える
+ */
+.facts,
+.fact {
+  border-color: var(--color-line-soft);
+}
+
+.fact {
+  display: grid;
+  grid-template-columns: 5.5rem 1fr;
+  gap: var(--space-2);
+  padding: var(--space-1) 0;
+  border-bottom: var(--border-soft);
+  font-size: var(--text-base);
+}
+
+.fact dt {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--color-muted);
+}
+
+/* Tech / Period の値はカードの .tech と同じく本文フォントで揃える */
+.fact dd {
+  font-family: var(--font-jp);
+}
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-3);
+  padding-top: var(--space-1);
+}
+
+@media (max-width: 860px) {
+  .expanded,
+  .frameBox {
+    inset: var(--space-3) var(--space-2);
+  }
+
+  .expandedInner {
+    grid-template-columns: 1fr;
+    padding: var(--space-3);
+  }
+}

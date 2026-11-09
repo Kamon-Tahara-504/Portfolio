@@ -1,0 +1,95 @@
+.grid {
+  display: grid;
+  /* 右の文章列を広めにし、リードが1行に収まりやすくする */
+  grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+  gap: var(--space-8);
+  align-items: start;
+}
+
+.portrait {
+  position: sticky;
+  top: calc(var(--header-height) + var(--space-4));
+  border: var(--border);
+  background-color: var(--color-bg);
+}
+
+.portrait img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  filter: grayscale(1) contrast(1.05);
+}
+
+.caption {
+  display: flex;
+  justify-content: space-between;
+  padding: var(--space-2);
+  border-top: var(--border);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.1em;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.lead {
+  /* text-xl だと「創造的な時間を生み出す。」の手前で折り返すため、一段小さくする */
+  font-size: clamp(1rem, 0.85rem + 0.55vw, 1.35rem);
+  font-weight: 700;
+  line-height: 1.55;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+
+@media (min-width: 1100px) {
+  .lead {
+    white-space: nowrap;
+  }
+}
+
+.paragraph {
+  white-space: pre-line;
+  color: var(--color-muted);
+}
+
+.profile {
+  margin-top: var(--space-4);
+  border-top: var(--border);
+  background-color: var(--color-bg);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 6.4rem 1fr;
+  gap: var(--space-2);
+  padding-block: var(--space-2);
+  border-bottom: var(--border-soft);
+  font-size: var(--text-sm);
+}
+
+.row dt {
+  font-weight: 700;
+}
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+
+  .portrait {
+    position: static;
+    max-width: 288px;
+  }
+}
+
+@media (max-width: 480px) {
+  .row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+}
