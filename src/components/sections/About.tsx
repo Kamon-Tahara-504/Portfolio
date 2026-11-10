@@ -25,7 +25,7 @@ export function About() {
 
         <div className={styles.grid}>
           <figure className={styles.portrait}>
-            <img src={about.about.image} alt={about.name} loading="lazy" />
+            <img src={about.about.image} alt={about.name} />
             <figcaption className={styles.caption}>
               <span>{about.name}</span>
               <span>{about.nameEn}</span>
