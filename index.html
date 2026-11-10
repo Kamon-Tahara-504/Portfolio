@@ -2,6 +2,11 @@
 <html lang="ja">
   <head>
     <meta charset="UTF-8" />
+    <script>
+      // module より先に実行し、再読み込み時の前回位置の復元を止める
+      if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+      if (location.hash) history.replaceState(null, "", location.pathname + location.search);
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="田原 果門（Tahara Kamon）のポートフォリオ。Web / Mobile アプリケーションの設計と開発。" />
     <title>Tahara Kamon | Portfolio</title>

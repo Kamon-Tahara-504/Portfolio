@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Header } from "./components/Header";
 import { HeroStartGauge } from "./components/hero/HeroStartGauge";
 import { About } from "./components/sections/About";
@@ -10,6 +10,7 @@ import { Works } from "./components/sections/Works";
 import { useDiagonalScroll } from "./hooks/useDiagonalScroll";
 import { useLineDraw } from "./hooks/useLineDraw";
 import { ScrollTrigger } from "./lib/gsap";
+import { resetEntryPosition } from "./lib/scroll";
 
 // 動きを減らす設定では導入ゲージ自体を出さず、最初から本文を見せる
 const skipIntro = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -19,6 +20,11 @@ export default function App() {
   const gridRef = useRef<HTMLDivElement>(null);
   const [introDone, setIntroDone] = useState(skipIntro);
   const finishIntro = useCallback(() => setIntroDone(true), []);
+  // 斜めスクロールの初期位置は、この時点のスクロール量で決まる。
+  // 前回位置のまま作ると Hero の段が退場の途中で固定される。
+  useLayoutEffect(() => {
+    resetEntryPosition();
+  }, []);
   useDiagonalScroll(mainRef, gridRef);
   useLineDraw(mainRef);
 

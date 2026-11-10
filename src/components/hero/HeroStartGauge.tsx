@@ -14,10 +14,10 @@ const IDLE = 400;
 const FILL = 2200;
 const STEP = 500;
 const HOLD = 720;
-// Hero が所定の位置に入るまで白い覆いを残し、そのあとゆっくり消して画像を見せる
-// 6段が 0.12 秒ずつ遅れ、各 0.9 秒で入る。最後の段が着くまで覆いを残す
-const REVEAL_AT = 1500;
-const FADE = 700;
+// 放射が終わったあと、100% を読み取れる程度だけ残して白を消す。
+// Hero の入場はこの覆いが消えてから始まるので、ここに入場時間を足すと数字が止まった白が長く残る。
+const REVEAL_AT = 280;
+const FADE = 500;
 
 const RADIUS = 88;
 const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
