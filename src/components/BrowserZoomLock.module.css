@@ -1,0 +1,37 @@
+.lock {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  display: grid;
+  place-items: center;
+  padding-inline: var(--gutter);
+  background-color: var(--color-bg);
+  color: var(--color-ink);
+}
+
+.panel {
+  text-align: center;
+}
+
+.title {
+  font-family: var(--font-en);
+  font-size: var(--text-lg);
+  font-weight: 600;
+  letter-spacing: 0.18em;
+}
+
+.description {
+  margin-top: var(--space-3);
+  font-size: var(--text-sm);
+  line-height: 1.8;
+  color: var(--color-muted);
+}
+
+.current {
+  margin-top: var(--space-4);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.2em;
+  color: var(--color-muted);
+  font-variant-numeric: tabular-nums;
+}
