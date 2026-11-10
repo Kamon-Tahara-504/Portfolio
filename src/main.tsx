@@ -5,10 +5,9 @@ import App from "./App.tsx";
 import { resetEntryPosition } from "./lib/scroll";
 
 resetEntryPosition();
-window.addEventListener("pageshow", (event) => {
-  // 戻るキャッシュから復帰したときも、途中セクションではなく先頭から始める
-  if (event.persisted) resetEntryPosition();
-});
+// 描画後にブラウザが前回位置を戻しても、その直後に先頭へ戻す
+window.addEventListener("load", resetEntryPosition);
+window.addEventListener("pageshow", resetEntryPosition);
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

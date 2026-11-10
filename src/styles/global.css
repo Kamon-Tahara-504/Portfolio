@@ -13,6 +13,8 @@
 html,
 body {
   overflow-x: clip;
+  /* 先頭・末尾でブラウザのバウンス（オーバースクロール）が出ないようにする */
+  overscroll-behavior: none;
 }
 
 html {

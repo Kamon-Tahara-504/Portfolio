@@ -20,5 +20,6 @@ export function resetEntryPosition() {
     const { pathname, search } = window.location;
     history.replaceState(null, "", `${pathname}${search}`);
   }
-  window.scrollTo(0, 0);
+  // smooth だと途中位置のまま ScrollTrigger が確定するため、即座に先頭へ戻す
+  window.scrollTo({ top: 0, left: 0, behavior: "instant" });
 }
