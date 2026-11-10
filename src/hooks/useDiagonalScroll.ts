@@ -45,26 +45,51 @@ export function useDiagonalScroll(
         const gridTo = gridOffset + direction;
         gridOffset = gridTo;
 
-        gsap
-          .timeline({
-            defaults: { ease: "none" },
-            scrollTrigger: {
-              trigger: next,
-              start: "top 90%",
-              end: "top 40%",
-              scrub: 0.8,
-              invalidateOnRefresh: true,
-            },
-          })
+        const tl = gsap.timeline({
+          defaults: { ease: "none" },
+          scrollTrigger: {
+            trigger: next,
+            start: "top 90%",
+            end: "top 40%",
+            scrub: 0.8,
+            invalidateOnRefresh: true,
+          },
+        });
+
+        const rows = prev.querySelectorAll<HTMLElement>("[data-hero-row]");
+        if (rows.length > 0) {
+          // Hero は塊ではなく上の段から順に送り出す。全体を先に消すと下の段が動く前に見えなくなる
+          const rowStagger = 0.12;
+          rows.forEach((row, rowIndex) => {
+            tl.fromTo(
+              row,
+              { x: 0 },
+              { x: () => direction * shift(), duration: 0.9, immediateRender: false },
+              rowIndex * rowStagger,
+            );
+          });
+          // 画像自体は入場時の縦パララックスで transform を使っている。
+          // 退場は親を上へ動かし、Hero の overflow で切れながら抜けるようにする
+          const media = prev.querySelector("[data-hero-media]")?.parentElement;
+          if (media) {
+            tl.fromTo(
+              media,
+              { yPercent: 0, opacity: 1 },
+              { yPercent: -40, opacity: 0, duration: 1, immediateRender: false },
+              0,
+            );
+          }
+        } else {
           // prev は一つ前の境目で入場済みの状態から始まるため、生成時に値を上書きしない
-          .fromTo(prev, { autoAlpha: 1 }, { autoAlpha: 0, immediateRender: false }, 0)
-          .fromTo(
+          tl.fromTo(prev, { autoAlpha: 1 }, { autoAlpha: 0, immediateRender: false }, 0).fromTo(
             contentOf(prev),
             { x: 0 },
             { x: () => direction * shift(), immediateRender: false },
             0,
-          )
-          .fromTo(next, { autoAlpha: 0 }, { autoAlpha: 1 }, 0)
+          );
+        }
+
+        tl.fromTo(next, { autoAlpha: 0 }, { autoAlpha: 1 }, 0)
           .fromTo(contentOf(next), { x: () => -direction * shift() }, { x: 0 }, 0)
           .fromTo(
             grid,
