@@ -1,0 +1,91 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  background-color: var(--color-bg);
+  transition-property: opacity;
+  transition-timing-function: ease-out;
+}
+
+.fading {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.gauge {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: min(200px, 56vw);
+  aspect-ratio: 1;
+}
+
+.ring {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  /* 円弧を 12 時の位置から時計回りに伸ばす */
+  rotate: -90deg;
+}
+
+.track,
+.arc {
+  fill: none;
+  stroke-width: 1;
+}
+
+.track {
+  stroke: var(--color-line-soft);
+}
+
+.arc {
+  stroke: var(--color-ink);
+  stroke-width: 1.5;
+}
+
+.value {
+  font-family: var(--font-mono);
+  font-size: clamp(1.6rem, 1.2rem + 1.2vw, 2.2rem);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+}
+
+.unit {
+  margin-left: 0.15em;
+  font-size: 0.5em;
+  color: var(--color-muted);
+}
+
+.burst {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* 円の縁から外へ伸びる線。rotate で方向を決め、translate で縁の位置まで出す */
+.ray {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1px;
+  height: 18%;
+  background-color: var(--color-ink);
+  transform-origin: 50% 0;
+  translate: -50% 0;
+  animation: ray 720ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* 円の半径(ゲージの 44%)は線の長さ(18%)の約 2.44 倍なので、そこを起点に外へ伸ばす */
+@keyframes ray {
+  from {
+    transform: translateY(250%) scaleY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(400%) scaleY(1);
+    opacity: 0;
+  }
+}

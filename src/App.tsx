@@ -1,5 +1,6 @@
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Header } from "./components/Header";
+import { HeroStartGauge } from "./components/hero/HeroStartGauge";
 import { About } from "./components/sections/About";
 import { Contact } from "./components/sections/Contact";
 import { Experience } from "./components/sections/Experience";
@@ -10,9 +11,14 @@ import { useDiagonalScroll } from "./hooks/useDiagonalScroll";
 import { useLineDraw } from "./hooks/useLineDraw";
 import { ScrollTrigger } from "./lib/gsap";
 
+// 動きを減らす設定では導入ゲージ自体を出さず、最初から本文を見せる
+const skipIntro = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
 export default function App() {
   const mainRef = useRef<HTMLElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
+  const [introDone, setIntroDone] = useState(skipIntro);
+  const finishIntro = useCallback(() => setIntroDone(true), []);
   useDiagonalScroll(mainRef, gridRef);
   useLineDraw(mainRef);
 
@@ -28,10 +34,11 @@ export default function App() {
     <>
       {/* セクションと一緒に横へ流し、視点が移動している感覚を作る背景 */}
       <div ref={gridRef} className="grid-layer" aria-hidden="true" />
+      {!introDone && <HeroStartGauge onComplete={finishIntro} />}
       <Header />
       {/* useDiagonalScroll は main の直下の要素をセクション単位として扱う */}
       <main ref={mainRef}>
-        <Hero />
+        <Hero ready={introDone} />
         <About />
         <Works />
         <Experience />
