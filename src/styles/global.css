@@ -20,6 +20,9 @@ body {
 html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
+  /* 本文のドラッグ選択を止める。開発者ツールからの取得は止めない。 */
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 body {
@@ -51,6 +54,18 @@ body {
 img {
   display: block;
   max-width: 100%;
+  -webkit-user-drag: none;
+}
+
+svg {
+  -webkit-user-drag: none;
+}
+
+/* 入力欄はあとから足しても文字を選べるようにしておく */
+input,
+textarea {
+  -webkit-user-select: text;
+  user-select: text;
 }
 
 a {
