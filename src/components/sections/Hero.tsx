@@ -4,9 +4,17 @@ import { about, hero, splitParagraphs } from "../../lib/content";
 import { gsap, MOTION_OK } from "../../lib/gsap";
 import styles from "./Hero.module.css";
 
+// スクロール遷移でセクションを送り出す横移動量と同じ割合
+const SHIFT_RATIO = 0.45;
+
 const headline = splitParagraphs(about.about.description)[0];
 
-export function Hero() {
+type Props = {
+  /** 導入ゲージが終わったら true。白が消えるまで Hero を画面外に置いておく */
+  ready: boolean;
+};
+
+export function Hero({ ready }: Props) {
   const rootRef = useRef<HTMLElement>(null);
 
   useLayoutEffect(() => {
@@ -15,23 +23,21 @@ export function Hero() {
 
     const mm = gsap.matchMedia(root);
     mm.add(MOTION_OK, () => {
-      // 初回表示: 名前の各行が左下から斜めに入り、続けて本文と CTA が揃う
-      gsap
-        .timeline({ defaults: { ease: "power4.out" } })
-        .from("[data-hero-media]", { scale: 1.12, duration: 2.2, ease: "power2.out" }, 0)
-        .from(
-          "[data-hero-line]",
-          { xPercent: -12, yPercent: 110, skewX: -6, duration: 1.3, stagger: 0.12 },
-          0.15,
-        )
-        .from(
-          "[data-hero-fade]",
-          { x: -40, y: 40, autoAlpha: 0, duration: 1.1, stagger: 0.1 },
-          0.6,
-        );
+      const content = root.querySelector("[data-shift]");
+      if (content) {
+        // 導入ゲージの白が消えるまで画面外に置く。ready になってから斜めに入ってくる
+        gsap.set(content, { x: ready ? 0 : -window.innerWidth * SHIFT_RATIO });
+        if (ready) {
+          gsap.fromTo(
+            content,
+            { x: -window.innerWidth * SHIFT_RATIO },
+            { x: 0, duration: 1.1, ease: "power3.inOut" },
+          );
+        }
+      }
 
       // 背景だけ縦方向に遅らせ、セクション全体の斜め移動に奥行きを足す
-      gsap.to("[data-hero-media]", {
+      gsap.to(gsap.utils.selector(root)("[data-hero-media]"), {
         yPercent: 12,
         ease: "none",
         scrollTrigger: { trigger: root, start: "top top", end: "bottom top", scrub: true },
@@ -39,7 +45,7 @@ export function Hero() {
     });
 
     return () => mm.revert();
-  }, []);
+  }, [ready]);
 
   return (
     <section id="top" ref={rootRef} className={styles.hero}>
