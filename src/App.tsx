@@ -9,6 +9,7 @@ import { Hero } from "./components/sections/Hero";
 import { Skills } from "./components/sections/Skills";
 import { Works } from "./components/sections/Works";
 import { useBrowserZoomLock } from "./hooks/useBrowserZoomLock";
+import { useContentGuard } from "./hooks/useContentGuard";
 import { useDiagonalScroll } from "./hooks/useDiagonalScroll";
 import { useLineDraw } from "./hooks/useLineDraw";
 import { ScrollTrigger } from "./lib/gsap";
@@ -23,6 +24,7 @@ export default function App() {
   const [introDone, setIntroDone] = useState(skipIntro);
   const finishIntro = useCallback(() => setIntroDone(true), []);
   const zoomLock = useBrowserZoomLock();
+  useContentGuard();
   // 斜めスクロールの初期位置は、この時点のスクロール量で決まる。
   // 前回位置のまま作ると Hero の段が退場の途中で固定される。
   useLayoutEffect(() => {
