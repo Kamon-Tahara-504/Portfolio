@@ -1,24 +1,37 @@
 import { useState } from "react";
 import { hero } from "../lib/content";
+import { scrollToSection, scrollToTop } from "../lib/scroll";
 import styles from "./Header.module.css";
 
 const NAV_ITEMS = [
-  { href: "#about", label: "About" },
-  { href: "#works", label: "Works" },
-  { href: "#career", label: "Career" },
-  { href: "#skills", label: "Skills" },
-];
+  { id: "about", label: "About" },
+  { id: "works", label: "Works" },
+  { id: "career", label: "Career" },
+  { id: "skills", label: "Skills" },
+] as const;
 
 export function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const close = () => setIsOpen(false);
 
+  const go = (id: string) => {
+    close();
+    scrollToSection(id);
+  };
+
   return (
     <header className={styles.header}>
       <div className={`container ${styles.inner}`}>
-        <a href="#top" className={styles.brand} onClick={close}>
+        <button
+          type="button"
+          className={styles.brand}
+          onClick={() => {
+            close();
+            scrollToTop();
+          }}
+        >
           {hero.nameEn}
-        </a>
+        </button>
 
         <button
           type="button"
@@ -38,16 +51,16 @@ export function Header() {
         >
           <ul className={styles.list}>
             {NAV_ITEMS.map((item) => (
-              <li key={item.href}>
-                <a href={item.href} className={styles.link} onClick={close}>
+              <li key={item.id}>
+                <button type="button" className={styles.link} onClick={() => go(item.id)}>
                   {item.label}
-                </a>
+                </button>
               </li>
             ))}
           </ul>
-          <a href="#contact" className={styles.cta} onClick={close}>
+          <button type="button" className={styles.cta} onClick={() => go("contact")}>
             Contact
-          </a>
+          </button>
         </nav>
       </div>
     </header>
