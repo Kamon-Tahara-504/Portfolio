@@ -15,7 +15,8 @@ const FILL = 2200;
 const STEP = 500;
 const HOLD = 720;
 // Hero が所定の位置に入るまで白い覆いを残し、そのあとゆっくり消して画像を見せる
-const REVEAL_AT = 1100;
+// 6段が 0.12 秒ずつ遅れ、各 0.9 秒で入る。最後の段が着くまで覆いを残す
+const REVEAL_AT = 1500;
 const FADE = 700;
 
 const RADIUS = 88;

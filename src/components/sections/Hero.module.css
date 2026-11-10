@@ -1,11 +1,13 @@
 .hero {
   position: relative;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  justify-content: center;
   min-height: max(100svh, 640px);
   padding-top: var(--header-height);
   overflow: hidden;
-  background-color: var(--color-bg);
+  /* 塗りを置かない。透過部分から、他セクションと同じグリッドの線が見える */
+  background-color: transparent;
 }
 
 .media {
@@ -13,37 +15,25 @@
   inset: 0;
 }
 
-.media::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  /* 文字を置く左側を白へ寄せ、画像の黒い面は右側にだけ残す */
-  background: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0.96) 0%,
-    rgba(255, 255, 255, 0.82) 38%,
-    rgba(255, 255, 255, 0) 72%
-  );
-}
-
-/* 元画像は左が暗いため反転し、明るい面を文字側に向ける。
-   GSAP が img の transform を上書きするので、反転は親要素で行う */
+/* GSAP が img の transform を上書きするので、画面いっぱいは親の枠で決める */
 .flip {
   position: absolute;
-  inset: -15% 0 0;
-  transform: scaleX(-1);
+  inset: 0;
 }
 
 .image {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: left top;
   will-change: transform;
 }
 
 .content {
   position: relative;
   z-index: 1;
+  /* 大きな名前の最小幅で横にはみ出し、左へずれないようにする */
+  min-width: 0;
 }
 
 .role {
@@ -65,10 +55,10 @@
   text-transform: uppercase;
 }
 
-/* 行ごとに overflow を切り、下から差し込む動きを見せる */
+/* ここで横を切ると、大きな文字の左端が欠けて位置がずれて見える */
 .mask {
   display: block;
-  overflow: hidden;
+  overflow: visible;
   padding-bottom: 0.06em;
 }
 

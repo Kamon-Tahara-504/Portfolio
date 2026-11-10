@@ -6,6 +6,8 @@ import styles from "./Hero.module.css";
 
 // スクロール遷移でセクションを送り出す横移動量と同じ割合
 const SHIFT_RATIO = 0.45;
+const ROW_STAGGER = 0.12;
+const ROW_DURATION = 0.9;
 
 const headline = splitParagraphs(about.about.description)[0];
 
@@ -23,16 +25,13 @@ export function Hero({ ready }: Props) {
 
     const mm = gsap.matchMedia(root);
     mm.add(MOTION_OK, () => {
-      const content = root.querySelector("[data-shift]");
-      if (content) {
-        // 導入ゲージの白が消えるまで画面外に置く。ready になってから斜めに入ってくる
-        gsap.set(content, { x: ready ? 0 : -window.innerWidth * SHIFT_RATIO });
+      const rows = gsap.utils.toArray<HTMLElement>(root.querySelectorAll("[data-hero-row]"));
+      if (rows.length > 0) {
+        const offscreen = -window.innerWidth * SHIFT_RATIO;
+        // 導入ゲージの白が消えるまで各段を画面外に置く。塊では動かさず、上から順に入れる
+        gsap.set(rows, { x: ready ? 0 : offscreen });
         if (ready) {
-          gsap.fromTo(
-            content,
-            { x: -window.innerWidth * SHIFT_RATIO },
-            { x: 0, duration: 1.1, ease: "power3.inOut" },
-          );
+          gsap.fromTo(rows, { x: offscreen }, { x: 0, duration: ROW_DURATION, stagger: ROW_STAGGER, ease: "power3.inOut" });
         }
       }
 
@@ -53,7 +52,7 @@ export function Hero({ ready }: Props) {
         <div className={styles.flip}>
           <img
             data-hero-media
-            src={asset("/images/section/Top1.png")}
+            src={asset("/images/section/Top1.1.png")}
             alt=""
             className={styles.image}
             fetchPriority="high"
@@ -62,31 +61,27 @@ export function Hero({ ready }: Props) {
       </div>
 
       <div className={`container ${styles.content}`} data-shift>
-        <p className={styles.role} data-hero-fade>
+        <p className={styles.role} data-hero-row>
           {hero.developerTitle}
         </p>
 
         <h1 className={styles.brand}>
-          <span className={styles.mask}>
-            <span data-hero-line className={styles.line}>
-              {hero.nameEn.split(" ")[0]}
-            </span>
+          <span className={styles.mask} data-hero-row>
+            <span className={styles.line}>{hero.nameEn.split(" ")[0]}</span>
           </span>
-          <span className={styles.mask}>
-            <span data-hero-line className={styles.line}>
-              {hero.nameEn.split(" ")[1]}
-            </span>
+          <span className={styles.mask} data-hero-row>
+            <span className={styles.line}>{hero.nameEn.split(" ")[1]}</span>
           </span>
-          <span className={styles.nameJa} data-hero-fade>
+          <span className={styles.nameJa} data-hero-row>
             {hero.name}
           </span>
         </h1>
 
-        <p className={styles.headline} data-hero-fade>
+        <p className={styles.headline} data-hero-row>
           {headline}
         </p>
 
-        <div className={styles.actions} data-hero-fade>
+        <div className={styles.actions} data-hero-row>
           <a href="#works" className={styles.primary}>
             制作実績を見る
           </a>
