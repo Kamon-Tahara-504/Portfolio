@@ -2,6 +2,7 @@ import { useLayoutEffect, useRef } from "react";
 import { asset } from "../../lib/asset";
 import { about, hero, splitParagraphs } from "../../lib/content";
 import { gsap, MOTION_OK } from "../../lib/gsap";
+import { scrollToSection } from "../../lib/scroll";
 import styles from "./Hero.module.css";
 
 // スクロール遷移でセクションを送り出す横移動量と同じ割合
@@ -82,12 +83,12 @@ export function Hero({ ready }: Props) {
         </p>
 
         <div className={styles.actions} data-hero-row>
-          <a href="#works" className={styles.primary}>
+          <button type="button" className={styles.primary} onClick={() => scrollToSection("works")}>
             制作実績を見る
-          </a>
-          <a href="#contact" className={styles.secondary}>
+          </button>
+          <button type="button" className={styles.secondary} onClick={() => scrollToSection("contact")}>
             お問い合わせ
-          </a>
+          </button>
         </div>
       </div>
 
