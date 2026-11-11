@@ -1,6 +1,7 @@
 import { SectionHeading } from "../SectionHeading";
 import { skillCategories } from "../../lib/content";
 import styles from "./Skills.module.css";
+import { SkillsTimeline } from "./SkillsTimeline";
 
 export function Skills() {
   return (
@@ -22,11 +23,7 @@ export function Skills() {
                   <li key={skill.name} className={styles.skill}>
                     <span className={styles.name}>{skill.name}</span>
                     <span className={styles.track} aria-hidden="true">
-                      <span
-                        className={styles.fill}
-                        style={{ width: `${skill.level}%` }}
-                        data-draw
-                      />
+                      <span className={styles.fill} style={{ width: `${skill.level}%` }} data-draw />
                     </span>
                   </li>
                 ))}
@@ -34,6 +31,8 @@ export function Skills() {
             </div>
           ))}
         </div>
+
+        <SkillsTimeline />
       </div>
     </section>
   );
