@@ -70,6 +70,10 @@ export type Project = {
 export type Skill = {
   name: string;
   level: number;
+  /** "YYYY-MM"。無い項目は自己評価だけに出す */
+  startDate?: string;
+  /** null は進行中 */
+  endDate?: string | null;
 };
 
 export type SkillCategory = {
