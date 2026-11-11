@@ -13,6 +13,7 @@ const easeInOut = (t: number) => (t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t);
 export function SkillsTimeline() {
   const scrollerRef = useRef<HTMLDivElement>(null);
   const [playing, setPlaying] = useState(false);
+  const [sweeping, setSweeping] = useState(false);
   const layout = layoutTimeline(collectTimelineSkills(skillCategories));
   const laneOffsets = layout.skillPositions.map((bar) => bar.lineHeight);
   const minLane = Math.min(0, ...laneOffsets);
@@ -39,6 +40,7 @@ export function SkillsTimeline() {
     const finish = () => {
       if (stopped) return;
       stopped = true;
+      setSweeping(false);
       setPlaying(false);
     };
 
@@ -49,6 +51,7 @@ export function SkillsTimeline() {
       if (el.scrollLeft <= 1) {
         pause = window.setTimeout(() => {
           if (stopped) return;
+          setSweeping(true);
           const startLeft = el.scrollLeft;
           const endLeft = Math.max(0, el.scrollWidth - el.clientWidth);
           const started = performance.now();
@@ -87,15 +90,25 @@ export function SkillsTimeline() {
   return (
     <div className={styles.timeline}>
       <div className={styles.toolbar}>
-        <div>
-          <h3 className={styles.heading}>習得期間</h3>
-          <p className={styles.note}>横軸は月です。バーは始めた月から、終えた月または現在までです。</p>
-        </div>
-        <button type="button" className={styles.play} onClick={play} disabled={playing}>
-          {playing ? "再生中" : "再生"}
-        </button>
+        <h3 className={styles.heading}>習得期間</h3>
+        <p className={styles.note}>横軸は月です。バーは始めた月から、終えた月または現在までです。</p>
       </div>
+      <button
+        type="button"
+        className={styles.play}
+        data-playing={playing || undefined}
+        onClick={play}
+        disabled={playing}
+        aria-label="再生"
+      >
+        <svg className={styles.playRing} viewBox="0 0 40 40" aria-hidden="true">
+          <circle className={styles.playTrack} cx="20" cy="20" r="18" />
+          <circle className={styles.playArc} cx="20" cy="20" r="18" />
+          <polygon className={styles.playMark} points="17,13 17,27 28,20" />
+        </svg>
+      </button>
 
+      <div className={styles.viewport} data-sweeping={sweeping || undefined}>
       <div ref={scrollerRef} className={styles.scroller} data-playing={playing || undefined}>
         <div
           className={styles.track}
@@ -151,6 +164,8 @@ export function SkillsTimeline() {
             );
           })}
         </div>
+      </div>
+      <span className={styles.playhead} aria-hidden="true" />
       </div>
     </div>
   );

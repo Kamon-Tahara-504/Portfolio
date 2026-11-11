@@ -1,5 +1,5 @@
 import { SectionHeading } from "../SectionHeading";
-import { skillCategories } from "../../lib/content";
+import { skillCategories, skillsForLevels } from "../../lib/content";
 import styles from "./Skills.module.css";
 import { SkillsTimeline } from "./SkillsTimeline";
 
@@ -19,7 +19,7 @@ export function Skills() {
             <div key={category.key} className={styles.column}>
               <h3 className={styles.label}>{category.label}</h3>
               <ul className={styles.list}>
-                {category.skills.map((skill) => (
+                {skillsForLevels(category.skills).map((skill) => (
                   <li key={skill.name} className={styles.skill}>
                     <span className={styles.name}>{skill.name}</span>
                     <span className={styles.track} aria-hidden="true">
