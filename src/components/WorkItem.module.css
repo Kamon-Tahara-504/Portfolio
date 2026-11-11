@@ -26,8 +26,9 @@
 .frame {
   position: relative;
   overflow: hidden;
-  border-bottom: var(--border);
   aspect-ratio: 16 / 10;
+  /* border だと中の画像が線の分だけ下にずれ、展開の始点と格納の終点がカードの写真と揃わない */
+  box-shadow: inset 0 -1px 0 var(--color-line);
 }
 
 .image {
@@ -46,6 +47,8 @@
   border-bottom: var(--border);
   font-family: var(--font-mono);
   font-size: var(--text-xs);
+  /* ホバーの左バーと同じく、左端を起点に伸びて出す */
+  transform-origin: left top;
 }
 
 .body {
@@ -111,24 +114,12 @@
     color 0.3s var(--ease-out);
 }
 
+/* 開いた瞬間に覆いでホバーが外れても、ボタンが白へ戻らないようにする */
 .item:hover .more,
 .item:focus-visible .more,
 .hidden .more {
   background-color: var(--color-ink);
   color: var(--color-inverse);
-}
-
-/*
- * 拡大中は、拡大表示へ移動していく部品だけを隠す。
- * .more は開いた瞬間に覆いでホバーが外れて白へ切り替わるのを防ぐため、ホバー時の見た目を保ってからフェードさせる。
- * 一覧にしかない番号や線(data-card-only)は残し、アニメーションでフェードアウトさせる
- */
-.hidden [data-flip-id] {
-  visibility: hidden;
-}
-
-.hidden [data-card-only] {
-  visibility: visible;
 }
 
 @media (max-width: 480px) {
@@ -215,12 +206,13 @@
 
 .mainFrame {
   overflow: hidden;
-  border: var(--border);
   background-color: var(--color-surface);
   aspect-ratio: 1 / 1;
   /* 正方形は横幅がそのまま高さになるため、上限を決めて画面の縦に収める */
   width: 100%;
   max-width: 620px;
+  /* border は画像の位置を内側へ押し下げる。影なら写真の矩形は枠と一致する */
+  box-shadow: inset 0 0 0 1px var(--color-line);
 }
 
 .mainImage {
