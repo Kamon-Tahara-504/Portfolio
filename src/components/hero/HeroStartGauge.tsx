@@ -4,6 +4,8 @@ import { HeroRadialBurst } from "./HeroRadialBurst";
 import styles from "./HeroStartGauge.module.css";
 
 type Props = {
+  /** 覆いを消し始めるときに呼ぶ。Hero とヘッダーの入場をここから始める */
+  onReveal: () => void;
   /** フェードアウトまで終わった後に呼ばれる */
   onComplete: () => void;
 };
@@ -14,8 +16,8 @@ const IDLE = 400;
 const FILL = 2200;
 const STEP = 500;
 const HOLD = 720;
-// 放射が終わったあと、100% を読み取れる程度だけ残して白を消す。
-// Hero の入場はこの覆いが消えてから始まるので、ここに入場時間を足すと数字が止まった白が長く残る。
+// 放射が終わったあと、100% を読み取れる程度だけ残してゲージを消す。
+// 消し始めるタイミングで Hero とヘッダーの入場を始める。
 const REVEAL_AT = 280;
 const FADE = 500;
 
@@ -41,7 +43,7 @@ function progressAt(elapsed: number): number {
  * 中央の数字と円弧を同じ値で動かすため、CSS アニメーションではなく経過時間から毎フレーム計算する。
  * 毎フレーム React を再描画すると数字の切り替わりが重く見えるため、数字と円弧は DOM を直接書き換える。
  */
-export function HeroStartGauge({ onComplete }: Props) {
+export function HeroStartGauge({ onReveal, onComplete }: Props) {
   const rootRef = useRef<HTMLDivElement>(null);
   const arcRef = useRef<SVGCircleElement>(null);
   const valueRef = useRef<HTMLSpanElement>(null);
@@ -75,12 +77,14 @@ export function HeroStartGauge({ onComplete }: Props) {
 
   useEffect(() => {
     if (phase === "filling") return;
-    const timer =
-      phase === "burst"
-        ? window.setTimeout(() => setPhase("fading"), HOLD + REVEAL_AT)
-        : window.setTimeout(onComplete, FADE);
+    if (phase === "burst") {
+      const timer = window.setTimeout(() => setPhase("fading"), HOLD + REVEAL_AT);
+      return () => window.clearTimeout(timer);
+    }
+    onReveal();
+    const timer = window.setTimeout(onComplete, FADE);
     return () => window.clearTimeout(timer);
-  }, [phase, onComplete]);
+  }, [phase, onReveal, onComplete]);
 
   return (
     <div

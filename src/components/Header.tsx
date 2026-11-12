@@ -10,7 +10,16 @@ const NAV_ITEMS = [
   { id: "skills", label: "Skills" },
 ] as const;
 
-export function Header() {
+// バーが出てから、左の文字ほど先に出す
+const TEXT_DELAY = 0.42;
+const TEXT_STEP = 0.07;
+
+type Props = {
+  /** 導入ゲージが消え始めたら true。それまでヘッダーは出さない */
+  ready: boolean;
+};
+
+export function Header({ ready }: Props) {
   const [isOpen, setIsOpen] = useState(false);
   const close = () => setIsOpen(false);
 
@@ -20,11 +29,13 @@ export function Header() {
   };
 
   return (
-    <header className={styles.header}>
+    <header className={styles.header} data-ready={ready || undefined}>
+      <div className={styles.bar} aria-hidden="true" />
       <div className={`container ${styles.inner}`}>
         <button
           type="button"
           className={styles.brand}
+          style={{ animationDelay: ready ? `${TEXT_DELAY}s` : undefined }}
           onClick={() => {
             close();
             scrollToTop();
@@ -36,6 +47,7 @@ export function Header() {
         <button
           type="button"
           className={styles.toggle}
+          style={{ animationDelay: ready ? `${TEXT_DELAY + TEXT_STEP}s` : undefined }}
           aria-expanded={isOpen}
           aria-controls="global-nav"
           onClick={() => setIsOpen((open) => !open)}
@@ -50,15 +62,25 @@ export function Header() {
           aria-label="Global"
         >
           <ul className={styles.list}>
-            {NAV_ITEMS.map((item) => (
+            {NAV_ITEMS.map((item, index) => (
               <li key={item.id}>
-                <button type="button" className={styles.link} onClick={() => go(item.id)}>
+                <button
+                  type="button"
+                  className={styles.link}
+                  style={{ animationDelay: ready ? `${TEXT_DELAY + TEXT_STEP * (index + 1)}s` : undefined }}
+                  onClick={() => go(item.id)}
+                >
                   {item.label}
                 </button>
               </li>
             ))}
           </ul>
-          <button type="button" className={styles.cta} onClick={() => go("contact")}>
+          <button
+            type="button"
+            className={styles.cta}
+            style={{ animationDelay: ready ? `${TEXT_DELAY + TEXT_STEP * (NAV_ITEMS.length + 1)}s` : undefined }}
+            onClick={() => go("contact")}
+          >
             Contact
           </button>
         </nav>

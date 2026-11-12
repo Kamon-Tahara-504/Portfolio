@@ -4,7 +4,8 @@
   z-index: 200;
   display: grid;
   place-items: center;
-  background-color: var(--color-bg);
+  /* 画像とグリッドの上でゲージだけを見せる */
+  background-color: transparent;
   transition-property: opacity;
   transition-timing-function: ease-out;
 }

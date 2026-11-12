@@ -13,16 +13,20 @@ import { useContentGuard } from "./hooks/useContentGuard";
 import { useDiagonalScroll } from "./hooks/useDiagonalScroll";
 import { useLineDraw } from "./hooks/useLineDraw";
 import { ScrollTrigger } from "./lib/gsap";
+import { whenHeroEnterSettled } from "./lib/heroEnter";
+import { markIntroSeen, shouldSkipIntro, watchIntroAway } from "./lib/intro";
 import { resetEntryPosition } from "./lib/scroll";
-
-// 動きを減らす設定では導入ゲージ自体を出さず、最初から本文を見せる
-const skipIntro = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 export default function App() {
   const mainRef = useRef<HTMLElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
-  const [introDone, setIntroDone] = useState(skipIntro);
-  const finishIntro = useCallback(() => setIntroDone(true), []);
+  const [introDone, setIntroDone] = useState(shouldSkipIntro);
+  const [showGauge, setShowGauge] = useState(() => !shouldSkipIntro());
+  const finishIntro = useCallback(() => {
+    markIntroSeen();
+    setIntroDone(true);
+  }, []);
+  const hideGauge = useCallback(() => setShowGauge(false), []);
   const zoomLock = useBrowserZoomLock();
   useContentGuard();
   // 斜めスクロールの初期位置は、この時点のスクロール量で決まる。
@@ -33,9 +37,16 @@ export default function App() {
   useDiagonalScroll(mainRef, gridRef);
   useLineDraw(mainRef);
 
-  // Web フォントの差し替えで行の高さが変わり、トリガー位置がずれるため再計算する
   useEffect(() => {
-    const refresh = () => ScrollTrigger.refresh();
+    if (introDone) markIntroSeen();
+    return watchIntroAway();
+  }, [introDone]);
+
+  // フォントと読み込み完了の再計算は、Hero の入場が終わってから行う
+  useEffect(() => {
+    const refresh = () => {
+      whenHeroEnterSettled().then(() => ScrollTrigger.refresh());
+    };
     document.fonts?.ready.then(refresh);
     window.addEventListener("load", refresh);
     return () => window.removeEventListener("load", refresh);
@@ -45,8 +56,8 @@ export default function App() {
     <>
       {/* セクションと一緒に横へ流し、視点が移動している感覚を作る背景 */}
       <div ref={gridRef} className="grid-layer" aria-hidden="true" />
-      {!introDone && <HeroStartGauge onComplete={finishIntro} />}
-      <Header />
+      {showGauge && <HeroStartGauge onReveal={finishIntro} onComplete={hideGauge} />}
+      <Header ready={introDone} />
       {/* useDiagonalScroll は main の直下の要素をセクション単位として扱う */}
       <main ref={mainRef}>
         <Hero ready={introDone} />
