@@ -10,14 +10,21 @@ type Refs = {
 };
 
 const DURATION = 0.8;
+// 格納の終点は一覧の写真より 0.5px 下に見えるため、写真だけ上へずらして着地させる
+const CLOSE_IMAGE_NUDGE_Y = 0.5;
 const EASE = "power3.inOut";
 const PART = "[data-flip-id]";
 const EXTRA = "[data-extra]";
 const CARD_ONLY = "[data-card-only]";
+const CARD_NUMBER = "[data-card-number]";
 /** 拡大表示の中の区切り線。伸びている途中に線が見えると形が崩れて見えるため、ほぼ広がり切ってから出す */
 const LINE = "[data-line]";
+const FRAME_LINE = "[data-frame-line]";
+const FRAME_LINE_OFF = "inset 0 0 0 1px rgba(17, 17, 17, 0)";
 const LINE_AT = DURATION * 0.8;
 const FADE = 0.3;
+// ホバーの左バーと同じ時間。このあいだは拡大側を出さず、番号の格納を見せる
+const NUMBER_OUT = 0.3;
 const CLEAR = "rgba(255, 255, 255, 0)";
 
 const prefersReducedMotion = () =>
@@ -115,19 +122,22 @@ export function useCardExpand(refs: Refs, source: HTMLElement) {
 
       const tl = gsap
         .timeline({
+          delay: NUMBER_OUT,
           onComplete: () => {
             gsap.set(card, { clearProps: "overflow" });
             gsap.set(frame, { clearProps: "all" });
           },
         })
+        .set([backdrop, frame, card], { autoAlpha: 1 }, 0)
+        .set(source.querySelectorAll(PART), { autoAlpha: 0 }, 0)
         .from(backdrop, { autoAlpha: 0, duration: DURATION * 0.6, ease: "power1.out" }, 0)
         .from(frame, { ...frameVars, duration: DURATION, ease: EASE }, 0)
         // 枠の白地を最初から出すと下にある一覧カードの線や番号が一瞬で隠れるため、白地とカード側の装飾を入れ替えるように切り替える
         .from(frame, { backgroundColor: CLEAR, duration: FADE, ease: "power1.out" }, 0)
-        .to(source.querySelectorAll(CARD_ONLY), { autoAlpha: 0, duration: FADE, ease: "power1.out" }, 0)
+        .to(source.querySelectorAll(`${CARD_ONLY}:not(${CARD_NUMBER})`), { autoAlpha: 0, duration: FADE, ease: "power1.out" }, 0)
         .to(source, { borderColor: "transparent", duration: FADE, ease: "power1.out" }, 0)
         .add(
-          Flip.from(state, { targets: parts.filter(isImagePart), duration: DURATION, ease: EASE }),
+          Flip.from(state, { targets: parts.filter(isImagePart), duration: DURATION, ease: EASE, immediateRender: false }),
           0,
         );
 
@@ -138,8 +148,22 @@ export function useCardExpand(refs: Refs, source: HTMLElement) {
           if (origin) addTextOpen(tl, part, origin);
         });
 
-      tl.from(card.querySelectorAll(EXTRA), { autoAlpha: 0, y: 12, duration: 0.4, ease: "power2.out" }, LINE_AT)
-        .from(card.querySelectorAll(LINE), { borderColor: CLEAR, duration: FADE, ease: "power1.out" }, LINE_AT);
+      // 上のバーを y で動かすと、写真が止まりきったあとに写真の上の隙間が数px開く
+      const extras = gsap.utils.toArray<HTMLElement>(card.querySelectorAll(EXTRA));
+      tl.from(extras.filter((el) => el.dataset.extra === "pin"), { autoAlpha: 0, duration: 0.4, ease: "power2.out" }, LINE_AT)
+        .from(extras.filter((el) => el.dataset.extra !== "pin"), { autoAlpha: 0, y: 12, duration: 0.4, ease: "power2.out" }, LINE_AT)
+        .from(card.querySelectorAll(LINE), { borderColor: CLEAR, duration: FADE, ease: "power1.out" }, LINE_AT)
+        .from(card.querySelectorAll(FRAME_LINE), { boxShadow: FRAME_LINE_OFF, duration: FADE, ease: "power1.out" }, LINE_AT);
+
+      // Flip の初期配置より後に隠す。番号が左へ縮むあいだ、拡大側を写真の上に出さない
+      gsap.set([backdrop, frame, card], { autoAlpha: 0 });
+    });
+    // context の外で縮める。閉じたときの revert で scale が 1 に戻り、伸びる動きが消えるのを防ぐ
+    gsap.to(source.querySelectorAll(CARD_NUMBER), {
+      scaleX: 0,
+      duration: NUMBER_OUT,
+      ease: "power3.out",
+      transformOrigin: "left top",
     });
     return () => ctx.revert();
   }, [refs, source]);
@@ -160,13 +184,16 @@ export function useCardExpand(refs: Refs, source: HTMLElement) {
       gsap.set(card, { overflow: "visible" });
       const tl = gsap.timeline({ onComplete: onDone });
       tl.to(card.querySelectorAll(EXTRA), { autoAlpha: 0, duration: 0.2, ease: "power1.in" }, 0)
-        .to(card.querySelectorAll(LINE), { borderColor: CLEAR, duration: 0.2, ease: "power1.in" }, 0);
+        .to(card.querySelectorAll(LINE), { borderColor: CLEAR, duration: 0.2, ease: "power1.in" }, 0)
+        .to(card.querySelectorAll(FRAME_LINE), { boxShadow: FRAME_LINE_OFF, duration: 0.2, ease: "power1.in" }, 0);
 
       card.querySelectorAll<HTMLElement>(PART).forEach((part) => {
         const dest = findPair(source, part);
         if (!dest) return;
         if (isImagePart(part)) {
-          tl.add(Flip.fit(part, dest, { duration: DURATION, ease: EASE }) as gsap.core.Tween, 0.1);
+          const vars = Flip.fit(part, dest, { getVars: true, duration: DURATION, ease: EASE }) as gsap.TweenVars;
+          vars.y = Number(vars.y ?? 0) - CLOSE_IMAGE_NUDGE_Y;
+          tl.to(part, vars, 0.1);
         } else {
           addTextClose(tl, part, dest, 0.1);
         }
@@ -175,7 +202,7 @@ export function useCardExpand(refs: Refs, source: HTMLElement) {
       tl.add(Flip.fit(frame, source, { scale: false, duration: DURATION, ease: EASE }) as gsap.core.Tween, 0.1)
         .to(backdrop, { autoAlpha: 0, duration: DURATION * 0.5, ease: "power1.in" }, DURATION * 0.6)
         .to(frame, { backgroundColor: CLEAR, duration: FADE, ease: "power1.in" }, DURATION + 0.1 - FADE)
-        .to(source.querySelectorAll(CARD_ONLY), { autoAlpha: 1, duration: FADE, ease: "power1.in" }, DURATION + 0.1 - FADE)
+        .to(source.querySelectorAll(`${CARD_ONLY}:not(${CARD_NUMBER})`), { autoAlpha: 1, duration: FADE, ease: "power3.out" }, DURATION + 0.1 - FADE)
         .to(source, { borderColor: getComputedStyle(frame).borderTopColor, duration: FADE, ease: "power1.in" }, DURATION + 0.1 - FADE);
     },
     [refs, source],

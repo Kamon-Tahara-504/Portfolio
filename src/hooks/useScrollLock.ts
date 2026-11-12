@@ -1,5 +1,6 @@
 import { useLayoutEffect } from "react";
 import { ScrollTrigger } from "../lib/gsap";
+import { whenHeroEnterSettled } from "../lib/heroEnter";
 
 /**
  * マウント中は背景のページスクロールを止める。
@@ -20,7 +21,9 @@ export function useScrollLock() {
       // ロック中に幅が変わると斜めスクロールの開始位置がずれるため再計算する。
       // 直後に実行すると、ゲージが消えたあとに動いている Hero の入場と画像フェードが
       // 途中で初期状態へ戻される。両方が終わる 1.6 秒よりあとまで待つ
-      window.setTimeout(() => ScrollTrigger.refresh(), 4000);
+      window.setTimeout(() => {
+        whenHeroEnterSettled().then(() => ScrollTrigger.refresh());
+      }, 4000);
     };
   }, []);
 }

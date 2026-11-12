@@ -13,6 +13,12 @@
 .media {
   position: absolute;
   inset: 0;
+  opacity: 0;
+}
+
+.hero[data-ready] .media {
+  opacity: 1;
+  transition: opacity 0.9s var(--ease-out);
 }
 
 /* GSAP が img の transform を上書きするので、画面いっぱいは親の枠で決める */
@@ -80,11 +86,15 @@
   word-break: keep-all;
   overflow-wrap: anywhere;
   margin-top: var(--space-4);
-  padding-left: var(--space-2);
-  border-left: var(--border);
   font-size: var(--text-lg);
   font-weight: 500;
   line-height: 1.7;
+}
+
+/* 左線は入場で動く内側に置く。外側だとゲージ中に線だけ残る */
+.headline [data-hero-in] {
+  padding-left: var(--space-2);
+  border-left: var(--border);
 }
 
 .actions {
@@ -92,6 +102,16 @@
   flex-wrap: wrap;
   gap: var(--space-2);
   margin-top: var(--space-6);
+}
+
+[data-hero-in] {
+  display: block;
+}
+
+.actionIn {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
 }
 
 .primary,
@@ -131,6 +151,7 @@
 
 .scroll {
   position: absolute;
+  opacity: 0;
   left: var(--gutter);
   bottom: var(--space-4);
   z-index: 1;
@@ -141,6 +162,11 @@
   font-size: var(--text-xs);
   letter-spacing: 0.16em;
   text-transform: uppercase;
+}
+
+.hero[data-ready] .scroll {
+  opacity: 1;
+  transition: opacity 0.9s var(--ease-out);
 }
 
 .scrollLine {

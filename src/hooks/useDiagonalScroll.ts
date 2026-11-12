@@ -58,16 +58,13 @@ export function useDiagonalScroll(
 
         const rows = prev.querySelectorAll<HTMLElement>("[data-hero-row]");
         if (rows.length > 0) {
-          // Hero は塊ではなく上の段から順に送り出す。全体を先に消すと下の段が動く前に見えなくなる
-          const rowStagger = 0.12;
-          rows.forEach((row, rowIndex) => {
-            tl.fromTo(
-              row,
-              { x: 0 },
-              { x: () => direction * shift(), duration: 0.9, immediateRender: false },
-              rowIndex * rowStagger,
-            );
-          });
+          // 入場は段差がある。退場は全部の段を同時に送る
+          tl.fromTo(
+            rows,
+            { x: 0 },
+            { x: () => direction * shift(), duration: 0.9, immediateRender: false },
+            0,
+          );
           // 画像自体は入場時の縦パララックスで transform を使っている。
           // 退場は親を上へ動かし、Hero の overflow で切れながら抜けるようにする
           const media = prev.querySelector("[data-hero-media]")?.parentElement;

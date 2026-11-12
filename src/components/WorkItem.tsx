@@ -1,5 +1,6 @@
 import {
   useEffect,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -9,6 +10,7 @@ import {
 import { createPortal } from "react-dom";
 import type { Project } from "../types/content";
 import { getCategoryLabel, getProjectLinks, getProjectPeriod } from "../lib/content";
+import { gsap } from "../lib/gsap";
 import { useCardExpand } from "../hooks/useCardExpand";
 import { useScrollLock } from "../hooks/useScrollLock";
 import styles from "./WorkItem.module.css";
@@ -23,6 +25,26 @@ type Props = {
 export function WorkItem({ project, isOpen, onOpen, onClose }: Props) {
   // 拡大表示の起点として描画中に参照するため、ref ではなく state で持つ
   const [card, setCard] = useState<HTMLButtonElement | null>(null);
+  const wasOpen = useRef(false);
+
+  // 番号はモーダルの下で伸ばしても見えない。閉じたあとに、ホバーの左バーと同じく左端から出す
+  useLayoutEffect(() => {
+    if (!card) return;
+    if (isOpen) {
+      wasOpen.current = true;
+      return;
+    }
+    if (!wasOpen.current) return;
+    wasOpen.current = false;
+    const number = card.querySelector<HTMLElement>("[data-card-number]");
+    if (!number) return;
+    gsap.killTweensOf(number);
+    gsap.fromTo(
+      number,
+      { scaleX: 0 },
+      { scaleX: 1, duration: 0.3, ease: "power3.out", transformOrigin: "left top" },
+    );
+  }, [isOpen, card]);
 
   return (
     <>
@@ -41,7 +63,7 @@ export function WorkItem({ project, isOpen, onOpen, onClose }: Props) {
             loading="lazy"
             className={styles.image}
           />
-          <span className={styles.number} data-card-only>
+          <span className={styles.number} data-card-only data-card-number>
             {project.number}
           </span>
         </div>
@@ -161,14 +183,14 @@ function ExpandedCard({ project, source, onClosed }: ExpandedProps) {
         tabIndex={-1}
       >
         <div className={styles.expandedInner}>
-          <div className={styles.topBar} data-extra>
+          <div className={styles.topBar} data-extra="pin">
             <span className={styles.topNumber}>Project No.{project.number}</span>
             <button type="button" className={styles.close} onClick={requestClose}>
               Close ×
             </button>
           </div>
 
-          <div className={styles.mainFrame} data-flip-id={flipId(project, "image")} data-line>
+          <div className={styles.mainFrame} data-flip-id={flipId(project, "image")} data-frame-line>
             <img
               src={project.images[0]}
               alt={`${project.title} のスクリーンショット`}

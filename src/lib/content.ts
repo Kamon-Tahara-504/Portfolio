@@ -64,6 +64,15 @@ export const skillCategories: SkillCategory[] = Object.entries(
   skills: skills.filter((skill) => skill.name.trim() !== ""),
 }));
 
+const LEVELS_PER_CATEGORY = 5;
+
+/** 自己評価バーは、カテゴリ内で割合の高い 5 件だけ出す。外れた項目はデータに残す。 */
+export function skillsForLevels(skills: Skill[]): Skill[] {
+  const ranked = [...skills].sort((a, b) => b.level - a.level).slice(0, LEVELS_PER_CATEGORY);
+  const shown = new Set(ranked);
+  return skills.filter((skill) => shown.has(skill));
+}
+
 const LINK_LABELS: Record<keyof ProjectLinks, string> = {
   demo: "Demo",
   appStore: "App Store",
