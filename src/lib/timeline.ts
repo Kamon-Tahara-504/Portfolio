@@ -27,7 +27,7 @@ const LANGUAGE_COLORS: Record<string, string> = {
   Kotlin: "#A97BFF",
   "SwiftUI / Swift": "#F05138",
   "React Native": "#61dafb",
-  "React.js": "#61dafb",
+  React: "#61dafb",
   "Next.js": "#000000",
   "Flutter / Dart": "#00B4AB",
   AWS: "#FF9900",
@@ -203,7 +203,7 @@ export function layoutTimeline(skills: TimelineSkill[], now = new Date()): Timel
         (isAbove ? aboveLayers : belowLayers)[assignedLayer].push({ start, end });
       }
 
-      if (skill.name === "React.js") {
+      if (skill.name === "React") {
         reactLayer = { isAbove, assignedLayer };
       }
     }

@@ -68,7 +68,12 @@ const LEVELS_PER_CATEGORY = 5;
 
 /** 自己評価バーは、カテゴリ内で割合の高い 5 件だけ出す。外れた項目はデータに残す。 */
 export function skillsForLevels(skills: Skill[]): Skill[] {
-  const ranked = [...skills].sort((a, b) => b.level - a.level).slice(0, LEVELS_PER_CATEGORY);
+  const ranked = skills
+    .map((skill, index) => ({ skill, index }))
+    // 同率ならデータの後ろを残す。C# は自己評価の枠から外したままにする
+    .sort((a, b) => b.skill.level - a.skill.level || b.index - a.index)
+    .slice(0, LEVELS_PER_CATEGORY)
+    .map((item) => item.skill);
   const shown = new Set(ranked);
   return skills.filter((skill) => shown.has(skill));
 }

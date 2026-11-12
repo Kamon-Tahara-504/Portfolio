@@ -22,6 +22,7 @@ export function Skills() {
                 {skillsForLevels(category.skills).map((skill) => (
                   <li key={skill.name} className={styles.skill}>
                     <span className={styles.name}>{skill.name}</span>
+                    <span className={styles.percent}>{skill.level}%</span>
                     <span className={styles.track} aria-hidden="true">
                       <span className={styles.fill} style={{ width: `${skill.level}%` }} data-draw />
                     </span>
