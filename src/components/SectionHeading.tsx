@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import styles from "./SectionHeading.module.css";
 
 type Props = {
@@ -5,9 +6,19 @@ type Props = {
   label: string;
   title: string;
   lead?: string;
+  action?: ReactNode;
+  /** true のとき action をホバーなしでも表示する（展開中の閉じる操作など） */
+  actionVisible?: boolean;
 };
 
-export function SectionHeading({ index, label, title, lead }: Props) {
+export function SectionHeading({
+  index,
+  label,
+  title,
+  lead,
+  action,
+  actionVisible = false,
+}: Props) {
   return (
     <header className={styles.heading}>
       <div className={styles.meta}>
@@ -16,7 +27,14 @@ export function SectionHeading({ index, label, title, lead }: Props) {
         <span className={styles.rule} data-draw aria-hidden="true" />
         <span className={styles.label}>{label}</span>
       </div>
-      <h2 className={styles.title}>{title}</h2>
+      <div className={styles.titleRow}>
+        <h2 className={styles.title}>{title}</h2>
+        {action ? (
+          <div className={styles.action} data-visible={actionVisible || undefined}>
+            {action}
+          </div>
+        ) : null}
+      </div>
       {lead && <p className={styles.lead}>{lead}</p>}
     </header>
   );

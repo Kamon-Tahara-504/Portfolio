@@ -68,24 +68,27 @@ export function Works() {
   return (
     <section id="works" className="section compact">
       <div className="container" data-shift>
-        <div className={styles.headingWrap}>
-          <SectionHeading
-            index="02"
-            label="Works"
-            title="Selected Works"
-            lead="課題の設定から設計・実装・公開まで取り組んだ主要なプロジェクトです。"
-          />
-          <button
-            type="button"
-            className={styles.expand}
-            data-board-toggle
-            aria-expanded={expanded}
-            disabled={opening || closing}
-            onClick={toggle}
-          >
-            {expanded ? "閉じる" : "展開"}
-          </button>
-        </div>
+        <SectionHeading
+          index="02"
+          label="Works"
+          title="Selected Works"
+          lead="課題の設定から設計・実装・公開まで取り組んだ主要なプロジェクトです。"
+          actionVisible={expanded}
+          action={
+            <button
+              type="button"
+              className={styles.expand}
+              data-board-toggle
+              data-open={expanded || undefined}
+              aria-expanded={expanded}
+              aria-label={expanded ? "閉じる" : "展開"}
+              disabled={opening || closing}
+              onClick={toggle}
+            >
+              <span className={styles.expandIcon} aria-hidden="true" />
+            </button>
+          }
+        />
 
         <div
           ref={board.stageRef}
