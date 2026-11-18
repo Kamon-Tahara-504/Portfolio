@@ -1,57 +1,135 @@
+.headingWrap {
+  position: relative;
+}
+
+.stage {
+  position: relative;
+}
+
+.stage[data-expanded] {
+  overflow: hidden;
+  /* 画面端より少し内側で切る。板は元の位置に残す */
+  --edge-inset: 32px;
+  --fade-width: 4.5rem;
+  width: calc(100vw - var(--edge-inset) * 2);
+  max-width: none;
+  transform: translateX(calc(var(--bleed-left, 0px) * -1 + var(--edge-inset)));
+  box-sizing: border-box;
+  /* 横スクロールは板を動かす。縦のホイールはページのまま */
+  touch-action: pan-y;
+  cursor: grab;
+}
+
+.stage[data-expanded]::before,
+.stage[data-expanded]::after {
+  content: "";
+  position: absolute;
+  z-index: 3;
+  top: 0;
+  bottom: 0;
+  width: var(--fade-width);
+  pointer-events: none;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.stage[data-expanded]::before {
+  left: 0;
+  background: linear-gradient(to right, var(--color-bg), rgb(255 255 255 / 0));
+  mask-image: linear-gradient(to right, #000, transparent);
+  -webkit-mask-image: linear-gradient(to right, #000, transparent);
+}
+
+.stage[data-expanded]::after {
+  right: 0;
+  background: linear-gradient(to left, var(--color-bg), rgb(255 255 255 / 0));
+  mask-image: linear-gradient(to left, #000, transparent);
+  -webkit-mask-image: linear-gradient(to left, #000, transparent);
+}
+
+.stage[data-expanded] button {
+  cursor: grab;
+}
+
+.stage[data-dragging],
+.stage[data-dragging] button {
+  cursor: grabbing;
+}
+
+.stage .expand,
+.stage[data-dragging] .expand {
+  cursor: pointer;
+}
+
+.board {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-4);
+  width: max-content;
+}
+
+.stage[data-expanded] .board {
+  margin-left: calc(var(--bleed-left, 0px) - var(--edge-inset));
+  /* 枠で線が切れない分だけ空ける。フェードはカードに重ねたままにする */
+  padding-right: 32px;
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--space-6) var(--space-4);
+  /* 右の列を足しても、今の2列の幅は枠いっぱいのままにする */
+  width: var(--stage-width, 100%);
+  flex: none;
 }
 
-.others {
-  margin-top: var(--space-12);
+.extra {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  width: calc((var(--stage-width, 100%) - var(--space-4)) / 2);
+  flex: none;
+  opacity: 0;
+  transition: opacity 0.7s var(--ease-out);
 }
 
-.othersTitle {
-  margin-bottom: var(--space-3);
-  font-family: var(--font-en);
-  font-size: var(--text-lg);
-  font-weight: 500;
+.extra[data-shown] {
+  opacity: 1;
 }
 
-.table {
-  border-top: var(--border);
+/* 展開してもカード幅は変えない。右の列は元の1枚と同じ幅 */
+.stage[data-expanded] .grid {
+  grid-template-columns: var(--card-width) var(--card-width);
+  width: calc(var(--card-width) * 2 + var(--space-4));
+}
+
+.stage[data-expanded] .extra {
+  width: var(--card-width);
+}
+
+.expand {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 40;
+  padding: 0.45rem 0.9rem;
+  border: var(--border);
   background-color: var(--color-bg);
-}
-
-.row {
-  display: grid;
-  grid-template-columns: 2.4rem minmax(0, 9.6rem) minmax(0, 1fr) 7.2rem 5.6rem;
-  gap: var(--space-2);
-  align-items: center;
-  padding: var(--space-2) var(--space-1);
-  border-bottom: var(--border-soft);
+  font-family: var(--font-en);
   font-size: var(--text-sm);
-  transition: background-color 0.3s;
+  transition:
+    background-color 0.3s,
+    color 0.3s;
 }
 
-.row:hover {
-  background-color: var(--color-surface);
+.expand:hover:not(:disabled) {
+  background-color: var(--color-ink);
+  color: var(--color-inverse);
 }
 
-.number,
-.period {
-  font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  color: var(--color-muted);
-}
-
-.name {
-  font-weight: 700;
-}
-
-.catch {
-  color: var(--color-muted);
-}
-
-.rowLink {
-  justify-self: end;
+.expand:disabled {
+  opacity: 0.45;
+  cursor: default;
 }
 
 @media (max-width: 900px) {
@@ -59,17 +137,20 @@
     grid-template-columns: 1fr;
   }
 
-  .row {
-    grid-template-columns: 2rem 1fr auto;
-    row-gap: 0.25rem;
+  .extra,
+  .stage[data-expanded] .extra {
+    width: var(--card-width, var(--stage-width, 100%));
   }
 
-  .catch {
-    grid-column: 2 / -1;
-    grid-row: 2;
+  .stage[data-expanded] .grid {
+    grid-template-columns: var(--card-width);
+    width: var(--card-width);
   }
+}
 
-  .period {
-    display: none;
+@media (prefers-reduced-motion: reduce) {
+  .expand,
+  .extra {
+    transition: none;
   }
 }
