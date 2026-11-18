@@ -1,7 +1,3 @@
-.headingWrap {
-  position: relative;
-}
-
 .stage {
   position: relative;
 }
@@ -56,11 +52,6 @@
   cursor: grabbing;
 }
 
-.stage .expand,
-.stage[data-dragging] .expand {
-  cursor: pointer;
-}
-
 .board {
   display: flex;
   align-items: flex-start;
@@ -108,18 +99,42 @@
 }
 
 .expand {
-  position: absolute;
-  top: 0;
-  right: 0;
+  position: relative;
   z-index: 40;
-  padding: 0.45rem 0.9rem;
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
   border: var(--border);
+  border-radius: 50%;
   background-color: var(--color-bg);
-  font-family: var(--font-en);
-  font-size: var(--text-sm);
+  color: var(--color-ink);
   transition:
     background-color 0.3s,
-    color 0.3s;
+    color 0.3s,
+    transform 0.3s ease;
+}
+
+.expandIcon,
+.expandIcon::before {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0.7rem;
+  height: 1px;
+  background-color: currentColor;
+  transform: translate(-50%, -50%);
+}
+
+.expandIcon::before {
+  content: "";
+  width: 1px;
+  height: 0.7rem;
+}
+
+.expand[data-open] {
+  transform: rotate(45deg);
 }
 
 .expand:hover:not(:disabled) {
@@ -152,5 +167,9 @@
   .expand,
   .extra {
     transition: none;
+  }
+
+  .expand[data-open] {
+    transform: none;
   }
 }
