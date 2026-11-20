@@ -8,7 +8,7 @@ export function Contact() {
 
   return (
     <footer id="contact" className={`compact ${styles.contact}`}>
-      <div className="container" data-shift>
+      <div className={`container ${styles.inner}`} data-shift>
         <div className={styles.meta}>
           <span>05</span>
           <span className={styles.rule} data-draw aria-hidden="true" />

@@ -1,3 +1,8 @@
+/* Hero が早く空く分、上余白を詰めて見え始めを上げる */
+.about {
+  padding-top: var(--space-8);
+}
+
 .grid {
   display: grid;
   /* 右の文章列を広めにし、リードが1行に収まりやすくする */

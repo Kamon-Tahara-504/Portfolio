@@ -45,35 +45,58 @@ export function useDiagonalScroll(
         const gridTo = gridOffset + direction;
         gridOffset = gridTo;
 
+        const rows = prev.querySelectorAll<HTMLElement>("[data-hero-row]");
+        // Hero は中身が先に消えるため、About だけ入場を上寄せする
+        const fromHero = rows.length > 0;
+
         const tl = gsap.timeline({
           defaults: { ease: "none" },
           scrollTrigger: {
             trigger: next,
-            start: "top 90%",
-            end: "top 40%",
+            start: fromHero ? "top 82%" : "top 65%",
+            end: fromHero ? "top 32%" : "top 15%",
             scrub: 0.8,
             invalidateOnRefresh: true,
           },
         });
 
-        const rows = prev.querySelectorAll<HTMLElement>("[data-hero-row]");
-        if (rows.length > 0) {
-          // 入場は段差がある。退場は全部の段を同時に送る
-          tl.fromTo(
+        if (fromHero) {
+          // 名前などの段も、About 入場を待たず Hero スクロール直後に送り出す
+          gsap.fromTo(
             rows,
             { x: 0 },
-            { x: () => direction * shift(), duration: 0.9, immediateRender: false },
-            0,
+            {
+              x: () => direction * shift(),
+              ease: "none",
+              immediateRender: false,
+              scrollTrigger: {
+                trigger: prev,
+                start: "top top",
+                end: "+=25%",
+                scrub: 0.3,
+                invalidateOnRefresh: true,
+              },
+            },
           );
-          // 画像自体は入場時の縦パララックスで transform を使っている。
-          // 退場は親を上へ動かし、Hero の overflow で切れながら抜けるようにする
+          // オブジェクトはセクション遷移を待たず、Hero を少しスクロールした時点で格納する
           const media = prev.querySelector("[data-hero-media]")?.parentElement;
           if (media) {
-            tl.fromTo(
+            gsap.fromTo(
               media,
               { yPercent: 0, opacity: 1 },
-              { yPercent: -40, opacity: 0, duration: 1, immediateRender: false },
-              0,
+              {
+                yPercent: -45,
+                opacity: 0,
+                ease: "none",
+                immediateRender: false,
+                scrollTrigger: {
+                  trigger: prev,
+                  start: "top top",
+                  end: "+=22%",
+                  scrub: 0.3,
+                  invalidateOnRefresh: true,
+                },
+              },
             );
           }
         } else {
