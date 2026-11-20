@@ -45,6 +45,8 @@ export function Header({ ready }: Props) {
       let matched = false;
       let next = { left: 0, top: 0, width: 0 };
       for (const id of SECTION_IDS) {
+        // Contact は枠ボタンなので、到達中も下線を出さない
+        if (id === "contact") continue;
         const section = document.getElementById(id);
         const item = itemRefs.current.get(id);
         if (!section || !item) continue;

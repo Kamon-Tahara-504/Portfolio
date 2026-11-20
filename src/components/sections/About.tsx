@@ -19,7 +19,7 @@ const profile = [
 
 export function About() {
   return (
-    <section id="about" className="section compact">
+    <section id="about" className={`section compact ${styles.about}`}>
       <div className="container" data-shift>
         <SectionHeading index="01" label="About" title="Philosophy" />
 
