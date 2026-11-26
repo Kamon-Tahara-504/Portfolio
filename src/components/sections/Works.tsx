@@ -6,6 +6,10 @@ import { BOARD_MOTION_MS, useWorksBoard } from "../../hooks/useWorksBoard";
 import type { Project } from "../../types/content";
 import styles from "./Works.module.css";
 
+// 展開前のグリッドと同じ列数。追加カードもこの行数で右へ列を足す
+const FEATURED_COLUMNS = 2;
+const BOARD_ROWS = Math.ceil(featuredProjects.length / FEATURED_COLUMNS);
+
 export function Works() {
   // 一度に拡大できるのは 1 件だけにして、1 つの制作物に集中できるようにする
   const [openId, setOpenId] = useState<string | null>(null);
@@ -98,6 +102,7 @@ export function Works() {
           style={{
             ...(expanded && frame ? { height: frame.height } : {}),
             ...(board.stageWidth ? { ["--stage-width" as string]: `${board.stageWidth}px` } : {}),
+            ["--board-rows" as string]: String(BOARD_ROWS),
             ...(frame
               ? {
                   ["--card-width" as string]: `${frame.card}px`,
