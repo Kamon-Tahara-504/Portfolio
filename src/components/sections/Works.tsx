@@ -115,6 +115,8 @@ export function Works() {
               </div>
             )}
           </div>
+          {/* 横長でない画面では、下端でカードが直線に切れるのを霧で隠す */}
+          <div className={styles.fogBottom} aria-hidden="true" />
         </div>
       </div>
     </section>

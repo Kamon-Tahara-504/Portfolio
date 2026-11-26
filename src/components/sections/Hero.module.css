@@ -195,6 +195,34 @@
   }
 }
 
+/* 横長でない画面では、vw 基準の見出しサイズと min-height の 640px 下限が
+   ビューポートに対して過大になる。16:9 / 16:10 はそのまま、4:3 以下だけ切り替える */
+@media (max-aspect-ratio: 4/3) {
+  .hero {
+    min-height: 100svh;
+  }
+
+  .brand {
+    font-size: clamp(2.5rem, 1.2rem + 9vmin, 6.5rem);
+  }
+
+  .nameJa {
+    font-size: var(--text-base);
+    letter-spacing: 0.2em;
+  }
+
+  .headline {
+    max-width: min(38rem, 100%);
+    font-size: var(--text-base);
+  }
+
+  .primary,
+  .secondary {
+    min-width: 9rem;
+    padding: 0.8rem 1.4rem;
+  }
+}
+
 @media (max-width: 768px) {
   .media::after {
     background: linear-gradient(
