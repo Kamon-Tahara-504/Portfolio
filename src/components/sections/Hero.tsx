@@ -30,7 +30,13 @@ export function Hero({ ready }: Props) {
     mm.add(MOTION_OK, () => {
       const entering = gsap.utils.toArray<HTMLElement>(root.querySelectorAll("[data-hero-in]"));
       if (entering.length > 0) {
-        const offscreen = -window.innerWidth * SHIFT_RATIO;
+        // 画面幅の 45% では、見出し幅のほうが大きい横長でない画面で
+        // 入場待ちの文言が左端に残って見えてしまう
+        const hideBy = Math.max(
+          window.innerWidth * SHIFT_RATIO,
+          ...entering.map((el) => Math.ceil(el.getBoundingClientRect().right) + 1),
+        );
+        const offscreen = -hideBy;
         // 退場は外側の data-hero-row が持つ。入場は内側だけを動かし、同じ x を奪わない
         gsap.set(entering, { x: ready ? 0 : offscreen });
         if (ready) {
